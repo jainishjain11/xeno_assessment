@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: crm-backend
+Version: 0.1.0
+Summary: FastAPI CRM + Celery worker
+Requires-Python: >=3.11
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: sqlalchemy[asyncio]
+Requires-Dist: asyncpg
+Requires-Dist: alembic
+Requires-Dist: pydantic-settings
+Requires-Dist: pydantic[email]
+Requires-Dist: celery[redis]
+Requires-Dist: redis
+Requires-Dist: httpx
+Requires-Dist: sse-starlette
+Requires-Dist: python-jose[cryptography]
+Requires-Dist: passlib[bcrypt]
+Requires-Dist: anthropic
+Requires-Dist: slowapi
+Requires-Dist: faker

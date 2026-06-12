@@ -136,39 +136,39 @@
 > Goal: Working auth + customer/order CRUD with bulk import.
 
 ### 2.1 App Foundation
-- [ ] `backend/app/config.py` — `Settings` class with pydantic-settings
-- [ ] `backend/app/main.py` — FastAPI app factory with:
-  - [ ] CORS middleware (allow frontend origin)
-  - [ ] Global exception handlers (404, 422, 500)
-  - [ ] Router registration
-  - [ ] Lifespan handler (DB connection check on startup)
-- [ ] `backend/app/utils/jwt.py` — `create_token()`, `decode_token()`, `get_current_user` dependency
-- [ ] `backend/app/utils/pagination.py` — reusable `PaginatedResponse` schema + `paginate()` helper
+- [x] `backend/app/config.py` — `Settings` class with pydantic-settings
+- [x] `backend/app/main.py` — FastAPI app factory with:
+  - [x] CORS middleware (allow frontend origin)
+  - [x] Global exception handlers (404, 422, 500)
+  - [x] Router registration
+  - [x] Lifespan handler (DB connection check on startup)
+- [x] `backend/app/utils/jwt.py` — `create_token()`, `decode_token()`, `get_current_user` dependency
+- [x] `backend/app/utils/pagination.py` — reusable `PaginatedResponse` schema + `paginate()` helper
 
 ### 2.2 Auth Endpoints
-- [ ] `backend/app/schemas/auth.py` — `RegisterRequest`, `LoginRequest`, `TokenResponse`
-- [ ] `backend/app/services/auth_service.py` — `register()`, `login()`, password hashing
-- [ ] `backend/app/routers/auth.py` — `POST /auth/register`, `POST /auth/login`, `GET /auth/me`
-- [ ] Test auth flow: register → login → get JWT → use on protected endpoint
+- [x] `backend/app/schemas/auth.py` — `RegisterRequest`, `LoginRequest`, `TokenResponse`
+- [x] `backend/app/services/auth_service.py` — `register()`, `login()`, password hashing
+- [x] `backend/app/routers/auth.py` — `POST /auth/register`, `POST /auth/login`, `GET /auth/me`
+- [x] Test auth flow: register → login → get JWT → use on protected endpoint
 
 ### 2.3 Customer Endpoints
-- [ ] `backend/app/schemas/customer.py` — `CustomerCreate`, `CustomerUpdate`, `CustomerResponse`, `CustomerListResponse`
-- [ ] `backend/app/services/customer_service.py` — CRUD + bulk import logic:
-  - [ ] `create_customer()` — single create
-  - [ ] `bulk_import()` — upsert by email, recompute aggregates
-  - [ ] `get_customers()` — paginated + filterable
-  - [ ] `get_customer()` — with orders
-  - [ ] `update_customer()` — partial update
-  - [ ] `soft_delete_customer()`
-- [ ] `backend/app/routers/customers.py` — all endpoints per spec §5.2
-- [ ] Test bulk import with 100 customers
+- [x] `backend/app/schemas/customer.py` — `CustomerCreate`, `CustomerUpdate`, `CustomerResponse`, `CustomerListResponse`
+- [x] `backend/app/services/customer_service.py` — CRUD + bulk import logic:
+  - [x] `create_customer()` — single create
+  - [x] `bulk_import()` — upsert by email, recompute aggregates
+  - [x] `get_customers()` — paginated + filterable
+  - [x] `get_customer()` — with orders
+  - [x] `update_customer()` — partial update
+  - [x] `soft_delete_customer()`
+- [x] `backend/app/routers/customers.py` — all endpoints per spec §5.2
+- [x] Test bulk import with 100 customers
 
 ### 2.4 Order Endpoints
-- [ ] `backend/app/schemas/order.py` — `OrderCreate`, `OrderResponse`
-- [ ] `backend/app/services/order_service.py` — `bulk_import_orders()`, `get_orders_for_customer()`
-  - [ ] After order import: recompute customer `total_spent`, `order_count`, `last_order_at`
-- [ ] `backend/app/routers/orders.py` — endpoints per spec §5.3
-- [ ] Test order import + verify customer aggregates update correctly
+- [x] `backend/app/schemas/order.py` — `OrderCreate`, `OrderResponse`
+- [x] `backend/app/services/order_service.py` — `bulk_import_orders()`, `get_orders_for_customer()`
+  - [x] After order import: recompute customer `total_spent`, `order_count`, `last_order_at`
+- [x] `backend/app/routers/orders.py` — endpoints per spec §5.3
+- [x] Test order import + verify customer aggregates update correctly
 
 ---
 
@@ -543,7 +543,7 @@
 |---|---|---|
 | 0 | Scaffolding & Configuration | `[x]` |
 | 1 | Database Layer | `[x]` |
-| 2 | Auth & Customer CRUD | `[ ]` |
+| 2 | Auth & Customer CRUD | `[x]` |
 | 3 | Segment Engine | `[ ]` |
 | 4 | Campaign Engine + Celery | `[ ]` |
 | 5 | Channel Stub Service | `[ ]` |

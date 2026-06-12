@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+sqlalchemy[asyncio]
+asyncpg
+alembic
+pydantic-settings
+pydantic[email]
+celery[redis]
+redis
+httpx
+sse-starlette
+python-jose[cryptography]
+passlib[bcrypt]
+anthropic
+slowapi
+faker
