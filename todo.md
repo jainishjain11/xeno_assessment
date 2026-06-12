@@ -100,35 +100,35 @@
 > Goal: All tables exist in Supabase, ORM models defined, migrations work.
 
 ### 1.1 SQLAlchemy Models
-- [ ] `backend/app/database.py` — async engine, session factory, `Base` declarative
-- [ ] `backend/app/models/user.py` — `User` model
-- [ ] `backend/app/models/customer.py` — `Customer` model with all indexes
-- [ ] `backend/app/models/order.py` — `Order` model with all indexes
-- [ ] `backend/app/models/segment.py` — `Segment` model with JSONB `filter_rules`
-- [ ] `backend/app/models/campaign.py` — `Campaign` model with status enum
-- [ ] `backend/app/models/communication_log.py` — `CommunicationLog` with idempotency_key UNIQUE
-- [ ] `backend/app/models/receipt_event.py` — `ReceiptEvent` append-only model
-- [ ] `backend/app/models/__init__.py` — import all models for Alembic discovery
+- [x] `backend/app/database.py` — async engine, session factory, `Base` declarative
+- [x] `backend/app/models/user.py` — `User` model
+- [x] `backend/app/models/customer.py` — `Customer` model with all indexes
+- [x] `backend/app/models/order.py` — `Order` model with all indexes
+- [x] `backend/app/models/segment.py` — `Segment` model with JSONB `filter_rules`
+- [x] `backend/app/models/campaign.py` — `Campaign` model with status enum
+- [x] `backend/app/models/communication_log.py` — `CommunicationLog` with idempotency_key UNIQUE
+- [x] `backend/app/models/receipt_event.py` — `ReceiptEvent` append-only model
+- [x] `backend/app/models/__init__.py` — import all models for Alembic discovery
 
 ### 1.2 Alembic Setup
-- [ ] `alembic init alembic` (in /backend)
-- [ ] Configure `alembic.ini` with async SQLAlchemy target
-- [ ] Configure `alembic/env.py` to import all models + use async engine
-- [ ] Generate initial migration: `alembic revision --autogenerate -m "initial_schema"`
-- [ ] Review generated migration — ensure all indexes, UNIQUE constraints, FKs are present
-- [ ] Run migration against Supabase: `alembic upgrade head`
-- [ ] Create analytics view via raw SQL migration: `campaign_funnel_stats`
+- [x] `alembic init alembic` (in /backend)
+- [x] Configure `alembic.ini` with async SQLAlchemy target
+- [x] Configure `alembic/env.py` to import all models + use async engine
+- [x] Generate initial migration: `alembic revision --autogenerate -m "initial_schema"`
+- [x] Review generated migration — ensure all indexes, UNIQUE constraints, FKs are present
+- [x] Run migration against Supabase: `alembic upgrade head`
+- [x] Create analytics view via raw SQL migration: `campaign_funnel_stats`
 
 ### 1.3 Seed Data
-- [ ] `backend/seed.py` — Faker-based seed script:
-  - [ ] Create demo user (`demo@aurabeauty.com` / `demo1234`)
-  - [ ] Generate 500 customers (realistic Indian names, emails, cities, spend distribution)
-  - [ ] Generate 2,000 orders across customers
-  - [ ] Recompute `total_spent` + `order_count` + `last_order_at` on each customer
-  - [ ] Create 3 segments with filter_rules JSONB
-  - [ ] Create 2 completed campaigns with full communication_logs (all statuses)
-- [ ] Run seed script and verify data in Supabase dashboard
-- [ ] Verify analytics view returns correct numbers on seeded data
+- [x] `backend/seed.py` — Faker-based seed script:
+  - [x] Create demo user (`demo@aurabeauty.com` / `demo1234`)
+  - [x] Generate 500 customers (realistic Indian names, emails, cities, spend distribution)
+  - [x] Generate 2,000 orders across customers
+  - [x] Recompute `total_spent` + `order_count` + `last_order_at` on each customer
+  - [x] Create 3 segments with filter_rules JSONB
+  - [x] Create 2 completed campaigns with full communication_logs (all statuses)
+- [x] Run seed script and verify data in Supabase dashboard
+- [x] Verify analytics view returns correct numbers on seeded data
 
 ---
 
@@ -542,7 +542,7 @@
 | Phase | Description | Status |
 |---|---|---|
 | 0 | Scaffolding & Configuration | `[x]` |
-| 1 | Database Layer | `[ ]` |
+| 1 | Database Layer | `[x]` |
 | 2 | Auth & Customer CRUD | `[ ]` |
 | 3 | Segment Engine | `[ ]` |
 | 4 | Campaign Engine + Celery | `[ ]` |
