@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: channel-stub
+Version: 0.1.0
+Requires-Python: >=3.11
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: celery[redis]
+Requires-Dist: httpx
+Requires-Dist: pydantic-settings

@@ -1,0 +1,77 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: crm
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  crm-api:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:password@postgres:5432/crm
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET=supersecretkey-please-change-in-prod
+      - JWT_ALGORITHM=HS256
+      - ANTHROPIC_API_KEY=dummy
+      - CHANNEL_STUB_URL=http://channel-stub:8001
+      - ENVIRONMENT=development
+    depends_on:
+      - postgres
+      - redis
+
+  crm-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.worker
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:password@postgres:5432/crm
+      - REDIS_URL=redis://redis:6379/0
+      - ENVIRONMENT=development
+    depends_on:
+      - postgres
+      - redis
+      - crm-api
+
+  channel-stub:
+    build:
+      context: ./channel-stub
+    ports:
+      - "8001:8001"
+    environment:
+      - REDIS_URL=redis://redis:6379/1
+      - CRM_RECEIPT_URL=http://crm-api:8000/api/v1/receipts/callback
+      - ENVIRONMENT=development
+    depends_on:
+      - redis
+
+  flower:
+    image: mher/flower
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+      - crm-worker
+
+volumes:
+  redis_data:
+  postgres_data:
