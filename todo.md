@@ -267,8 +267,8 @@
 > Goal: CRM handles callbacks correctly, idempotently, in any order.
 
 ### 6.1 Receipt Service
-- [ ] `backend/app/services/receipt_service.py` — core idempotency logic:
-  - [ ] `process_receipt(payload: ReceiptCallback) -> ReceiptResult`:
+- [x] `backend/app/services/receipt_service.py` — core idempotency logic:
+  - [x] `process_receipt(payload: ReceiptCallback) → ReceiptResult`:
     1. Check Redis: `idempotency:receipt:{event_id}` — if exists → return `duplicate`
     2. Load `communication_log` by `communication_log_id` — if not found → `404`
     3. Check `receipt_events` table: has this `event_type` already been processed? → `duplicate`
@@ -282,19 +282,19 @@
     9. Return `ReceiptResult` with previous + new status
 
 ### 6.2 Receipt Router
-- [ ] `backend/app/routers/receipts.py` — `POST /receipts/callback`:
-  - [ ] Rate limiting via slowapi (1000/min per IP)
-  - [ ] Call `receipt_service.process_receipt()`
-  - [ ] Always return `200 OK` (never 4xx to channel stub — log errors instead)
-- [ ] Unit test idempotency: fire same callback 3x → DB updated once, receipt_events has 1 real + 2 duplicates
-- [ ] Unit test out-of-order: fire `clicked` before `delivered` → all intermediate timestamps backfilled
+- [x] `backend/app/routers/receipts.py` — `POST /receipts/callback`:
+  - [x] Rate limiting via slowapi (1000/min per IP)
+  - [x] Call `receipt_service.process_receipt()`
+  - [x] Always return `200 OK` (never 4xx to channel stub — log errors instead)
+- [x] Unit test idempotency: fire same callback 3x → DB updated once, receipt_events has 1 real + 2 duplicates
+- [x] Unit test out-of-order: fire `clicked` before `delivered` → all intermediate timestamps backfilled
 
 ### 6.3 Aggregate Update Task
-- [ ] `backend/app/tasks/analytics.py` — `update_campaign_aggregate_task(campaign_id)`:
-  - [ ] Query `campaign_funnel_stats` view
-  - [ ] Cache result in Redis: `campaign:stats:{campaign_id}` (TTL 1h)
-  - [ ] Publish to Redis pubsub: `sse:channel:{campaign_id}`
-  - [ ] Task should be deduplicated: if same campaign_id task already queued, skip (use Celery `apply_async` with `countdown=1`)
+- [x] `backend/app/tasks/analytics.py` — `update_campaign_aggregate_task(campaign_id)`:
+  - [x] Query `campaign_funnel_stats` view
+  - [x] Cache result in Redis: `campaign:stats:{campaign_id}` (TTL 1h)
+  - [x] Publish to Redis pubsub: `sse:channel:{campaign_id}`
+  - [x] Task should be deduplicated: if same campaign_id task already queued, skip (use Celery `apply_async` with `countdown=1`)
 
 ---
 
@@ -547,7 +547,7 @@
 | 3 | Segment Engine | `[x]` |
 | 4 | Campaign Engine + Celery | `[x]` |
 | 5 | Channel Stub Service | `[x]` |
-| 6 | Receipt API (Idempotency) | `[ ]` |
+| 6 | Receipt API (Idempotency) | `[x]` |
 | 7 | Analytics SSE | `[ ]` |
 | 8 | AI Engine | `[ ]` |
 | 9 | Frontend Foundation + Auth | `[ ]` |

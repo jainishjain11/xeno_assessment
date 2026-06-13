@@ -7,7 +7,7 @@ celery_app = Celery(
     "crm_worker",
     broker=settings.redis_url,
     backend=settings.redis_url,
-    include=["app.tasks.dispatch"]
+    include=["app.tasks.dispatch", "app.tasks.analytics"]
 )
 
 celery_app.conf.update(
