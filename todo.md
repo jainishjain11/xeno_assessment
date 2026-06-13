@@ -256,10 +256,10 @@
   - [x] If delivered: sleep 5–15s → POST `opened` (40% probability)
   - [x] If opened: sleep 2–5s → POST `read` (70% of opened)
   - [x] If read: sleep 3–8s → POST `clicked` (20% of read)
-  - [ ] If clicked: sleep 1–3s → POST `converted` (10% of clicked)
-  - [ ] All callbacks: `httpx.post(callback_url, json=payload)` with retry on failure
-  - [ ] Log each callback attempt to stdout with timestamp
-- [ ] Test: launch campaign with 10 customers, watch full lifecycle in logs over ~30s
+  - [x] If clicked: sleep 1–3s → POST `converted` (10% of clicked)
+  - [x] All callbacks: `httpx.post(callback_url, json=payload)` with retry on failure
+  - [x] Log each callback attempt to stdout with timestamp
+- [x] Test: launch campaign with 10 customers, watch full lifecycle in logs over ~30s
 
 ---
 
