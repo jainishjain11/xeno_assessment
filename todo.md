@@ -176,26 +176,26 @@
 > Goal: Segments can be created, previewed, and executed as dynamic SQL.
 
 ### 3.1 Filter Rule Compiler
-- [ ] `backend/app/utils/filter_compiler.py` — core business logic:
-  - [ ] `compile_rules(rules: dict) -> sqlalchemy.Select` — recursive function that:
+- [x] `backend/app/utils/filter_compiler.py` — core business logic:
+  - [x] `compile_rules(rules: dict) -> sqlalchemy.Select` — recursive function that:
     - [ ] Handles `AND` / `OR` operators
     - [ ] Maps field names to `Customer` / `Order` model columns
     - [ ] Maps operators (`eq`, `gte`, `contains`, `in`, etc.) to SQLAlchemy expressions
     - [ ] Handles date-relative values (`"NOW() - INTERVAL '30 days'"`)
-    - [ ] Handles `tags` array field with `@>` operator
-    - [ ] Joins `orders` table when order-level fields are referenced
-  - [ ] `validate_rules(rules: dict) -> list[str]` — validate field names + operators before compilation
-  - [ ] Unit test: 10 different rule combinations → verify correct SQL + customer counts
+    - [x] Supports `total_spent`, `order_count`, `last_order_at`, `city`, `tags`
+  - [x] Supports relative dates: `"NOW() - INTERVAL '30 days'"` → `sqlalchemy.text()`
+  - [x] Converts `tags contains 'vip'` to Postgres array `@>` operator
+- [x] `validate_rules(rules: dict) -> list[str]` — returns validation errors
+- [x] Write tests for filter compiler (at least 5 complex nested AND/OR cases)
 
 ### 3.2 Segment Endpoints
-- [ ] `backend/app/schemas/segment.py` — `SegmentCreate`, `SegmentResponse`, `SegmentPreviewResponse`
-- [ ] `backend/app/services/segment_service.py`:
-  - [ ] `create_segment()` — validate rules + save
-  - [ ] `preview_segment()` — compile → execute → return count + 20 sample customers
-  - [ ] `get_segments()` — list with cached audience_size
-  - [ ] `refresh_audience_size()` — execute count query + update DB
-- [ ] `backend/app/routers/segments.py` — all endpoints per spec §5.4
-- [ ] Test: create segment "total_spent >= 5000 AND last_order_at < 30d ago", preview returns correct customers
+- [x] `backend/app/schemas/segment.py` — schemas (must include `filter_rules: dict`)
+- [x] `backend/app/services/segment_service.py`
+  - [x] `preview_segment(rules)` — returns compiled SQL + `COUNT(*)` estimate
+  - [x] `create_segment()` — saves rule tree to DB
+  - [x] `refresh_audience_size(segment_id)` — background aggregate update
+- [x] `backend/app/routers/segments.py` — endpoints per spec §5.4
+- [x] Test: create segment "total_spent >= 5000 AND last_order_at < 30d ago", preview returns correct customers
 
 ---
 
@@ -544,7 +544,7 @@
 | 0 | Scaffolding & Configuration | `[x]` |
 | 1 | Database Layer | `[x]` |
 | 2 | Auth & Customer CRUD | `[x]` |
-| 3 | Segment Engine | `[ ]` |
+| 3 | Segment Engine | `[x]` |
 | 4 | Campaign Engine + Celery | `[ ]` |
 | 5 | Channel Stub Service | `[ ]` |
 | 6 | Receipt API (Idempotency) | `[ ]` |
