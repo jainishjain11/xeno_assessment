@@ -302,13 +302,13 @@
 > Goal: Frontend can subscribe to live campaign stats updates via SSE.
 
 ### 7.1 SSE Endpoint
-- [ ] `backend/app/routers/analytics.py` — `GET /analytics/live/{campaign_id}`:
-  - [ ] Authenticate request (JWT in query param or header)
-  - [ ] Send initial snapshot from Redis cache
-  - [ ] Subscribe to Redis pubsub `sse:channel:{campaign_id}`
-  - [ ] On each pubsub message: yield SSE `funnel_update` event
-  - [ ] Yield heartbeat every 15s to keep connection alive
-  - [ ] Handle client disconnect cleanly
+- [x] `backend/app/routers/analytics.py` — `GET /analytics/live/{campaign_id}`:
+  - [x] Authenticate request (JWT in query param or header)
+  - [x] Send initial snapshot from Redis cache
+  - [x] Subscribe to Redis pubsub `sse:channel:{campaign_id}`
+  - [x] On each pubsub message: yield SSE `funnel_update` event
+  - [x] Yield heartbeat every 15s to keep connection alive
+  - [x] Handle client disconnect cleanly
 - [ ] Test: open SSE stream in browser, launch campaign, watch stats tick up in real time
 
 ---
@@ -548,7 +548,7 @@
 | 4 | Campaign Engine + Celery | `[x]` |
 | 5 | Channel Stub Service | `[x]` |
 | 6 | Receipt API (Idempotency) | `[x]` |
-| 7 | Analytics SSE | `[ ]` |
+| 7 | Analytics SSE | `[x]` |
 | 8 | AI Engine | `[ ]` |
 | 9 | Frontend Foundation + Auth | `[ ]` |
 | 10 | Customer + Segment Pages | `[ ]` |
