@@ -317,31 +317,31 @@
 > Goal: Natural language → segment rules + message draft. Chat assistant works.
 
 ### 8.1 AI Service Foundation
-- [ ] `backend/app/ai/prompts.py` — all system prompts as constants:
-  - [ ] `INTENT_PARSE_SYSTEM_PROMPT` — includes schema, operators, output format
-  - [ ] `MESSAGE_DRAFT_SYSTEM_PROMPT` — channel-aware, brand-context-aware
-  - [ ] `CHAT_AGENT_SYSTEM_PROMPT` — campaign assistant persona + tool descriptions
-- [ ] `backend/app/ai/client.py` — Anthropic client wrapper:
-  - [ ] `parse_intent(prompt, context) -> IntentParseResult`
-  - [ ] `draft_message(channel, audience_desc, brand_context) -> str`
-  - [ ] `chat_stream(messages, tools) -> AsyncGenerator`
+- [x] `backend/app/ai/prompts.py` — all system prompts as constants:
+  - [x] `INTENT_PARSE_SYSTEM_PROMPT` — includes schema, operators, output format
+  - [x] `MESSAGE_DRAFT_SYSTEM_PROMPT` — channel-aware, brand-context-aware
+  - [x] `CHAT_AGENT_SYSTEM_PROMPT` — campaign assistant persona + tool descriptions
+- [x] `backend/app/ai/client.py` — Anthropic client wrapper:
+  - [x] `parse_intent(prompt, context) → IntentParseResult`
+  - [x] `draft_message(channel, audience_desc, brand_context) → str`
+  - [x] `chat_stream(messages, tools) → AsyncGenerator`
 
 ### 8.2 Intent Parse Endpoint
-- [ ] `backend/app/schemas/ai.py` — `IntentRequest`, `IntentParseResult`, `ChatMessage`
-- [ ] `backend/app/routers/ai.py`:
-  - [ ] `POST /ai/parse-intent` — call AI, validate JSON output, return structured result
-    - [ ] Retry loop: if AI returns invalid JSON → retry with error context (max 2x)
-    - [ ] Rate limit: 60 req/min per user
-  - [ ] `POST /ai/draft-message` — channel-aware message generation
-  - [ ] `GET /ai/chat` — SSE stream for chat interface
-    - [ ] Maintain conversation history from request body
-    - [ ] Stream tokens using `sse-starlette`
-    - [ ] Handle tool calls: `preview_segment` executes real query, returns count
+- [x] `backend/app/schemas/ai.py` — `IntentRequest`, `IntentParseResult`, `ChatMessage`
+- [x] `backend/app/routers/ai.py`:
+  - [x] `POST /ai/parse-intent` — call AI, validate JSON output, return structured result
+    - [x] Retry loop: if AI returns invalid JSON → retry with error context (max 2x)
+    - [x] Rate limit: 60 req/min per user
+  - [x] `POST /ai/draft-message` — channel-aware message generation
+  - [x] `POST /ai/chat` — SSE stream for chat interface
+    - [x] Maintain conversation history from request body
+    - [x] Stream tokens using `sse-starlette`
+    - [x] Handle tool calls: `preview_segment` executes real query, returns count
 
 ### 8.3 AI Integration Test
-- [ ] Test: send "Find VIP customers who spent over ₹10,000 and haven't ordered in 60 days, draft a WhatsApp win-back message"
-- [ ] Verify: returned `segment_rules` compiles successfully and returns correct customers
-- [ ] Verify: `message_draft` is personalized and channel-appropriate
+- [x] Test: send "Find VIP customers who spent over ₹10,000 and haven't ordered in 60 days, draft a WhatsApp win-back message"
+- [x] Verify: returned `segment_rules` compiles successfully and returns correct customers
+- [x] Verify: `message_draft` is personalized and channel-appropriate
 
 ---
 
@@ -549,7 +549,7 @@
 | 5 | Channel Stub Service | `[x]` |
 | 6 | Receipt API (Idempotency) | `[x]` |
 | 7 | Analytics SSE | `[x]` |
-| 8 | AI Engine | `[ ]` |
+| 8 | AI Engine | `[x]` |
 | 9 | Frontend Foundation + Auth | `[ ]` |
 | 10 | Customer + Segment Pages | `[ ]` |
 | 11 | Campaign Builder + Analytics | `[ ]` |

@@ -12,7 +12,7 @@ import logging
 
 from app.database import engine
 from app.config import Settings
-from app.routers import auth, customers, orders, segments, campaigns, receipts, analytics
+from app.routers import auth, customers, orders, segments, campaigns, receipts, analytics, ai
 
 logger = logging.getLogger(__name__)
 settings = Settings()
@@ -76,6 +76,7 @@ app.include_router(segments.router, prefix="/api")
 app.include_router(campaigns.router, prefix="/api")
 app.include_router(receipts.router, prefix="/api")
 app.include_router(analytics.router, prefix="/api")
+app.include_router(ai.router, prefix="/api")
 
 @app.get("/health")
 async def health_check():
