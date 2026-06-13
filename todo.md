@@ -237,25 +237,25 @@
 > Goal: Standalone service simulates delivery lifecycle and fires callbacks.
 
 ### 5.1 Channel Stub App
-- [ ] `channel-stub/app/main.py` — FastAPI app
-- [ ] `channel-stub/app/config.py` — Settings (REDIS_URL, CRM_RECEIPT_URL)
-- [ ] `channel-stub/celery_app.py` — Celery worker (separate Redis DB index)
+- [x] `channel-stub/app/main.py` — FastAPI app
+- [x] `channel-stub/app/config.py` — Settings (REDIS_URL, CRM_RECEIPT_URL)
+- [x] `channel-stub/celery_app.py` — Celery worker (separate Redis DB index)
 
 ### 5.2 Send Endpoint
-- [ ] `channel-stub/app/routers/send.py` — `POST /send`:
-  - [ ] Validate request payload
-  - [ ] Generate `external_ref` UUID
-  - [ ] Enqueue `simulate_delivery_task`
-  - [ ] Return `202 Accepted` with `{ "external_ref": "..." }`
-- [ ] Test: POST to `/send` → returns 202 → task appears in Flower
+- [x] `channel-stub/app/routers/send.py` — `POST /send`:
+  - [x] Validate request payload
+  - [x] Generate `external_ref` UUID
+  - [x] Enqueue `simulate_delivery_task`
+  - [x] Return `202 Accepted` with `{ "external_ref": "..." }`
+- [x] Test: POST to `/send` → returns 202 → task appears in Flower
 
 ### 5.3 Simulation Task
-- [ ] `channel-stub/app/tasks/simulate.py` — `simulate_delivery_task(...)`:
-  - [ ] Sleep 1–5s → POST `sent` callback to CRM
-  - [ ] Sleep 2–8s → POST `delivered` (85%) or `failed` (15%) callback
-  - [ ] If delivered: sleep 5–15s → POST `opened` (40% probability)
-  - [ ] If opened: sleep 2–5s → POST `read` (70% of opened)
-  - [ ] If read: sleep 3–8s → POST `clicked` (20% of read)
+- [x] `channel-stub/app/tasks/simulate.py` — `simulate_delivery_task(...)`:
+  - [x] Sleep 1–5s → POST `sent` callback to CRM
+  - [x] Sleep 2–8s → POST `delivered` (85%) or `failed` (15%) callback
+  - [x] If delivered: sleep 5–15s → POST `opened` (40% probability)
+  - [x] If opened: sleep 2–5s → POST `read` (70% of opened)
+  - [x] If read: sleep 3–8s → POST `clicked` (20% of read)
   - [ ] If clicked: sleep 1–3s → POST `converted` (10% of clicked)
   - [ ] All callbacks: `httpx.post(callback_url, json=payload)` with retry on failure
   - [ ] Log each callback attempt to stdout with timestamp
@@ -546,7 +546,7 @@
 | 2 | Auth & Customer CRUD | `[x]` |
 | 3 | Segment Engine | `[x]` |
 | 4 | Campaign Engine + Celery | `[x]` |
-| 5 | Channel Stub Service | `[ ]` |
+| 5 | Channel Stub Service | `[x]` |
 | 6 | Receipt API (Idempotency) | `[ ]` |
 | 7 | Analytics SSE | `[ ]` |
 | 8 | AI Engine | `[ ]` |
