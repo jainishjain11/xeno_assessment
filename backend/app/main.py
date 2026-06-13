@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import SQLAlchemyError
 from app.database import engine
-from app.routers import auth, customers, orders, segments
+from app.routers import auth, customers, orders, segments, campaigns
 import logging
 
 logger = logging.getLogger(__name__)
@@ -52,6 +52,7 @@ app.include_router(auth.router, prefix="/api")
 app.include_router(customers.router, prefix="/api")
 app.include_router(orders.router, prefix="/api")
 app.include_router(segments.router, prefix="/api")
+app.include_router(campaigns.router, prefix="/api")
 
 @app.get("/health")
 async def health_check():

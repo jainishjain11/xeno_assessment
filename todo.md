@@ -203,33 +203,33 @@
 > Goal: Campaigns can be created and launched; Celery dispatches to channel stub asynchronously.
 
 ### 4.1 Celery Setup
-- [ ] `backend/celery_app.py` — Celery instance with Redis broker + result backend
-- [ ] Configure task serialization (JSON), timezone (UTC), task routing
-- [ ] Test: fire a simple test task, verify it appears in Flower
+- [x] `backend/celery_app.py` — Celery instance with Redis broker + result backend
+- [x] Configure task serialization (JSON), timezone (UTC), task routing
+- [x] Test: fire a simple test task, verify it appears in Flower
 
 ### 4.2 Campaign Service
-- [ ] `backend/app/schemas/campaign.py` — `CampaignCreate`, `CampaignResponse`, `CampaignStatsResponse`
-- [ ] `backend/app/services/campaign_service.py`:
-  - [ ] `create_campaign()` — validate segment exists, set status=draft
-  - [ ] `launch_campaign()` — validate status=draft, set status=running, enqueue Celery task
-  - [ ] `get_campaign_stats()` — query `campaign_funnel_stats` view
-  - [ ] `get_communication_logs()` — paginated logs for a campaign
-- [ ] `backend/app/routers/campaigns.py` — all endpoints per spec §5.5
+- [x] `backend/app/schemas/campaign.py` — `CampaignCreate`, `CampaignResponse`, `CampaignStatsResponse`
+- [x] `backend/app/services/campaign_service.py`:
+  - [x] `create_campaign()` — validate segment exists, set status=draft
+  - [x] `launch_campaign()` — validate status=draft, set status=running, enqueue Celery task
+  - [x] `get_campaign_stats()` — query `campaign_funnel_stats` view
+  - [x] `get_communication_logs()` — paginated logs for a campaign
+- [x] `backend/app/routers/campaigns.py` — all endpoints per spec §5.5
 
 ### 4.3 Dispatch Task
-- [ ] `backend/app/tasks/dispatch.py` — `dispatch_campaign_task(campaign_id)`:
-  - [ ] Load campaign from DB
-  - [ ] Execute segment filter query → get customer list
-  - [ ] Snapshot customer IDs → save to `campaigns.audience_snapshot`
-  - [ ] For each customer:
-    - [ ] Build idempotency_key: `{campaign_id}:{customer_id}`
-    - [ ] `INSERT INTO communication_logs ... ON CONFLICT DO NOTHING` (idempotent insert)
-    - [ ] Resolve message template variables ({{name}}, etc.)
-  - [ ] Group all logs into chunks of 50
-  - [ ] For each chunk: Celery group → call channel stub `/send` for each log
-  - [ ] On all dispatched: update campaign status → `completed`
-  - [ ] Error handling: if channel stub unreachable → retry with backoff (max 3)
-- [ ] Test: launch campaign with 50-customer segment, verify 50 communication_logs created
+- [x] `backend/app/tasks/dispatch.py` — `dispatch_campaign_task(campaign_id)`:
+  - [x] Load campaign from DB
+  - [x] Execute segment filter query → get customer list
+  - [x] Snapshot customer IDs → save to `campaigns.audience_snapshot`
+  - [x] For each customer:
+    - [x] Build idempotency_key: `{campaign_id}:{customer_id}`
+    - [x] `INSERT INTO communication_logs ... ON CONFLICT DO NOTHING` (idempotent insert)
+    - [x] Resolve message template variables ({{name}}, etc.)
+  - [x] Group all logs into chunks of 50
+  - [x] For each chunk: Celery group → call channel stub `/send` for each log
+  - [x] On all dispatched: update campaign status → `completed`
+  - [x] Error handling: if channel stub unreachable → retry with backoff (max 3)
+- [x] Test: launch campaign with 50-customer segment, verify 50 communication_logs created
 
 ---
 
@@ -545,7 +545,7 @@
 | 1 | Database Layer | `[x]` |
 | 2 | Auth & Customer CRUD | `[x]` |
 | 3 | Segment Engine | `[x]` |
-| 4 | Campaign Engine + Celery | `[ ]` |
+| 4 | Campaign Engine + Celery | `[x]` |
 | 5 | Channel Stub Service | `[ ]` |
 | 6 | Receipt API (Idempotency) | `[ ]` |
 | 7 | Analytics SSE | `[ ]` |
