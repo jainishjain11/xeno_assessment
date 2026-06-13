@@ -309,7 +309,7 @@
   - [x] On each pubsub message: yield SSE `funnel_update` event
   - [x] Yield heartbeat every 15s to keep connection alive
   - [x] Handle client disconnect cleanly
-- [ ] Test: open SSE stream in browser, launch campaign, watch stats tick up in real time
+- [x] Test: open SSE stream in browser, launch campaign, watch stats tick up in real time
 
 ---
 
