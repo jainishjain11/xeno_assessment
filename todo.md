@@ -349,19 +349,19 @@
 > Goal: React app running, routing works, auth flow complete.
 
 ### 9.1 App Foundation
-- [ ] `frontend/src/lib/axios.ts` — Axios instance with:
-  - [ ] `baseURL` from `VITE_API_BASE_URL`
-  - [ ] Request interceptor: inject `Authorization: Bearer {token}` from Zustand store
-  - [ ] Response interceptor: on 401 → clear auth + redirect to `/login`
-- [ ] `frontend/src/store/auth.ts` — Zustand auth store: `{ user, token, login(), logout() }`
-- [ ] `frontend/src/lib/query-client.ts` — TanStack Query client with default config
-- [ ] `frontend/src/App.tsx` — Router setup: public routes (`/login`) + protected routes (all others)
-- [ ] `frontend/src/components/layout/Layout.tsx` — Shell: sidebar nav + main content area
-- [ ] `frontend/src/components/layout/Sidebar.tsx` — Navigation links with active states
+- [x] `frontend/src/lib/axios.ts` — Axios instance with:
+  - [x] `baseURL` from `VITE_API_BASE_URL`
+  - [x] Request interceptor: inject `Authorization: Bearer {token}` from Zustand store
+  - [x] Response interceptor: on 401 → clear auth + redirect to `/login`
+- [x] `frontend/src/store/auth.ts` — Zustand auth store: `{ user, token, login(), logout() }`
+- [x] `frontend/src/lib/query-client.ts` — TanStack Query client with default config
+- [x] `frontend/src/App.tsx` — Router setup: public routes (`/login`) + protected routes (all others)
+- [x] `frontend/src/components/layout/Layout.tsx` — Shell: sidebar nav + main content area
+- [x] `frontend/src/components/layout/Sidebar.tsx` — Navigation links with active states
 
 ### 9.2 Auth Pages
-- [ ] `frontend/src/pages/Login.tsx` — Login form with React Hook Form + Zod validation
-- [ ] `frontend/src/hooks/useAuth.ts` — `useLogin()`, `useLogout()`, `useCurrentUser()`
+- [x] `frontend/src/pages/Login.tsx` — Login form with React Hook Form + Zod validation
+- [x] `frontend/src/hooks/useAuth.ts` — `useLogin()`, `useLogout()`, `useCurrentUser()`
 - [ ] Test: login with demo credentials → redirects to dashboard → logout → back to login
 
 ---
@@ -550,7 +550,7 @@
 | 6 | Receipt API (Idempotency) | `[x]` |
 | 7 | Analytics SSE | `[x]` |
 | 8 | AI Engine | `[x]` |
-| 9 | Frontend Foundation + Auth | `[ ]` |
+| 9 | Frontend Foundation + Auth | `[x]` |
 | 10 | Customer + Segment Pages | `[ ]` |
 | 11 | Campaign Builder + Analytics | `[ ]` |
 | 12 | AI Assistant | `[ ]` |
