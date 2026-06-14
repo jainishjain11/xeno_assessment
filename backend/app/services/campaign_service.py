@@ -7,6 +7,21 @@ import uuid
 
 class CampaignService:
     @staticmethod
+    def get_campaigns_query(status: str | None = None):
+        query = select(Campaign).order_by(Campaign.created_at.desc())
+        if status:
+            query = query.where(Campaign.status == status)
+        return query
+
+    @staticmethod
+    async def get_campaign_or_404(db: AsyncSession, campaign_id: uuid.UUID) -> Campaign:
+        result = await db.execute(select(Campaign).where(Campaign.id == campaign_id))
+        campaign = result.scalar_one_or_none()
+        if not campaign:
+            raise HTTPException(status_code=404, detail="Campaign not found")
+        return campaign
+
+    @staticmethod
     async def create_campaign(db: AsyncSession, data: CampaignCreate, user_id: uuid.UUID) -> Campaign:
         result = await db.execute(select(Segment).where(Segment.id == data.segment_id))
         if not result.scalar_one_or_none():

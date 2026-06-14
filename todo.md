@@ -397,25 +397,25 @@
 > Goal: Campaigns can be created, launched, and monitored with live analytics.
 
 ### 11.1 Campaign Pages
-- [ ] `frontend/src/hooks/useCampaigns.ts` — TanStack Query hooks
-- [ ] `frontend/src/pages/CampaignList.tsx` — table with status badge, audience size, delivery rate
-- [ ] `frontend/src/pages/CampaignBuilder.tsx` — key page:
-  - [ ] Step 1: Name + channel select + segment select
-  - [ ] Step 2: Message composer with template variable chip insertion + AI draft button
-  - [ ] Step 3: Review (audience count, preview message, estimated send time)
-  - [ ] Launch button → `POST /campaigns/{id}/launch` → redirect to analytics
-- [ ] `frontend/src/pages/CampaignDetail.tsx` — key page:
-  - [ ] Funnel chart (Recharts BarChart or FunnelChart): Sent → Delivered → Opened → Clicked → Converted
-  - [ ] Rate cards: Delivery Rate, Open Rate, CTR, Conversion Rate
-  - [ ] Live SSE: stats update in real time as callbacks arrive
-  - [ ] Communication logs table: customer name, status badge, timestamps
+- [x] `frontend/src/hooks/useCampaigns.ts` — TanStack Query hooks
+- [x] `frontend/src/pages/CampaignList.tsx` — table with status badge, audience size, delivery rate
+- [x] `frontend/src/pages/CampaignBuilder.tsx` — key page:
+  - [x] Step 1: Name + channel select + segment select
+  - [x] Step 2: Message composer with template variable chip insertion + AI draft button
+  - [x] Step 3: Review (audience count, preview message, estimated send time)
+  - [x] Launch button → `POST /campaigns/{id}/launch` → redirect to analytics
+- [x] `frontend/src/pages/CampaignDetail.tsx` — key page:
+  - [x] Funnel chart (Recharts BarChart or FunnelChart): Sent → Delivered → Opened → Clicked → Converted
+  - [x] Rate cards: Delivery Rate, Open Rate, CTR, Conversion Rate
+  - [x] Live SSE: stats update in real time as callbacks arrive
+  - [x] Communication logs table: customer name, status badge, timestamps
 
 ### 11.2 SSE Hook
-- [ ] `frontend/src/hooks/useCampaignSSE.ts` — wraps `@microsoft/fetch-event-source`:
-  - [ ] Connect on component mount, disconnect on unmount
-  - [ ] Parse `funnel_update` events → update Zustand/local state
-  - [ ] Handle reconnection on disconnect
-  - [ ] Show "Live" indicator badge when connected
+- [x] `frontend/src/hooks/useCampaignSSE.ts` — wraps `@microsoft/fetch-event-source`:
+  - [x] Connect on component mount, disconnect on unmount
+  - [x] Parse `funnel_update` events → update Zustand/local state
+  - [x] Handle reconnection on disconnect
+  - [x] Show "Live" indicator badge when connected
 
 ---
 
@@ -552,7 +552,7 @@
 | 8 | AI Engine | `[x]` |
 | 9 | Frontend Foundation + Auth | `[x]` |
 | 10 | Customer + Segment Pages | `[x]` |
-| 11 | Campaign Builder + Analytics | `[ ]` |
+| 11 | Campaign Builder + Analytics | `[x]` |
 | 12 | AI Assistant | `[ ]` |
 | 13 | Polish + Error States | `[ ]` |
 | 14 | Deployment | `[ ]` |

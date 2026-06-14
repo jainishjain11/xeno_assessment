@@ -11,6 +11,32 @@ import math
 
 router = APIRouter(prefix="/campaigns", tags=["campaigns"])
 
+@router.get("", response_model=PaginatedResponse[CampaignResponse])
+async def list_campaigns(
+    page: int = Query(1, ge=1),
+    size: int = Query(50, ge=1, le=100),
+    status: str | None = Query(None, description="Filter by status"),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    query_stmt = CampaignService.get_campaigns_query(status=status)
+    items, total = await paginate(db, query_stmt, page, size)
+    return {
+        "items": items,
+        "total": total,
+        "page": page,
+        "size": size,
+        "pages": math.ceil(total / size) if size else 0
+    }
+
+@router.get("/{campaign_id}", response_model=CampaignResponse)
+async def get_campaign(
+    campaign_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return await CampaignService.get_campaign_or_404(db, campaign_id)
+
 @router.post("", response_model=CampaignResponse, status_code=201)
 async def create_campaign(
     data: CampaignCreate,
@@ -39,7 +65,7 @@ async def get_campaign_stats(
 async def get_communication_logs(
     campaign_id: uuid.UUID,
     page: int = Query(1, ge=1),
-    size: int = Query(50, ge=1, le=100),
+    size: int = Query(20, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
