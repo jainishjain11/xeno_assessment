@@ -370,26 +370,26 @@
 > Goal: Data management pages complete and functional.
 
 ### 10.1 Dashboard
-- [ ] `frontend/src/pages/Dashboard.tsx` — summary cards: total customers, active campaigns, messages sent, avg delivery rate
-- [ ] `frontend/src/hooks/useAnalytics.ts` — queries for dashboard stats
+- [x] `frontend/src/pages/Dashboard.tsx` — summary cards: total customers, active campaigns, messages sent, avg delivery rate
+- [x] `frontend/src/hooks/useAnalytics.ts` — queries for dashboard stats
 
 ### 10.2 Customer Pages
-- [ ] `frontend/src/hooks/useCustomers.ts` — TanStack Query hooks: `useCustomers()`, `useCustomer(id)`, `useImportCustomers()`
-- [ ] `frontend/src/pages/CustomerList.tsx` — paginated table: name, email, city, total_spent, last_order, tags
-  - [ ] Search by name/email
-  - [ ] Filter by city, tags
-  - [ ] Sort by total_spent, last_order_at
-- [ ] `frontend/src/pages/CustomerDetail.tsx` — profile card + order history table + communication history
+- [x] `frontend/src/hooks/useCustomers.ts` — TanStack Query hooks: `useCustomers()`, `useCustomer(id)`, `useImportCustomers()`
+- [x] `frontend/src/pages/CustomerList.tsx` — paginated table: name, email, city, total_spent, last_order, tags
+  - [x] Search by name/email
+  - [x] Filter by city, tags
+  - [x] Sort by total_spent, last_order_at
+- [x] `frontend/src/pages/CustomerDetail.tsx` — profile card + order history table + communication history
 
 ### 10.3 Segment Pages
-- [ ] `frontend/src/hooks/useSegments.ts` — TanStack Query hooks
-- [ ] `frontend/src/pages/SegmentList.tsx` — card grid with audience size badge
-- [ ] `frontend/src/pages/SegmentBuilder.tsx` — key page:
-  - [ ] Visual rule builder (field + operator + value dropdowns)
-  - [ ] Live preview: "This segment contains X customers" (debounced preview call)
-  - [ ] AI assist button → opens AI input → populates rules from `parse-intent`
-  - [ ] Save segment
-- [ ] `frontend/src/pages/SegmentDetail.tsx` — rules display + audience sample table + refresh button
+- [x] `frontend/src/hooks/useSegments.ts` — TanStack Query hooks
+- [x] `frontend/src/pages/SegmentList.tsx` — card grid with audience size badge
+- [x] `frontend/src/pages/SegmentBuilder.tsx` — key page:
+  - [x] Visual rule builder (field + operator + value dropdowns)
+  - [x] Live preview: "This segment contains X customers" (debounced preview call)
+  - [x] AI assist button → opens AI input → populates rules from `parse-intent`
+  - [x] Save segment
+- [x] `frontend/src/pages/SegmentDetail.tsx` — rules display + audience sample table + refresh button
 
 ---
 
@@ -551,7 +551,7 @@
 | 7 | Analytics SSE | `[x]` |
 | 8 | AI Engine | `[x]` |
 | 9 | Frontend Foundation + Auth | `[x]` |
-| 10 | Customer + Segment Pages | `[ ]` |
+| 10 | Customer + Segment Pages | `[x]` |
 | 11 | Campaign Builder + Analytics | `[ ]` |
 | 12 | AI Assistant | `[ ]` |
 | 13 | Polish + Error States | `[ ]` |
