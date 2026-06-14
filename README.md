@@ -52,8 +52,8 @@ An AI-Native Mini CRM built for consumer brands to intelligently segment their a
 - **Why**: Because the simulated Channel Stub operates asynchronously, network retries inevitably cause duplicated webhooks. This setup guarantees safety.
 - **Tradeoff**: Re-processing duplicate events consumes database compute slightly but requires less application code.
 
-**6. Direct Anthropic SDK**
-- **What**: Called the Anthropic Claude API directly rather than using a layer like LangChain.
+**6. Direct Google Gemini SDK**
+- **What**: Called the Google Gemini API directly rather than using a layer like LangChain.
 - **Why**: Prevents bloated abstraction layers, giving full control over prompt engineering, JSON schema injection, and retry limits.
 - **Tradeoff**: Manual error handling is required, including the parsing of structured models out of raw string completion tokens.
 

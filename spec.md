@@ -45,7 +45,7 @@ Marketer types intent → AI segments audience + drafts message
 │  /api/v1/customers/* /api/v1/segments/*     /api/v1/receipts/*      │
 │                                                                      │
 │  ┌─────────────────┐   ┌───────────────────────────────────────┐   │
-│  │  Anthropic API  │   │         SQLAlchemy ORM (async)         │   │
+│  │  Google Gemini  │   │         SQLAlchemy ORM (async)         │   │
 │  │  (AI Engine)    │   │                                        │   │
 │  └─────────────────┘   └──────────────────┬────────────────────┘   │
 │                                            │                        │
@@ -533,7 +533,7 @@ User prompt
     ▼
 FastAPI /ai/parse-intent
     │
-    ├─► Anthropic claude-sonnet-4-6
+    ├─► Gemini 2.5 Flash
     │       System: schema + format spec
     │       User: prompt + brand context
     │       → Returns JSON with segment_rules + message_draft
@@ -633,7 +633,7 @@ DATABASE_URL=postgresql+asyncpg://user:pass@host:5432/dbname
 REDIS_URL=redis://localhost:6379/0
 JWT_SECRET=<32-byte random>
 JWT_ALGORITHM=HS256
-ANTHROPIC_API_KEY=sk-ant-...
+GEMINI_API_KEY=AIzaSy...
 CHANNEL_STUB_URL=http://localhost:8001
 ENVIRONMENT=production
 ```
@@ -689,7 +689,7 @@ The seed script generates realistic data for a fictional brand **"Aura Beauty"**
 | ORM | SQLAlchemy 2 async | Tortoise ORM | Mature ecosystem, Alembic, better type hints |
 | State management | Zustand + TanStack Query | Redux Toolkit | Lower boilerplate, better DX for this scale |
 | Real-time | SSE (sse-starlette) | WebSockets | Unidirectional data fits SSE; no WS overhead |
-| AI integration | Anthropic claude-sonnet-4-6 direct API | LangChain | Avoid abstraction overhead; direct control |
+| AI integration | Google Gemini direct API | LangChain | Avoid abstraction overhead; direct control |
 | Segment rules | JSONB rule tree → dynamic SQL | Hardcoded filter forms | Fully AI-composable; extensible without migration |
 | Channel sim | Separate FastAPI service | Same-process mock | Reflects real architecture; tests real async loop |
 | Auth | JWT (stateless) | Session + DB | Stateless scales horizontally; no session table |

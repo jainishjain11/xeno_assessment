@@ -1,12 +1,13 @@
 """
 backend/app/ai/client.py
-Anthropic wrapper with retry logic, streaming, and Pydantic validation.
+Google Gemini wrapper with retry logic, streaming, and Pydantic validation.
 """
 import json
 import logging
 from typing import AsyncGenerator
 
-import anthropic
+from google import genai
+from google.genai import types
 from fastapi import HTTPException
 
 from app.config import Settings
@@ -20,16 +21,16 @@ from app.schemas.ai import IntentParseResult, MessageDraftRequest
 logger = logging.getLogger(__name__)
 settings = Settings()
 
-# Lazy singleton — instantiated on first call so tests can patch the key
-_client: anthropic.AsyncAnthropic | None = None
+# Lazy singleton
+_client: genai.Client | None = None
 
-def _get_client() -> anthropic.AsyncAnthropic:
+def _get_client() -> genai.Client:
     global _client
     if _client is None:
-        _client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+        _client = genai.Client(api_key=settings.gemini_api_key)
     return _client
 
-MODEL = "claude-sonnet-4-5"
+MODEL = "gemini-2.5-flash"
 
 
 # ── Intent parse ──────────────────────────────────────────────────────────────
@@ -39,13 +40,13 @@ async def parse_intent(prompt: str, context: dict | None = None) -> IntentParseR
     Translate a natural-language marketing prompt into a structured
     IntentParseResult (segment_rules + message_draft + metadata).
 
-    Retries once on JSON parse failure, appending the error to help the model
-    self-correct. Raises HTTPException 422 on second failure.
+    Retries once on JSON parse failure.
     """
     client = _get_client()
     ctx_str = json.dumps(context or {}, ensure_ascii=False)
     user_message = f"{prompt}\n\nContext: {ctx_str}"
 
+    last_error = ""
     for attempt in range(2):
         if attempt == 1:
             user_message += (
@@ -54,14 +55,17 @@ async def parse_intent(prompt: str, context: dict | None = None) -> IntentParseR
                 "Return ONLY the raw JSON object — no markdown, no explanation."
             )
 
-        response = await client.messages.create(
+        config = types.GenerateContentConfig(
+            system_instruction=INTENT_PARSE_SYSTEM_PROMPT,
+            temperature=0.0
+        )
+        response = await client.aio.models.generate_content(
             model=MODEL,
-            max_tokens=2048,
-            system=INTENT_PARSE_SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_message}],
+            contents=user_message,
+            config=config
         )
 
-        raw = response.content[0].text.strip()
+        raw = response.text.strip()
         # Strip markdown fences if model disobeys instructions
         if raw.startswith("```"):
             raw = raw.split("```")[1]
@@ -98,29 +102,44 @@ async def draft_message(req: MessageDraftRequest) -> str:
     if req.tone:
         user_content += f"\nTone: {req.tone}"
 
-    response = await client.messages.create(
-        model=MODEL,
-        max_tokens=1024,
-        system=MESSAGE_DRAFT_SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": user_content}],
+    config = types.GenerateContentConfig(
+        system_instruction=MESSAGE_DRAFT_SYSTEM_PROMPT,
+        temperature=0.7
     )
-    return response.content[0].text.strip()
+    response = await client.aio.models.generate_content(
+        model=MODEL,
+        contents=user_content,
+        config=config
+    )
+    return response.text.strip()
 
 
 # ── Chat stream ───────────────────────────────────────────────────────────────
 
 async def stream_chat(messages: list[dict]) -> AsyncGenerator[str, None]:
     """
-    Stream chat tokens from Claude using the CHAT_AGENT_SYSTEM_PROMPT.
+    Stream chat tokens from Gemini using the CHAT_AGENT_SYSTEM_PROMPT.
     Yields each text delta as it arrives for SSE streaming.
     """
     client = _get_client()
 
-    async with client.messages.stream(
+    config = types.GenerateContentConfig(
+        system_instruction=CHAT_AGENT_SYSTEM_PROMPT,
+        temperature=0.7
+    )
+
+    # Map messages to Gemini format
+    gemini_messages = []
+    for m in messages:
+        role = "user" if m.get("role") == "user" else "model"
+        gemini_messages.append({"role": role, "parts": [{"text": m.get("content")}]})
+
+    response_stream = await client.aio.models.generate_content_stream(
         model=MODEL,
-        max_tokens=2048,
-        system=CHAT_AGENT_SYSTEM_PROMPT,
-        messages=messages,
-    ) as stream:
-        async for text in stream.text_stream:
-            yield text
+        contents=gemini_messages,
+        config=config
+    )
+
+    async for chunk in response_stream:
+        if chunk.text:
+            yield chunk.text

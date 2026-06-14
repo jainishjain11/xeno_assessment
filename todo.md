@@ -38,7 +38,7 @@
   - `alembic`, `pydantic-settings`, `pydantic[email]`
   - `celery[redis]`, `redis`, `httpx`, `sse-starlette`
   - `python-jose[cryptography]`, `passlib[bcrypt]`
-  - `anthropic`, `slowapi`, `faker`
+  - `google-genai`, `slowapi`, `faker`
 - [x] Create directory structure:
   ```
   backend/
@@ -321,7 +321,7 @@
   - [x] `INTENT_PARSE_SYSTEM_PROMPT` — includes schema, operators, output format
   - [x] `MESSAGE_DRAFT_SYSTEM_PROMPT` — channel-aware, brand-context-aware
   - [x] `CHAT_AGENT_SYSTEM_PROMPT` — campaign assistant persona + tool descriptions
-- [x] `backend/app/ai/client.py` — Anthropic client wrapper:
+- [x] `backend/app/ai/client.py` — Google Gemini client wrapper:
   - [x] `parse_intent(prompt, context) → IntentParseResult`
   - [x] `draft_message(channel, audience_desc, brand_context) → str`
   - [x] `chat_stream(messages, tools) → AsyncGenerator`

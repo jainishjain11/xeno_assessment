@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     jwt_secret: str = "super-secret-key-for-dev"
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 10080
-    anthropic_api_key: str = "dummy"
+    gemini_api_key: str = "dummy"
     channel_stub_url: str = "http://localhost:8001"
     environment: str = "development"
 

@@ -82,7 +82,7 @@ async def ai_chat(
     """
     logger.info(f"[AI] chat stream started for user={current_user.id}")
 
-    # Convert Pydantic messages to the dict format Anthropic expects
+    # Convert Pydantic messages to a generic dict format
     messages_dicts = [{"role": m.role, "content": m.content} for m in body.messages]
 
     async def _generator():

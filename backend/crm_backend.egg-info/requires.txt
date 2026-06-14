@@ -11,6 +11,6 @@ httpx
 sse-starlette
 python-jose[cryptography]
 passlib[bcrypt]
-anthropic
+google-genai
 slowapi
 faker

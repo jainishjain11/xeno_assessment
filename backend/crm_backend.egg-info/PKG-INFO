@@ -16,6 +16,6 @@ Requires-Dist: httpx
 Requires-Dist: sse-starlette
 Requires-Dist: python-jose[cryptography]
 Requires-Dist: passlib[bcrypt]
-Requires-Dist: anthropic
+Requires-Dist: google-genai
 Requires-Dist: slowapi
 Requires-Dist: faker

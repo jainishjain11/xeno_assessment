@@ -30,7 +30,7 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - JWT_SECRET=supersecretkey-please-change-in-prod
       - JWT_ALGORITHM=HS256
-      - ANTHROPIC_API_KEY=dummy
+      - GEMINI_API_KEY=dummy
       - CHANNEL_STUB_URL=http://channel-stub:8001
       - ENVIRONMENT=development
     depends_on:
