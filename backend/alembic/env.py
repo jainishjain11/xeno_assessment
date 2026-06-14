@@ -17,7 +17,9 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 settings = Settings()
-config.set_main_option("sqlalchemy.url", settings.database_url.replace("%", "%%"))
+import os
+direct_url = os.environ.get("DIRECT_DATABASE_URL", settings.database_url)
+config.set_main_option("sqlalchemy.url", direct_url.replace("%", "%%"))
 
 target_metadata = Base.metadata
 
