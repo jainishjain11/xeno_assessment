@@ -32,30 +32,29 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  TableRow,
 } from '@/components/ui/table';
 import { formatPct, formatDate } from '@/lib/formatters';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 
 const STATUS_CONFIG: Record<string, { cls: string }> = {
-  draft: { cls: 'bg-gray-100 text-gray-600 border-gray-200' },
-  running: { cls: 'bg-blue-100 text-blue-700 border-blue-200' },
-  completed: { cls: 'bg-green-100 text-green-700 border-green-200' },
-  failed: { cls: 'bg-red-100 text-red-700 border-red-200' },
-  queued: { cls: 'bg-gray-100 text-gray-600 border-gray-200' },
-  sent: { cls: 'bg-blue-100 text-blue-700 border-blue-200' },
-  delivered: { cls: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
-  opened: { cls: 'bg-purple-100 text-purple-700 border-purple-200' },
-  clicked: { cls: 'bg-indigo-100 text-indigo-700 border-indigo-200' },
-  converted: { cls: 'bg-amber-100 text-amber-700 border-amber-200' },
+  draft: { cls: 'bg-slate-500/20 text-slate-300 border-slate-500/30' },
+  running: { cls: 'bg-pink-500/20 text-pink-400 border-pink-500/30' },
+  completed: { cls: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
+  failed: { cls: 'bg-red-500/20 text-red-400 border-red-500/30' },
+  queued: { cls: 'bg-slate-500/20 text-slate-300 border-slate-500/30' },
+  sent: { cls: 'bg-sky-500/20 text-sky-400 border-sky-500/30' },
+  delivered: { cls: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
+  opened: { cls: 'bg-violet-500/20 text-violet-400 border-violet-500/30' },
+  clicked: { cls: 'bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/30' },
+  converted: { cls: 'bg-amber-500/20 text-amber-400 border-amber-500/30' },
 };
 
 function StatusBadge({ status }: { status: string }) {
-  const cfg = STATUS_CONFIG[status] ?? { cls: 'bg-gray-100 text-gray-600 border-gray-200' };
+  const cfg = STATUS_CONFIG[status] ?? { cls: 'bg-white/10 text-slate-300 border-white/20' };
   return (
     <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${cfg.cls}`}>
       {status === 'running' && (
-        <span className="mr-1.5 h-1.5 w-1.5 animate-pulse rounded-full bg-blue-500 inline-block" />
+        <span className="mr-1.5 h-1.5 w-1.5 animate-pulse rounded-full bg-pink-400 inline-block" />
       )}
       {status}
     </span>
@@ -73,10 +72,10 @@ const CHANNEL_EMOJI: Record<string, string> = {
 
 const FUNNEL_STAGES = [
   { key: 'total_sent', label: 'Sent', color: '#6366f1' },
-  { key: 'total_delivered', label: 'Delivered', color: '#22c55e' },
-  { key: 'total_opened', label: 'Opened', color: '#a855f7' },
-  { key: 'total_read', label: 'Read', color: '#3b82f6' },
-  { key: 'total_clicked', label: 'Clicked', color: '#f59e0b' },
+  { key: 'total_delivered', label: 'Delivered', color: '#34d399' },
+  { key: 'total_opened', label: 'Opened', color: '#a78bfa' },
+  { key: 'total_read', label: 'Read', color: '#38bdf8' },
+  { key: 'total_clicked', label: 'Clicked', color: '#fbbf24' },
   { key: 'total_converted', label: 'Converted', color: '#10b981' },
 ] as const;
 
@@ -118,7 +117,7 @@ function FunnelChart({ stats }: FunnelChartProps) {
           type="category"
           dataKey="label"
           width={80}
-          tick={{ fontSize: 13, fill: 'hsl(var(--muted-foreground))' }}
+          tick={{ fontSize: 13, fill: '#94a3b8' }}
           axisLine={false}
           tickLine={false}
         />
@@ -129,10 +128,11 @@ function FunnelChart({ stats }: FunnelChartProps) {
           ]}
           contentStyle={{
             borderRadius: 8,
-            border: '1px solid hsl(var(--border))',
-            background: 'hsl(var(--card))',
-            color: 'hsl(var(--foreground))',
+            border: '1px solid rgba(255,255,255,0.1)',
+            background: 'rgba(30,30,40,0.9)',
+            color: '#f1f5f9',
             fontSize: 13,
+            backdropFilter: 'blur(10px)',
           }}
         />
         <Bar dataKey="count" radius={[0, 4, 4, 0]} maxBarSize={36}>
@@ -142,7 +142,7 @@ function FunnelChart({ stats }: FunnelChartProps) {
           <LabelList
             dataKey="count"
             position="right"
-            style={{ fontSize: 13, fill: 'hsl(var(--foreground))' }}
+            style={{ fontSize: 13, fill: '#f1f5f9' }}
             formatter={(v: unknown) => Number(v).toLocaleString()}
           />
         </Bar>
@@ -163,18 +163,18 @@ function RateCard({ label, value, description }: RateCardProps) {
   const numVal = value ?? 0;
   const colorClass =
     numVal >= 50
-      ? 'text-green-600'
+      ? 'text-emerald-400'
       : numVal >= 20
-        ? 'text-amber-600'
-        : 'text-red-500';
+        ? 'text-amber-400'
+        : 'text-red-400';
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</p>
-      <p className={`mt-2 text-3xl font-bold ${value == null ? 'text-muted-foreground/40' : colorClass}`}>
+    <div className="glass-card p-5">
+      <p className="text-xs font-medium text-slate-400 uppercase tracking-wide">{label}</p>
+      <p className={`mt-2 text-3xl font-bold ${value == null ? 'text-slate-500/40' : colorClass}`}>
         {formatPct(value)}
       </p>
-      <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+      <p className="mt-1 text-xs text-slate-400">{description}</p>
     </div>
   );
 }
@@ -183,10 +183,10 @@ function RateCard({ label, value, description }: RateCardProps) {
 
 function EmptyStats() {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border py-12 text-center">
-      <Activity className="mb-3 h-10 w-10 text-muted-foreground/40" />
-      <p className="text-sm font-medium text-foreground">No analytics data yet</p>
-      <p className="mt-1 text-xs text-muted-foreground">
+    <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/20 py-12 text-center glass">
+      <Activity className="mb-3 h-10 w-10 text-slate-500/40" />
+      <p className="text-sm font-medium text-slate-100">No analytics data yet</p>
+      <p className="mt-1 text-xs text-slate-400">
         Stats will appear here once the campaign is launched and messages start delivering.
       </p>
     </div>
@@ -198,15 +198,15 @@ function EmptyStats() {
 function LiveIndicator({ isLive }: { isLive: boolean }) {
   if (isLive) {
     return (
-      <div className="flex items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
+      <div className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
         <Wifi className="h-3 w-3" />
         Live
       </div>
     );
   }
   return (
-    <div className="flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+    <div className="flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-400">
       <WifiOff className="h-3 w-3" />
       Offline
     </div>
@@ -232,11 +232,11 @@ export function CampaignDetail() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-8 w-64 bg-white/10" />
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-28 rounded-xl" />)}
+          {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-28 rounded-xl bg-white/10" />)}
         </div>
-        <Skeleton className="h-64 rounded-xl" />
+        <Skeleton className="h-64 rounded-xl bg-white/10" />
       </div>
     );
   }
@@ -246,7 +246,7 @@ export function CampaignDetail() {
       <div className="py-12">
         <ErrorMessage message="Campaign not found. It may have been deleted." />
         <div className="mt-4 text-center">
-          <Button variant="outline" onClick={() => navigate('/campaigns')}>
+          <Button variant="outline" onClick={() => navigate('/campaigns')} className="bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Campaigns
           </Button>
@@ -263,7 +263,7 @@ export function CampaignDetail() {
       <div>
         <button
           onClick={() => navigate('/campaigns')}
-          className="mb-3 flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="mb-3 flex items-center gap-1 text-sm text-slate-400 hover:text-slate-100 transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           Back to Campaigns
@@ -271,12 +271,12 @@ export function CampaignDetail() {
 
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-2xl">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/20 text-2xl">
               {channelEmoji}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">{campaign.name}</h1>
-              <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
+              <h1 className="text-2xl font-bold text-slate-100">{campaign.name}</h1>
+              <div className="mt-1 flex items-center gap-2 text-sm text-slate-400">
                 <span className="capitalize">{campaign.channel}</span>
                 <span>·</span>
                 <span>Created {formatDate(campaign.created_at)}</span>
@@ -319,11 +319,11 @@ export function CampaignDetail() {
       </div>
 
       {/* Funnel chart */}
-      <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+      <div className="glass p-6">
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-foreground">Delivery Funnel</h2>
+          <h2 className="text-sm font-semibold text-slate-100">Delivery Funnel</h2>
           {stats && (
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-slate-400">
               {stats.total_sent.toLocaleString()} total sent
             </p>
           )}
@@ -337,42 +337,42 @@ export function CampaignDetail() {
       </div>
 
       {/* Communication logs */}
-      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-          <h2 className="text-sm font-semibold text-foreground">
+      <div className="glass overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+          <h2 className="text-sm font-semibold text-slate-100">
             Communication Logs
             {logsData && (
-              <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              <span className="ml-2 rounded-full bg-white/10 px-2 py-0.5 text-xs text-slate-300 border border-white/20">
                 {logsData.total.toLocaleString()}
               </span>
             )}
           </h2>
-          {logsLoading && <RefreshCw className="h-4 w-4 animate-spin text-muted-foreground" />}
+          {logsLoading && <RefreshCw className="h-4 w-4 animate-spin text-slate-400" />}
         </div>
 
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted/30">
-              <TableHead>Customer ID</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Sent At</TableHead>
-              <TableHead>Delivered At</TableHead>
-              <TableHead>Opened At</TableHead>
+            <TableRow className="bg-white/5 border-white/10 hover:bg-white/5">
+              <TableHead className="text-slate-300">Customer ID</TableHead>
+              <TableHead className="text-slate-300">Status</TableHead>
+              <TableHead className="text-slate-300">Sent At</TableHead>
+              <TableHead className="text-slate-300">Delivered At</TableHead>
+              <TableHead className="text-slate-300">Opened At</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {logsLoading
               ? [...Array(5)].map((_, i) => (
-                <TableRow key={i}>
+                <TableRow key={i} className="border-white/10 hover:bg-transparent">
                   {[...Array(5)].map((_, j) => (
-                    <TableCell key={j}><Skeleton className="h-4 w-full" /></TableCell>
+                    <TableCell key={j}><Skeleton className="h-4 w-full bg-white/10" /></TableCell>
                   ))}
                 </TableRow>
               ))
               : logs.length === 0
                 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="py-12 text-center text-muted-foreground">
+                  <TableRow className="border-white/10 hover:bg-transparent">
+                    <TableCell colSpan={5} className="py-12 text-center text-slate-400">
                       {campaign.status === 'draft'
                         ? 'No messages sent yet — launch the campaign to start.'
                         : 'No logs found.'}
@@ -380,20 +380,20 @@ export function CampaignDetail() {
                   </TableRow>
                 )
                 : logs.map((log) => (
-                  <TableRow key={log.id}>
-                    <TableCell className="text-muted-foreground font-mono text-xs">
+                  <TableRow key={log.id} className="border-white/10 hover:bg-white/5">
+                    <TableCell className="text-slate-400 font-mono text-xs">
                       {log.customer_id.slice(0, 8)}…
                     </TableCell>
                     <TableCell>
                       <StatusBadge status={log.status} />
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-xs">
+                    <TableCell className="text-slate-400 text-xs">
                       {formatDate(log.sent_at)}
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-xs">
+                    <TableCell className="text-slate-400 text-xs">
                       {formatDate(log.delivered_at)}
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-xs">
+                    <TableCell className="text-slate-400 text-xs">
                       {formatDate(log.opened_at)}
                     </TableCell>
                   </TableRow>
@@ -403,8 +403,8 @@ export function CampaignDetail() {
 
         {/* Pagination */}
         {logsData && logsData.pages > 1 && (
-          <div className="flex items-center justify-between border-t border-border px-5 py-3">
-            <p className="text-xs text-muted-foreground">
+          <div className="flex items-center justify-between border-t border-white/10 px-5 py-3">
+            <p className="text-xs text-slate-400">
               Page {logsPage} of {logsData.pages}
             </p>
             <div className="flex items-center gap-2">
@@ -414,6 +414,7 @@ export function CampaignDetail() {
                 size="sm"
                 onClick={() => setLogsPage((p) => Math.max(1, p - 1))}
                 disabled={logsPage === 1}
+                className="bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -423,6 +424,7 @@ export function CampaignDetail() {
                 size="sm"
                 onClick={() => setLogsPage((p) => Math.min(logsData.pages, p + 1))}
                 disabled={logsPage === logsData.pages}
+                className="bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>

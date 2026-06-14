@@ -3,7 +3,7 @@ import { Sidebar } from './Sidebar';
 
 export function Layout() {
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-transparent text-slate-100">
       {/* Fixed sidebar */}
       <Sidebar />
 

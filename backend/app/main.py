@@ -49,7 +49,7 @@ app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:5174"],
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:5174"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -69,14 +69,14 @@ async def global_exception_handler(request: Request, exc: Exception):
     logger.error(f"Unhandled exception: {exc}")
     return JSONResponse(status_code=500, content={"detail": "An unexpected error occurred."})
 
-app.include_router(auth.router, prefix="/api")
-app.include_router(customers.router, prefix="/api")
-app.include_router(orders.router, prefix="/api")
-app.include_router(segments.router, prefix="/api")
-app.include_router(campaigns.router, prefix="/api")
-app.include_router(receipts.router, prefix="/api")
-app.include_router(analytics.router, prefix="/api")
-app.include_router(ai.router, prefix="/api")
+app.include_router(auth.router, prefix="/api/v1")
+app.include_router(customers.router, prefix="/api/v1")
+app.include_router(orders.router, prefix="/api/v1")
+app.include_router(segments.router, prefix="/api/v1")
+app.include_router(campaigns.router, prefix="/api/v1")
+app.include_router(receipts.router, prefix="/api/v1")
+app.include_router(analytics.router, prefix="/api/v1")
+app.include_router(ai.router, prefix="/api/v1")
 
 @app.get("/health")
 async def health_check():

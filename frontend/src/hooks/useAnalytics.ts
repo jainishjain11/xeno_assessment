@@ -6,7 +6,7 @@ import api from '@/lib/axios';
 export interface DashboardStats {
   total_customers: number;
   active_campaigns: number;
-  messages_sent: number;
+  total_messages_sent: number;
   avg_delivery_rate: number | null;
 }
 

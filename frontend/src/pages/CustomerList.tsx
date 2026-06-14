@@ -47,15 +47,15 @@ function useDebounce<T>(value: T, delay: number): T {
 
 // ── Tag badge colors ──────────────────────────────────────────────────────────
 const TAG_COLORS: Record<string, string> = {
-  vip: 'bg-amber-100 text-amber-800 border-amber-200',
-  churned: 'bg-red-100 text-red-800 border-red-200',
-  loyal: 'bg-green-100 text-green-800 border-green-200',
-  new: 'bg-blue-100 text-blue-800 border-blue-200',
-  premium: 'bg-purple-100 text-purple-800 border-purple-200',
+  vip: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+  churned: 'bg-red-500/20 text-red-400 border-red-500/30',
+  loyal: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+  new: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  premium: 'bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/30',
 };
 
 function TagBadge({ tag }: { tag: string }) {
-  const cls = TAG_COLORS[tag.toLowerCase()] ?? 'bg-gray-100 text-gray-700 border-gray-200';
+  const cls = TAG_COLORS[tag.toLowerCase()] ?? 'bg-white/10 text-slate-300 border-white/20';
   return (
     <span
       className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium ${cls}`}
@@ -68,10 +68,10 @@ function TagBadge({ tag }: { tag: string }) {
 // ── Skeleton row ─────────────────────────────────────────────────────────────
 function SkeletonRow() {
   return (
-    <TableRow>
+    <TableRow className="border-white/10 hover:bg-transparent">
       {[...Array(7)].map((_, i) => (
         <TableCell key={i}>
-          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full bg-white/10" />
         </TableCell>
       ))}
     </TableRow>
@@ -126,14 +126,14 @@ export function CustomerList() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Customers</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-100">Customers</h1>
+          <p className="mt-1 text-sm text-slate-400">
             {data ? `${data.total.toLocaleString()} total customers` : 'Loading…'}
           </p>
         </div>
-        <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 shadow-sm">
-          <Users className="h-5 w-5 text-muted-foreground" />
-          <span className="text-xl font-semibold text-foreground">
+        <div className="flex items-center gap-2 glass px-4 py-2">
+          <Users className="h-5 w-5 text-slate-400" />
+          <span className="text-xl font-semibold text-slate-100">
             {isLoading ? '—' : (data?.total ?? 0).toLocaleString()}
           </span>
         </div>
@@ -141,18 +141,18 @@ export function CustomerList() {
 
       {/* Search bar */}
       <div className="relative max-w-sm">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
         <Input
           id="customer-search"
           placeholder="Search name, email, city…"
           value={searchInput}
           onChange={(e) => handleSearchChange(e.target.value)}
-          className="pl-9"
+          className="pl-9 bg-white/5 border-white/15 text-slate-100 placeholder-slate-500 focus:border-violet-400/50 focus:ring-[3px] focus:ring-violet-400/10"
         />
       </div>
 
       {/* Table card */}
-      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+      <div className="glass overflow-hidden">
         {isError ? (
           <ErrorMessage 
             message="Failed to load customers." 
@@ -161,45 +161,45 @@ export function CustomerList() {
         ) : (
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/30">
-                <TableHead className="w-[220px]">Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>City</TableHead>
+              <TableRow className="bg-white/5 border-white/10 hover:bg-white/5">
+                <TableHead className="w-[220px] text-slate-300">Name</TableHead>
+                <TableHead className="text-slate-300">Email</TableHead>
+                <TableHead className="text-slate-300">City</TableHead>
                 <TableHead>
                   <button
                     id="sort-total-spent"
                     onClick={() => toggleSort('total_spent')}
-                    className="flex items-center gap-1 font-medium text-muted-foreground hover:text-foreground"
+                    className="flex items-center gap-1 font-medium text-slate-300 hover:text-slate-100"
                   >
                     <TrendingUp className="h-3.5 w-3.5" />
                     Total Spent
                     <ArrowUpDown className="h-3 w-3" />
                   </button>
                 </TableHead>
-                <TableHead>Orders</TableHead>
+                <TableHead className="text-slate-300">Orders</TableHead>
                 <TableHead>
                   <button
                     id="sort-last-order"
                     onClick={() => toggleSort('last_order_at')}
-                    className="flex items-center gap-1 font-medium text-muted-foreground hover:text-foreground"
+                    className="flex items-center gap-1 font-medium text-slate-300 hover:text-slate-100"
                   >
                     <Calendar className="h-3.5 w-3.5" />
                     Last Order
                     <ArrowUpDown className="h-3 w-3" />
                   </button>
                 </TableHead>
-                <TableHead>Tags</TableHead>
+                <TableHead className="text-slate-300">Tags</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading
                 ? [...Array(8)].map((_, i) => <SkeletonRow key={i} />)
-                : sorted.length === 0
-                    <TableRow>
+                : sorted.length === 0 ? (
+                    <TableRow className="border-white/10 hover:bg-transparent">
                       <TableCell colSpan={7} className="py-16 text-center">
                         <div className="flex flex-col items-center gap-3">
-                          <Users className="h-10 w-10 text-muted-foreground/40" />
-                          <p className="text-sm text-muted-foreground">
+                          <Users className="h-10 w-10 text-slate-500/40" />
+                          <p className="text-sm text-slate-400">
                             {search ? `No customers match "${search}"` : 'No customers yet.'}
                           </p>
                           {!search && (
@@ -207,9 +207,8 @@ export function CustomerList() {
                               id="import-customers-empty-btn"
                               variant="outline"
                               size="sm"
-                              className="gap-2 mt-2"
+                              className="gap-2 mt-2 bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
                               onClick={() => {
-                                // Add a basic mock action for the empty state
                                 alert('Import customer functionality to be implemented');
                               }}
                             >
@@ -220,32 +219,32 @@ export function CustomerList() {
                         </div>
                       </TableCell>
                     </TableRow>
-                  : sorted.map((customer) => (
+                  ) : sorted.map((customer) => (
                     <TableRow
                       key={customer.id}
                       id={`customer-row-${customer.id}`}
-                      className="cursor-pointer transition-colors hover:bg-muted/40"
+                      className="cursor-pointer transition-colors hover:bg-white/5 border-white/10"
                       onClick={() => navigate(`/customers/${customer.id}`)}
                     >
-                      <TableCell className="font-medium text-foreground">
+                      <TableCell className="font-medium text-slate-100">
                         <div className="flex items-center gap-2.5">
-                          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-violet-500/20 text-sm font-semibold text-violet-400">
                             {customer.name[0]?.toUpperCase()}
                           </div>
                           <span className="truncate max-w-[160px]">{customer.name}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="text-muted-foreground">{customer.email}</TableCell>
-                      <TableCell className="text-muted-foreground">
+                      <TableCell className="text-slate-400">{customer.email}</TableCell>
+                      <TableCell className="text-slate-400">
                         {customer.city ?? '—'}
                       </TableCell>
-                      <TableCell className="font-medium text-foreground">
+                      <TableCell className="font-medium text-slate-100">
                         {formatCurrency(customer.total_spent)}
                       </TableCell>
-                      <TableCell className="text-muted-foreground">
+                      <TableCell className="text-slate-400">
                         {customer.order_count}
                       </TableCell>
-                      <TableCell className="text-muted-foreground">
+                      <TableCell className="text-slate-400">
                         {formatDate(customer.last_order_at)}
                       </TableCell>
                       <TableCell>
@@ -254,7 +253,7 @@ export function CustomerList() {
                             <TagBadge key={tag} tag={tag} />
                           ))}
                           {customer.tags.length > 3 && (
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-xs text-slate-400">
                               +{customer.tags.length - 3}
                             </span>
                           )}
@@ -270,7 +269,7 @@ export function CustomerList() {
       {/* Pagination */}
       {data && data.pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-400">
             Page {page} of {data.pages} · {data.total.toLocaleString()} results
           </p>
           <div className="flex items-center gap-2">
@@ -280,6 +279,7 @@ export function CustomerList() {
               size="sm"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
+              className="bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
             >
               <ChevronLeft className="h-4 w-4" />
               Previous
@@ -290,6 +290,7 @@ export function CustomerList() {
               size="sm"
               onClick={() => setPage((p) => Math.min(data.pages, p + 1))}
               disabled={page === data.pages}
+              className="bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
             >
               Next
               <ChevronRight className="h-4 w-4" />

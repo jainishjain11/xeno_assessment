@@ -55,3 +55,24 @@ async def get_order(
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
     return order
+
+@router.post("/import", status_code=200)
+async def import_orders(
+    data: list[OrderCreate],
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    count = 0
+    customer_ids = set()
+    for order_data in data:
+        order = Order(**order_data.model_dump())
+        db.add(order)
+        customer_ids.add(order.customer_id)
+        count += 1
+    
+    await db.commit()
+    
+    for cid in customer_ids:
+        await CustomerService.recalculate_stats(db, cid)
+        
+    return {"imported_count": count}

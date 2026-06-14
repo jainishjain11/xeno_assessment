@@ -10,19 +10,14 @@ import { ErrorMessage } from '@/components/ui/ErrorMessage';
 function AudienceBadge({ size }: { size?: number | null }) {
   if (size == null) {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+      <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-slate-400">
         <Users className="h-3 w-3" />
         Unknown
       </span>
     );
   }
 
-  const color =
-    size > 200
-      ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-      : size > 50
-        ? 'bg-blue-100 text-blue-800 border border-blue-200'
-        : 'bg-gray-100 text-gray-700 border border-gray-200';
+  const color = 'bg-violet-500/20 text-violet-400 border border-violet-500/30';
 
   return (
     <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${color}`}>
@@ -57,19 +52,19 @@ function SegmentCard({
   return (
     <div
       id={`segment-card-${segment.id}`}
-      className="group relative flex cursor-pointer flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-sm transition-all duration-200 hover:border-primary/40 hover:shadow-md"
+      className="group relative flex cursor-pointer flex-col gap-4 glass-card p-5"
       onClick={onClick}
     >
       {/* Icon + name */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-violet-500/20 text-violet-400">
             <Layers className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground leading-tight">{segment.name}</h3>
+            <h3 className="font-semibold text-slate-100 leading-tight">{segment.name}</h3>
             {segment.description && (
-              <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
+              <p className="mt-0.5 text-xs text-slate-400 line-clamp-2">
                 {segment.description}
               </p>
             )}
@@ -79,7 +74,7 @@ function SegmentCard({
         <button
           id={`edit-segment-${segment.id}`}
           onClick={onEdit}
-          className="flex-shrink-0 rounded-md p-1.5 text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover:opacity-100"
+          className="flex-shrink-0 rounded-md p-1.5 text-slate-400 opacity-0 transition-opacity hover:bg-white/10 hover:text-slate-100 group-hover:opacity-100"
         >
           <Edit2 className="h-4 w-4" />
         </button>
@@ -91,7 +86,7 @@ function SegmentCard({
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between border-t border-border pt-3 text-xs text-muted-foreground">
+      <div className="flex items-center justify-between border-t border-white/10 pt-3 text-xs text-slate-400">
         <div className="flex items-center gap-1">
           <Calendar className="h-3 w-3" />
           {formatDate(segment.created_at)}
@@ -105,17 +100,17 @@ function SegmentCard({
 // ── Skeleton card ─────────────────────────────────────────────────────────────
 function SegmentCardSkeleton() {
   return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+    <div className="glass p-5">
       <div className="flex items-center gap-3">
-        <Skeleton className="h-10 w-10 rounded-lg" />
+        <Skeleton className="h-10 w-10 rounded-lg bg-white/10" />
         <div className="flex-1 space-y-2">
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-3 w-1/2" />
+          <Skeleton className="h-4 w-3/4 bg-white/10" />
+          <Skeleton className="h-3 w-1/2 bg-white/10" />
         </div>
       </div>
-      <Skeleton className="mt-4 h-6 w-40 rounded-full" />
-      <div className="mt-4 border-t border-border pt-3">
-        <Skeleton className="h-3 w-32" />
+      <Skeleton className="mt-4 h-6 w-40 rounded-full bg-white/10" />
+      <div className="mt-4 border-t border-white/10 pt-3">
+        <Skeleton className="h-3 w-32 bg-white/10" />
       </div>
     </div>
   );
@@ -131,8 +126,8 @@ export function SegmentList() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Segments</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-100">Segments</h1>
+          <p className="mt-1 text-sm text-slate-400">
             {isLoading
               ? 'Loading…'
               : `${(segments ?? []).length} segment${(segments ?? []).length !== 1 ? 's' : ''} defined`}
@@ -141,7 +136,7 @@ export function SegmentList() {
         <Button
           id="new-segment-btn"
           onClick={() => navigate('/segments/new')}
-          className="gap-2"
+          className="gap-2 bg-gradient-to-br from-violet-600 to-violet-400 text-white border-none hover:opacity-90 hover:-translate-y-[1px] shadow-[0_4px_15px_rgba(167,139,250,0.4)]"
         >
           <Plus className="h-4 w-4" />
           New Segment
@@ -162,16 +157,16 @@ export function SegmentList() {
           ? [...Array(6)].map((_, i) => <SegmentCardSkeleton key={i} />)
           : (segments ?? []).length === 0
             ? (
-              <div className="col-span-full flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border py-16 text-center">
-                <Layers className="mb-3 h-12 w-12 text-muted-foreground/40" />
-                <p className="text-base font-medium text-foreground">No segments yet</p>
-                <p className="mt-1 text-sm text-muted-foreground">
+              <div className="col-span-full flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/20 py-16 text-center glass">
+                <Layers className="mb-3 h-12 w-12 text-slate-500/40" />
+                <p className="text-base font-medium text-slate-100">No segments yet</p>
+                <p className="mt-1 text-sm text-slate-400">
                   Create your first audience segment to target customers.
                 </p>
                 <Button
                   id="new-segment-empty-btn"
                   variant="outline"
-                  className="mt-4 gap-2"
+                  className="mt-4 gap-2 bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
                   onClick={() => navigate('/segments/new')}
                 >
                   <Plus className="h-4 w-4" />

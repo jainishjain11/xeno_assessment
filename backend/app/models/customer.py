@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import String, Numeric, Integer, DateTime
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from sqlalchemy.sql import func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
 class Customer(Base):
@@ -21,3 +21,4 @@ class Customer(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    orders = relationship("Order", back_populates="customer", cascade="all, delete")

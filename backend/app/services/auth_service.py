@@ -20,7 +20,8 @@ class AuthService:
     async def register(cls, db: AsyncSession, data: RegisterRequest) -> User:
         result = await db.execute(select(User).where(User.email == data.email))
         if result.scalar_one_or_none():
-            raise HTTPException(status_code=400, detail="Email already registered")
+            raise HTTPException(status_code=409, detail="Email already registered")
+
             
         hashed = cls.hash_password(data.password)
         user = User(

@@ -216,7 +216,7 @@ async def analytics_live(
 class DashboardStatsResponse(BaseModel):
     total_customers: int
     active_campaigns: int
-    messages_sent: int
+    total_messages_sent: int
     avg_delivery_rate: float | None
 
 @router.get("/dashboard", response_model=DashboardStatsResponse)
@@ -230,26 +230,24 @@ async def get_dashboard_stats(
     user_id = await _authenticate(request, token=None, db=db)
 
     # 1. Total Customers
-    res = await db.execute(text("SELECT COUNT(*) FROM customers"))
+    res = await db.execute(text("SELECT COUNT(*) FROM customers WHERE deleted_at IS NULL"))
     total_customers = res.scalar() or 0
 
     # 2. Active Campaigns
-    res = await db.execute(text("SELECT COUNT(*) FROM campaigns WHERE status IN ('running', 'scheduled')"))
+    res = await db.execute(text("SELECT COUNT(*) FROM campaigns WHERE status = 'running'"))
     active_campaigns = res.scalar() or 0
 
-    # 3. Messages Sent & Delivery Rate
-    res = await db.execute(text("SELECT SUM(total_sent), SUM(total_delivered) FROM campaign_funnel_stats"))
-    row = res.fetchone()
-    total_sent = row[0] if row and row[0] else 0
-    total_delivered = row[1] if row and row[1] else 0
+    # 3. Total Messages Sent
+    res = await db.execute(text("SELECT COUNT(*) FROM communication_logs"))
+    total_messages_sent = res.scalar() or 0
 
-    avg_delivery_rate = None
-    if total_sent > 0:
-        avg_delivery_rate = (total_delivered / total_sent) * 100.0
+    # 4. Avg Delivery Rate
+    res = await db.execute(text("SELECT ROUND(AVG(delivery_rate), 1) FROM campaign_funnel_stats"))
+    avg_delivery_rate = res.scalar()
 
     return DashboardStatsResponse(
         total_customers=total_customers,
         active_campaigns=active_campaigns,
-        messages_sent=total_sent,
+        total_messages_sent=total_messages_sent,
         avg_delivery_rate=avg_delivery_rate,
     )

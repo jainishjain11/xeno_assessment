@@ -7,12 +7,24 @@ import uuid
 class CustomerService:
     @staticmethod
     async def get_customer(db: AsyncSession, customer_id: uuid.UUID) -> Customer | None:
-        result = await db.execute(select(Customer).where(Customer.id == customer_id))
+        from sqlalchemy.orm import selectinload
+        result = await db.execute(
+            select(Customer)
+            .options(selectinload(Customer.orders))
+            .where(Customer.id == customer_id)
+        )
         return result.scalar_one_or_none()
 
     @staticmethod
-    def get_customers_query():
-        return select(Customer).order_by(Customer.created_at.desc())
+    def get_customers_query(search: str | None = None):
+        from sqlalchemy import or_
+        query = select(Customer)
+        if search:
+            query = query.where(or_(
+                Customer.name.ilike(f"%{search}%"),
+                Customer.email.ilike(f"%{search}%")
+            ))
+        return query.order_by(Customer.created_at.desc())
 
     @staticmethod
     async def create_customer(db: AsyncSession, data: CustomerCreate) -> Customer:

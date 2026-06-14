@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import String, Numeric, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.sql import func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
 class Order(Base):
@@ -17,3 +17,4 @@ class Order(Base):
     items: Mapped[dict] = mapped_column(JSONB, server_default='[]')
     ordered_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    customer = relationship("Customer", back_populates="orders")

@@ -2,6 +2,8 @@ from pydantic import BaseModel, EmailStr
 from datetime import datetime
 import uuid
 
+from app.schemas.order import OrderResponse
+
 class CustomerBase(BaseModel):
     name: str
     email: EmailStr
@@ -28,9 +30,11 @@ class CustomerResponse(CustomerBase):
     last_order_at: datetime | None
     created_at: datetime
     updated_at: datetime
-
     class Config:
         from_attributes = True
+
+class CustomerDetailResponse(CustomerResponse):
+    orders: list["OrderResponse"] = []
 
 class CustomerBulkImport(BaseModel):
     customers: list[CustomerCreate]

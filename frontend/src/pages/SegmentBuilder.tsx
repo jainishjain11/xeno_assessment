@@ -112,10 +112,12 @@ function RuleRow({ rule, index, onUpdate, onRemove, showRemove }: RuleRowProps) 
     onUpdate({ ...rule, value: coerced });
   };
 
+  const inputClass = "bg-white/5 border-white/15 text-slate-100 placeholder-slate-500 focus:border-violet-400/50 focus:ring-[3px] focus:ring-violet-400/10";
+
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 p-3">
+    <div className="flex items-center gap-2 glass-card p-3">
       {/* Index pill */}
-      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 text-[11px] font-semibold text-primary">
+      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-violet-500/20 text-[11px] font-semibold text-violet-400">
         {index + 1}
       </div>
 
@@ -123,7 +125,7 @@ function RuleRow({ rule, index, onUpdate, onRemove, showRemove }: RuleRowProps) 
       <Select value={rule.field} onValueChange={handleFieldChange}>
         <SelectTrigger
           id={`rule-field-${index}`}
-          className="h-9 w-[160px] flex-shrink-0 text-sm"
+          className={`h-9 w-[160px] flex-shrink-0 text-sm ${inputClass}`}
         >
           <SelectValue placeholder="Field" />
         </SelectTrigger>
@@ -140,7 +142,7 @@ function RuleRow({ rule, index, onUpdate, onRemove, showRemove }: RuleRowProps) 
       <Select value={rule.op} onValueChange={handleOpChange}>
         <SelectTrigger
           id={`rule-op-${index}`}
-          className="h-9 w-[160px] flex-shrink-0 text-sm"
+          className={`h-9 w-[160px] flex-shrink-0 text-sm ${inputClass}`}
         >
           <SelectValue placeholder="Operator" />
         </SelectTrigger>
@@ -165,7 +167,7 @@ function RuleRow({ rule, index, onUpdate, onRemove, showRemove }: RuleRowProps) 
             >
               <SelectTrigger
                 id={`rule-value-${index}`}
-                className="h-9 min-w-[160px] flex-1 text-sm"
+                className={`h-9 min-w-[160px] flex-1 text-sm ${inputClass}`}
               >
                 <SelectValue placeholder="Select date range…" />
               </SelectTrigger>
@@ -190,7 +192,7 @@ function RuleRow({ rule, index, onUpdate, onRemove, showRemove }: RuleRowProps) 
               }
               value={rule.value?.toString() ?? ''}
               onChange={(e) => handleValueChange(e.target.value)}
-              className="h-9 min-w-[120px] flex-1 text-sm"
+              className={`h-9 min-w-[120px] flex-1 text-sm ${inputClass}`}
             />
           )}
         </>
@@ -201,7 +203,7 @@ function RuleRow({ rule, index, onUpdate, onRemove, showRemove }: RuleRowProps) 
         <button
           id={`remove-rule-${index}`}
           onClick={onRemove}
-          className="ml-auto flex-shrink-0 rounded-md p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+          className="ml-auto flex-shrink-0 rounded-md p-1.5 text-slate-400 hover:bg-red-500/20 hover:text-red-400 transition-colors"
         >
           <Trash2 className="h-3.5 w-3.5" />
         </button>
@@ -257,16 +259,16 @@ function AIIntentModal({ open, onClose, onApply }: AIIntentModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg glass-strong border-white/10 text-slate-100">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" />
+            <Sparkles className="h-5 w-5 text-violet-400" />
             Describe your audience
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-3">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-400">
             Describe who you want to target in plain language. The AI will convert
             it into segment rules automatically.
           </p>
@@ -276,7 +278,7 @@ function AIIntentModal({ open, onClose, onApply }: AIIntentModalProps) {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             rows={4}
-            className="resize-none"
+            className="resize-none bg-white/5 border-white/15 text-slate-100 placeholder-slate-500 focus:border-violet-400/50 focus:ring-[3px] focus:ring-violet-400/10"
           />
           <div className="flex flex-wrap gap-2">
             {[
@@ -287,26 +289,26 @@ function AIIntentModal({ open, onClose, onApply }: AIIntentModalProps) {
               <button
                 key={example}
                 onClick={() => setPrompt(example)}
-                className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors"
+                className="rounded-full border border-white/20 px-3 py-1 text-xs text-slate-400 hover:border-violet-400/40 hover:text-slate-100 transition-colors"
               >
                 {example}
               </button>
             ))}
           </div>
           {error && (
-            <p className="text-sm text-destructive">{error}</p>
+            <p className="text-sm text-red-400">{error}</p>
           )}
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} disabled={isLoading}>
+          <Button variant="outline" onClick={onClose} disabled={isLoading} className="bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100">
             Cancel
           </Button>
           <Button
             id="ai-intent-submit"
             onClick={handleSubmit}
             disabled={!prompt.trim() || isLoading}
-            className="gap-2"
+            className="gap-2 bg-gradient-to-br from-violet-600 to-violet-400 text-white border-none hover:opacity-90 hover:-translate-y-[1px] shadow-[0_4px_15px_rgba(167,139,250,0.4)]"
           >
             {isLoading ? (
               <>
@@ -458,23 +460,24 @@ export function SegmentBuilder() {
 
   const canSave = name.trim().length > 0 && rules.length > 0;
 
+  const inputClass = "bg-white/5 border-white/15 text-slate-100 placeholder-slate-500 focus:border-violet-400/50 focus:ring-[3px] focus:ring-violet-400/10";
+
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-100">
             New Segment
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-slate-400">
             Define rules to match your target audience.
           </p>
         </div>
         <Button
           id="ai-assist-btn"
-          variant="outline"
           onClick={() => setAiOpen(true)}
-          className="gap-2 border-primary/30 text-primary hover:bg-primary/5"
+          className="gap-2 bg-gradient-to-br from-violet-600 to-violet-400 text-white border-none hover:opacity-90 hover:-translate-y-[1px] shadow-[0_4px_15px_rgba(167,139,250,0.4)] glow-violet"
         >
           <Sparkles className="h-4 w-4" />
           ✨ Describe your audience
@@ -485,21 +488,22 @@ export function SegmentBuilder() {
         {/* Left: builder */}
         <div className="space-y-5 lg:col-span-2">
           {/* Segment name + description */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-sm space-y-4">
-            <h2 className="text-sm font-semibold text-foreground">Segment Details</h2>
+          <div className="glass p-5 space-y-4">
+            <h2 className="text-sm font-semibold text-slate-100">Segment Details</h2>
             <div className="space-y-1.5">
-              <label htmlFor="segment-name" className="text-sm font-medium text-foreground">
-                Name <span className="text-destructive">*</span>
+              <label htmlFor="segment-name" className="text-sm font-medium text-slate-100">
+                Name <span className="text-red-400">*</span>
               </label>
               <Input
                 id="segment-name"
                 placeholder="e.g. High-Value Lapsed (30d)"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className={inputClass}
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="segment-description" className="text-sm font-medium text-foreground">
+              <label htmlFor="segment-description" className="text-sm font-medium text-slate-100">
                 Description
               </label>
               <Input
@@ -507,16 +511,17 @@ export function SegmentBuilder() {
                 placeholder="Optional description…"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                className={inputClass}
               />
             </div>
           </div>
 
           {/* Rule builder */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-sm space-y-4">
+          <div className="glass p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-foreground">Rules</h2>
+              <h2 className="text-sm font-semibold text-slate-100">Rules</h2>
               {/* AND / OR toggle */}
-              <div className="flex rounded-lg border border-border overflow-hidden text-sm">
+              <div className="flex rounded-lg border border-white/10 overflow-hidden text-sm">
                 {(['AND', 'OR'] as const).map((op) => (
                   <button
                     key={op}
@@ -524,8 +529,8 @@ export function SegmentBuilder() {
                     onClick={() => setGroupOp(op)}
                     className={`px-3 py-1 font-medium transition-colors ${
                       groupOp === op
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-background text-muted-foreground hover:bg-muted'
+                        ? 'bg-violet-500 text-white'
+                        : 'bg-transparent text-slate-400 hover:bg-white/10'
                     }`}
                   >
                     {op}
@@ -534,7 +539,7 @@ export function SegmentBuilder() {
               </div>
             </div>
 
-            <p className="text-xs text-muted-foreground -mt-2">
+            <p className="text-xs text-slate-400 -mt-2">
               Match customers where{' '}
               <strong>{groupOp === 'AND' ? 'all' : 'any'}</strong> of the following rules apply:
             </p>
@@ -558,7 +563,7 @@ export function SegmentBuilder() {
               variant="outline"
               size="sm"
               onClick={addRule}
-              className="gap-2"
+              className="gap-2 bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
             >
               <Plus className="h-3.5 w-3.5" />
               Add Rule
@@ -575,7 +580,7 @@ export function SegmentBuilder() {
             id="save-segment-btn"
             onClick={handleSave}
             disabled={!canSave || createMutation.isPending}
-            className="w-full gap-2"
+            className="w-full gap-2 bg-gradient-to-br from-violet-600 to-violet-400 text-white border-none hover:opacity-90 hover:-translate-y-[1px] shadow-[0_4px_15px_rgba(167,139,250,0.4)]"
             size="lg"
           >
             {createMutation.isPending ? (
@@ -594,31 +599,31 @@ export function SegmentBuilder() {
 
         {/* Right: live preview panel */}
         <div className="lg:col-span-1">
-          <div className="sticky top-6 rounded-xl border border-border bg-card p-5 shadow-sm">
-            <h2 className="mb-4 text-sm font-semibold text-foreground">Live Preview</h2>
+          <div className="sticky top-6 glass-strong p-5">
+            <h2 className="mb-4 text-sm font-semibold text-slate-100">Live Preview</h2>
 
-            <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-8 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary mb-3">
+            <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-white/20 py-8 text-center">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 mb-3">
                 <Users className="h-6 w-6" />
               </div>
               {previewLoading ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground mb-2" />
-                  <p className="text-xs text-muted-foreground">Counting…</p>
+                  <Loader2 className="h-5 w-5 animate-spin text-slate-400 mb-2" />
+                  <p className="text-xs text-slate-400">Counting…</p>
                 </>
               ) : previewCount !== null ? (
                 <>
-                  <p className="text-3xl font-bold text-foreground">
+                  <p className="text-3xl font-bold text-emerald-400">
                     {previewCount.toLocaleString()}
                   </p>
-                  <p className="mt-1 text-sm text-muted-foreground">
+                  <p className="mt-1 text-sm text-slate-400">
                     customer{previewCount !== 1 ? 's' : ''} match
                   </p>
                 </>
               ) : (
                 <>
-                  <p className="text-3xl font-bold text-muted-foreground/40">—</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <p className="text-3xl font-bold text-slate-500/40">—</p>
+                  <p className="mt-1 text-xs text-slate-400">
                     Add a complete rule to see preview
                   </p>
                 </>
@@ -628,7 +633,7 @@ export function SegmentBuilder() {
             {/* Rule summary */}
             {rules.length > 0 && (
               <div className="mt-4 space-y-2">
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                <p className="text-xs font-medium text-slate-400 uppercase tracking-wide">
                   Current rules
                 </p>
                 {rules.map((rule, i) => {
@@ -643,12 +648,12 @@ export function SegmentBuilder() {
                   return (
                     <div
                       key={i}
-                      className="rounded-md bg-muted/50 px-3 py-2 text-xs text-muted-foreground"
+                      className="rounded-md bg-white/5 px-3 py-2 text-xs text-slate-400"
                     >
-                      <span className="font-medium text-foreground">{fieldLabel}</span>{' '}
+                      <span className="font-medium text-slate-100">{fieldLabel}</span>{' '}
                       {opLabel}{' '}
                       {valueDisplay && (
-                        <span className="font-medium text-foreground">{valueDisplay}</span>
+                        <span className="font-medium text-slate-100">{valueDisplay}</span>
                       )}
                     </div>
                   );
