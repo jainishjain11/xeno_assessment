@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'sonner';
 import {
   Plus,
   Trash2,
@@ -10,7 +11,9 @@ import {
   ChevronDown,
   Save,
 } from 'lucide-react';
-import { useCreateSegment, usePreviewSegment, type FilterRule, type FilterGroup } from '@/hooks/useSegments';
+import { useCreateSegment, usePreviewSegment } from '@/hooks/useSegments';
+import type { FilterRule, FilterGroup } from '@/hooks/useSegments';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -446,6 +449,7 @@ export function SegmentBuilder() {
         description: description.trim() || undefined,
         filter_rules,
       });
+      toast.success('Segment created successfully');
       navigate(`/segments/${segment.id}`);
     } catch {
       // Error surfaced via createMutation.error
@@ -563,7 +567,7 @@ export function SegmentBuilder() {
 
           {/* Error */}
           {createMutation.error && (
-            <p className="text-sm text-destructive">{createMutation.error.message}</p>
+            <ErrorMessage message={createMutation.error.message} />
           )}
 
           {/* Save */}

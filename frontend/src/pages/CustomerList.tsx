@@ -8,11 +8,14 @@ import {
   TrendingUp,
   Calendar,
   ArrowUpDown,
+  UserPlus,
 } from 'lucide-react';
 import { useCustomers, type Customer } from '@/hooks/useCustomers';
+import { formatCurrency, formatDate } from '@/lib/formatters';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import {
   Table,
   TableBody,
@@ -21,25 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
-function formatDate(dateStr?: string) {
-  if (!dateStr) return '—';
-  return new Intl.DateTimeFormat('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(dateStr));
-}
 
 // ── Debounce hook ─────────────────────────────────────────────────────────────
 function useDebounce<T>(value: T, delay: number): T {
@@ -170,9 +154,10 @@ export function CustomerList() {
       {/* Table card */}
       <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         {isError ? (
-          <div className="flex items-center justify-center py-16 text-muted-foreground">
-            Failed to load customers. Please try again.
-          </div>
+          <ErrorMessage 
+            message="Failed to load customers." 
+            onRetry={() => window.location.reload()} 
+          />
         ) : (
           <Table>
             <TableHeader>
@@ -210,13 +195,31 @@ export function CustomerList() {
               {isLoading
                 ? [...Array(8)].map((_, i) => <SkeletonRow key={i} />)
                 : sorted.length === 0
-                  ? (
                     <TableRow>
-                      <TableCell colSpan={7} className="py-16 text-center text-muted-foreground">
-                        {search ? `No customers match "${search}"` : 'No customers found.'}
+                      <TableCell colSpan={7} className="py-16 text-center">
+                        <div className="flex flex-col items-center gap-3">
+                          <Users className="h-10 w-10 text-muted-foreground/40" />
+                          <p className="text-sm text-muted-foreground">
+                            {search ? `No customers match "${search}"` : 'No customers yet.'}
+                          </p>
+                          {!search && (
+                            <Button
+                              id="import-customers-empty-btn"
+                              variant="outline"
+                              size="sm"
+                              className="gap-2 mt-2"
+                              onClick={() => {
+                                // Add a basic mock action for the empty state
+                                alert('Import customer functionality to be implemented');
+                              }}
+                            >
+                              <UserPlus className="h-4 w-4" />
+                              Import Customers
+                            </Button>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
-                  )
                   : sorted.map((customer) => (
                     <TableRow
                       key={customer.id}

@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/query-client';
 import { useAuthStore } from '@/store/auth';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { Toaster } from '@/components/ui/sonner';
 
 // Layout
 import { Layout } from '@/components/layout/Layout';
@@ -28,11 +30,18 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+// ── Title Updater ─────────────────────────────────────────────────────────────
+function TitleUpdater() {
+  useDocumentTitle();
+  return null;
+}
+
 // ── App ───────────────────────────────────────────────────────────────────────
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <TitleUpdater />
         <Routes>
           {/* Public */}
           <Route path="/login" element={<Login />} />
@@ -61,6 +70,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
+      <Toaster position="top-right" richColors />
     </QueryClientProvider>
   );
 }

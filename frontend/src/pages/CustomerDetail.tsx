@@ -12,8 +12,10 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { useCustomer, useCustomerOrders } from '@/hooks/useCustomers';
+import { formatCurrency, formatDate, formatDateTime } from '@/lib/formatters';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import {
   Table,
   TableBody,
@@ -23,36 +25,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
-function formatDate(dateStr?: string) {
-  if (!dateStr) return '—';
-  return new Intl.DateTimeFormat('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(dateStr));
-}
-
-function formatDateTime(dateStr?: string) {
-  if (!dateStr) return '—';
-  return new Intl.DateTimeFormat('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(dateStr));
-}
 
 // ── Status badge ─────────────────────────────────────────────────────────────
 const STATUS_STYLES: Record<string, string> = {
@@ -143,19 +115,19 @@ export function CustomerDetail() {
 
   if (isError || !customer) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
-        <p className="text-lg font-medium text-foreground">Customer not found</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          This customer may have been deleted or doesn't exist.
-        </p>
-        <Button
-          variant="outline"
-          className="mt-4"
-          onClick={() => navigate('/customers')}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Customers
-        </Button>
+      <div className="py-12">
+        <ErrorMessage 
+          message="Customer not found. They may have been deleted or don't exist."
+        />
+        <div className="mt-4 text-center">
+          <Button
+            variant="outline"
+            onClick={() => navigate('/customers')}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Customers
+          </Button>
+        </div>
       </div>
     );
   }
@@ -278,6 +250,10 @@ export function CustomerDetail() {
                     {[...Array(4)].map((_, i) => (
                       <Skeleton key={i} className="h-8 w-full" />
                     ))}
+                  </div>
+                ) : isError ? (
+                  <div className="py-12">
+                    <ErrorMessage message="Failed to load orders." />
                   </div>
                 ) : orders.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-14 text-center">

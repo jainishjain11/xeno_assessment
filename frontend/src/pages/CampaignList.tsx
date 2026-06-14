@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Plus, Megaphone, ChevronRight } from 'lucide-react';
 import { useCampaigns } from '@/hooks/useCampaigns';
+import { formatDate } from '@/lib/formatters';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import {
   Table,
   TableBody,
@@ -11,16 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function formatDate(dateStr: string) {
-  return new Intl.DateTimeFormat('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(dateStr));
-}
 
 // ── Status badge ──────────────────────────────────────────────────────────────
 
@@ -136,9 +128,10 @@ export function CampaignList() {
 
       {/* Error */}
       {isError && (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          Failed to load campaigns. Please refresh.
-        </div>
+        <ErrorMessage 
+          message="Failed to load campaigns." 
+          onRetry={() => window.location.reload()} 
+        />
       )}
 
       {/* Table */}
@@ -174,7 +167,7 @@ export function CampaignList() {
                             onClick={() => navigate('/campaigns/new')}
                           >
                             <Plus className="h-4 w-4" />
-                            Create your first campaign
+                            Create Campaign
                           </Button>
                         </div>
                       </TableCell>

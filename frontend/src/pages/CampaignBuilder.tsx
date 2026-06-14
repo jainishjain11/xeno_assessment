@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { toast } from 'sonner';
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,10 +12,10 @@ import {
   CheckCircle2,
   Rocket,
   Save,
-  AlertCircle,
 } from 'lucide-react';
 import { useCreateCampaign, useLaunchCampaign } from '@/hooks/useCampaigns';
 import { useSegments } from '@/hooks/useSegments';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -522,6 +523,7 @@ export function CampaignBuilder() {
         channel,
         message_template: message.trim(),
       });
+      toast.success('Campaign saved as draft');
       navigate('/campaigns');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to save campaign');
@@ -540,6 +542,7 @@ export function CampaignBuilder() {
         message_template: message.trim(),
       });
       await launchMutation.mutateAsync(campaign.id);
+      toast.success('Campaign launched successfully');
       navigate(`/campaigns/${campaign.id}`);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to launch campaign');
@@ -595,10 +598,7 @@ export function CampaignBuilder() {
 
       {/* Error */}
       {error && (
-        <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
-          {error}
-        </div>
+        <ErrorMessage message={error} />
       )}
 
       {/* Navigation */}

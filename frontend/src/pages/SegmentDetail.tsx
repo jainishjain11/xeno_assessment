@@ -12,8 +12,10 @@ import {
 } from 'lucide-react';
 import { useSegment, usePreviewSegment, type FilterRule, type FilterGroup } from '@/hooks/useSegments';
 import { useCustomers } from '@/hooks/useCustomers';
+import { formatCurrency, formatDate } from '@/lib/formatters';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import {
   Table,
   TableBody,
@@ -23,25 +25,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import api from '@/lib/axios';
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
-function formatDate(dateStr?: string) {
-  if (!dateStr) return '—';
-  return new Intl.DateTimeFormat('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(dateStr));
-}
 
 // ── Human-readable rule display ───────────────────────────────────────────────
 
@@ -186,20 +169,18 @@ export function SegmentDetail() {
   }
 
   if (isError || !segment) {
-    return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
-        <Layers className="mb-3 h-12 w-12 text-muted-foreground/40" />
-        <p className="text-lg font-medium text-foreground">Segment not found</p>
-        <Button
-          variant="outline"
-          className="mt-4"
-          onClick={() => navigate('/segments')}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Segments
-        </Button>
+      <div className="py-12">
+        <ErrorMessage message="Segment not found. It may have been deleted." />
+        <div className="mt-4 text-center">
+          <Button
+            variant="outline"
+            onClick={() => navigate('/segments')}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Segments
+          </Button>
+        </div>
       </div>
-    );
   }
 
   const displayCount = previewCount ?? segment.audience_size;

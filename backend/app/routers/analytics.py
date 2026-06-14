@@ -24,6 +24,7 @@ from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from sse_starlette.sse import EventSourceResponse
+from pydantic import BaseModel
 
 from app.config import Settings
 from app.database import get_db
@@ -208,4 +209,47 @@ async def analytics_live(
         _campaign_event_generator(campaign_id, request, db),
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         ping=HEARTBEAT_INTERVAL,
+    )
+
+# ── Dashboard Stats ───────────────────────────────────────────────────────────
+
+class DashboardStatsResponse(BaseModel):
+    total_customers: int
+    active_campaigns: int
+    messages_sent: int
+    avg_delivery_rate: float | None
+
+@router.get("/dashboard", response_model=DashboardStatsResponse)
+async def get_dashboard_stats(
+    db: AsyncSession = Depends(get_db),
+    # Use normal JWT auth for this REST endpoint
+    request: Request = None,
+):
+    # Just a simple auth check since we don't have Depends(get_current_user) directly imported here
+    # but let's just import it inside the function to avoid circular imports if any, or use _authenticate
+    user_id = await _authenticate(request, token=None, db=db)
+
+    # 1. Total Customers
+    res = await db.execute(text("SELECT COUNT(*) FROM customers"))
+    total_customers = res.scalar() or 0
+
+    # 2. Active Campaigns
+    res = await db.execute(text("SELECT COUNT(*) FROM campaigns WHERE status IN ('running', 'scheduled')"))
+    active_campaigns = res.scalar() or 0
+
+    # 3. Messages Sent & Delivery Rate
+    res = await db.execute(text("SELECT SUM(total_sent), SUM(total_delivered) FROM campaign_funnel_stats"))
+    row = res.fetchone()
+    total_sent = row[0] if row and row[0] else 0
+    total_delivered = row[1] if row and row[1] else 0
+
+    avg_delivery_rate = None
+    if total_sent > 0:
+        avg_delivery_rate = (total_delivered / total_sent) * 100.0
+
+    return DashboardStatsResponse(
+        total_customers=total_customers,
+        active_campaigns=active_campaigns,
+        messages_sent=total_sent,
+        avg_delivery_rate=avg_delivery_rate,
     )

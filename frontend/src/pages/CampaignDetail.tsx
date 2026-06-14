@@ -32,27 +32,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableRow,
 } from '@/components/ui/table';
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function formatDate(dateStr?: string) {
-  if (!dateStr) return '—';
-  return new Intl.DateTimeFormat('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(dateStr));
-}
-
-function formatPct(val: number | null | undefined): string {
-  if (val == null) return '—';
-  return `${val.toFixed(1)}%`;
-}
-
-// ── Status + channel badges ───────────────────────────────────────────────────
+import { formatPct, formatDate } from '@/lib/formatters';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 
 const STATUS_CONFIG: Record<string, { cls: string }> = {
   draft: { cls: 'bg-gray-100 text-gray-600 border-gray-200' },
@@ -260,13 +243,14 @@ export function CampaignDetail() {
 
   if (isError || !campaign) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
-        <Megaphone className="mb-3 h-12 w-12 text-muted-foreground/40" />
-        <p className="text-lg font-medium text-foreground">Campaign not found</p>
-        <Button variant="outline" className="mt-4" onClick={() => navigate('/campaigns')}>
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Campaigns
-        </Button>
+      <div className="py-12">
+        <ErrorMessage message="Campaign not found. It may have been deleted." />
+        <div className="mt-4 text-center">
+          <Button variant="outline" onClick={() => navigate('/campaigns')}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Campaigns
+          </Button>
+        </div>
       </div>
     );
   }

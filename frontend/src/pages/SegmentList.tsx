@@ -1,18 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Plus, Layers, Users, Calendar, Edit2 } from 'lucide-react';
 import { useSegments } from '@/hooks/useSegments';
+import { formatDate } from '@/lib/formatters';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function formatDate(dateStr: string) {
-  return new Intl.DateTimeFormat('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(dateStr));
-}
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 
 // ── Audience badge ────────────────────────────────────────────────────────────
 function AudienceBadge({ size }: { size?: number | null }) {
@@ -158,9 +150,10 @@ export function SegmentList() {
 
       {/* Error */}
       {isError && (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          Failed to load segments. Please refresh.
-        </div>
+        <ErrorMessage 
+          message="Failed to load segments." 
+          onRetry={() => window.location.reload()} 
+        />
       )}
 
       {/* Card grid */}
@@ -182,7 +175,7 @@ export function SegmentList() {
                   onClick={() => navigate('/segments/new')}
                 >
                   <Plus className="h-4 w-4" />
-                  New Segment
+                  Create your first segment
                 </Button>
               </div>
             )

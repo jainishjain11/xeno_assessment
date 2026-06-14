@@ -14,6 +14,8 @@ import { useCustomers } from '@/hooks/useCustomers';
 import { useSegments } from '@/hooks/useSegments';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
+import { formatPct } from '@/lib/formatters';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 
 // ── Stat card ─────────────────────────────────────────────────────────────────
 
@@ -90,7 +92,7 @@ function QuickAction({
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export function Dashboard() {
   const navigate = useNavigate();
-  const { data: stats, isLoading: statsLoading } = useDashboardStats();
+  const { data: stats, isLoading, isError } = useDashboardStats();
   const { data: customersData } = useCustomers(1, 5);
   const { data: segments } = useSegments();
 
@@ -104,43 +106,50 @@ export function Dashboard() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Welcome to Aura Beauty CRM — your AI-powered marketing platform.
+          Overview of your campaigns and audience segments.
         </p>
       </div>
 
-      {/* Summary stat cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {isError ? (
+        <div className="mt-6">
+          <ErrorMessage 
+            message="Failed to load dashboard metrics." 
+            onRetry={() => window.location.reload()} 
+          />
+        </div>
+      ) : (
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           icon={Users}
           label="Total Customers"
-          value={statsLoading ? '—' : totalCustomers.toLocaleString()}
-          sub="In your database"
-          color="bg-blue-100 text-blue-600"
-          loading={statsLoading}
-        />
-        <StatCard
-          icon={Megaphone}
-          label="Active Campaigns"
-          value={statsLoading ? '—' : (stats?.active_campaigns ?? 0).toLocaleString()}
-          sub="Running or drafted"
-          color="bg-purple-100 text-purple-600"
-          loading={statsLoading}
-        />
-        <StatCard
-          icon={Layers}
-          label="Segments"
-          value={totalSegments.toLocaleString()}
-          sub="Audience definitions"
-          color="bg-emerald-100 text-emerald-600"
+          value={stats?.total_customers.toLocaleString() ?? 0}
+          color="bg-primary/10 text-primary"
+          loading={isLoading}
         />
         <StatCard
           icon={Activity}
+          label="Active Campaigns"
+          value={stats?.active_campaigns.toLocaleString() ?? 0}
+          sub="Running or scheduled"
+          color="bg-emerald-100 text-emerald-700"
+          loading={isLoading}
+        />
+        <StatCard
+          icon={MessageSquare}
           label="Messages Sent"
-          value="—"
-          sub="Launch a campaign to track"
-          color="bg-amber-100 text-amber-600"
+          value={stats?.messages_sent.toLocaleString() ?? 0}
+          color="bg-blue-100 text-blue-700"
+          loading={isLoading}
+        />
+        <StatCard
+          icon={TrendingUp}
+          label="Avg Delivery Rate"
+          value={stats ? formatPct(stats.avg_delivery_rate) : '0%'}
+          color="bg-purple-100 text-purple-700"
+          loading={isLoading}
         />
       </div>
+      )}
 
       {/* Quick actions */}
       <div>
