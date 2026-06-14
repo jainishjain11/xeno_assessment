@@ -28,3 +28,8 @@ class SegmentResponse(SegmentBase):
 class SegmentPreviewResponse(BaseModel):
     sql_query: str
     estimated_count: int
+    count: int | None = None
+    sample: list[Any] = []
+
+    class Config:
+        from_attributes = True

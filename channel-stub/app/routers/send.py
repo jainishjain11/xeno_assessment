@@ -26,6 +26,7 @@ def send_message(req: SendRequest):
     
     callback_url = str(req.callback_url) if req.callback_url else settings.crm_receipt_url
     
+    import celery_app  # Ensure Celery app is loaded with broker config
     simulate_delivery_task.delay(
         str(req.communication_log_id),
         callback_url,

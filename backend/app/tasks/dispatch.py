@@ -78,10 +78,10 @@ def dispatch_campaign_task(campaign_id: str):
                 
                 # POST to channel stub with retries
                 payload = {
-                    "log_id": str(inserted_log_id),
+                    "communication_log_id": str(inserted_log_id),
                     "channel": campaign.channel,
                     "customer_id": str(customer.id),
-                    "message": message_body
+                    "message_body": message_body
                 }
                 
                 delays = [5, 25, 125]

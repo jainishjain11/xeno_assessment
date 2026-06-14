@@ -44,6 +44,7 @@ class CommunicationLogResponse(BaseModel):
     channel: str
     message_body: str
     status: str
+    idempotency_key: str
     sent_at: datetime | None = None
     delivered_at: datetime | None = None
     opened_at: datetime | None = None

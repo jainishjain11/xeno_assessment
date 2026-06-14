@@ -43,8 +43,20 @@ async def preview_segment(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    sql_query, count = await SegmentService.preview_segment(db, filter_rules)
-    return {"sql_query": sql_query, "estimated_count": count}
+    sql_query, count, sample = await SegmentService.preview_segment(db, filter_rules)
+    return {"sql_query": sql_query, "estimated_count": count, "count": count, "sample": sample}
+
+@router.post("/{segment_id}/preview")
+async def preview_saved_segment(
+    segment_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    segment = await SegmentService.get_segment(db, segment_id)
+    if not segment:
+        raise HTTPException(status_code=404, detail="Segment not found")
+    sql_query, count, sample = await SegmentService.preview_segment(db, segment.filter_rules)
+    return {"sql_query": sql_query, "estimated_count": count, "count": count, "sample": sample}
 
 @router.get("/{segment_id}", response_model=SegmentResponse)
 async def get_segment(

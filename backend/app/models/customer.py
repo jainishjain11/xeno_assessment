@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import String, Numeric, Integer, DateTime
+from sqlalchemy import String, Numeric, Integer, DateTime, Text
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -14,7 +14,7 @@ class Customer(Base):
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     phone: Mapped[str | None] = mapped_column(String)
     city: Mapped[str | None] = mapped_column(String)
-    tags: Mapped[list[str]] = mapped_column(ARRAY(String), server_default='{}')
+    tags: Mapped[list[str]] = mapped_column(ARRAY(Text), server_default='{}')
     total_spent: Mapped[float] = mapped_column(Numeric(12, 2), server_default="0", index=True)
     order_count: Mapped[int] = mapped_column(Integer, server_default="0")
     last_order_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), index=True)

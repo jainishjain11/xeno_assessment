@@ -22,12 +22,12 @@
 
 ## Pre-Test Setup
 
-- [ ] Verify backend API is running: `GET http://localhost:8000/health` returns `{"status":"ok"}`
-- [ ] Verify channel stub is running: `GET http://localhost:8001/health` returns `{"status":"ok"}`
-- [ ] Verify Redis is reachable: `redis-cli ping` returns `PONG`
-- [ ] Verify both Celery workers are connected to Redis (no connection errors in worker logs)
-- [ ] Run seed script if not already done: `python seed.py` from /backend
-- [ ] Capture JWT token and store as $TOKEN for all subsequent tests:
+- [x] Verify backend API is running: `GET http://localhost:8000/health` returns `{"status":"ok"}`
+- [x] Verify channel stub is running: `GET http://localhost:8001/health` returns `{"status":"ok"}`
+- [x] Verify Redis is reachable: `redis-cli ping` returns `PONG`
+- [x] Verify both Celery workers are connected to Redis (no connection errors in worker logs)
+- [x] Run seed script if not already done: `python seed.py` from /backend
+- [x] Capture JWT token and store as $TOKEN for all subsequent tests:
   ```
   POST /api/v1/auth/login
   Body: {"email":"demo@aurabeauty.com","password":"demo1234"}
@@ -40,13 +40,13 @@
 
 ## Section 1: Auth (Phase 2)
 
-- [ ] **T01** — Health check
+- [x] **T01** — Health check
   ```
   GET http://localhost:8000/health
   Assert: status=200, body.status="ok"
   ```
 
-- [ ] **T02** — Register new user
+- [x] **T02** — Register new user
   ```
   POST /api/v1/auth/register
   Body: {"email":"testuser@test.com","password":"testpass123","full_name":"Test User"}
@@ -54,33 +54,33 @@
   Assert: response does NOT contain "password" or "hashed_password" field
   ```
 
-- [ ] **T03** — Duplicate email registration rejected
+- [x] **T03** — Duplicate email registration rejected
   ```
   POST /api/v1/auth/register (same body as T02)
   Assert: status=409 (conflict) — not 500
   ```
 
-- [ ] **T04** — Login returns valid JWT
+- [x] **T04** — Login returns valid JWT
   ```
   POST /api/v1/auth/login
   Body: {"email":"demo@aurabeauty.com","password":"demo1234"}
   Assert: status=200, response.access_token exists and length > 100
   ```
 
-- [ ] **T05** — Wrong password rejected
+- [x] **T05** — Wrong password rejected
   ```
   POST /api/v1/auth/login
   Body: {"email":"demo@aurabeauty.com","password":"wrongpassword"}
   Assert: status=401
   ```
 
-- [ ] **T06** — Protected route blocked without token
+- [x] **T06** — Protected route blocked without token
   ```
   GET /api/v1/customers (no Authorization header)
   Assert: status=401
   ```
 
-- [ ] **T07** — GET /auth/me returns current user
+- [x] **T07** — GET /auth/me returns current user
   ```
   GET /api/v1/auth/me (with $HEADERS)
   Assert: status=200, response.email="demo@aurabeauty.com"
@@ -90,7 +90,7 @@
 
 ## Section 2: Customers & Orders (Phase 2)
 
-- [ ] **T08** — Bulk import customers
+- [x] **T08** — Bulk import customers
   ```
   POST /api/v1/customers/import (with $HEADERS)
   Body: array of 5 customers with name, email, phone, city fields
@@ -98,28 +98,28 @@
   Store: $CUSTOMER_ID = any id from the response
   ```
 
-- [ ] **T09** — Duplicate import is idempotent
+- [x] **T09** — Duplicate import is idempotent
   ```
   POST /api/v1/customers/import (same body as T08)
   Assert: status=200, no duplicate rows (total count unchanged)
   Assert: upserted by email — existing records updated not duplicated
   ```
 
-- [ ] **T10** — List customers paginated
+- [x] **T10** — List customers paginated
   ```
   GET /api/v1/customers?page=1&size=5 (with $HEADERS)
   Assert: status=200, response.items is array, response.total >= 5
   Assert: response.page=1, response.size=5
   ```
 
-- [ ] **T11** — Get single customer
+- [x] **T11** — Get single customer
   ```
   GET /api/v1/customers/$CUSTOMER_ID (with $HEADERS)
   Assert: status=200, response.id=$CUSTOMER_ID
   Assert: response contains orders array (may be empty)
   ```
 
-- [ ] **T12** — Import orders and verify aggregate recomputation
+- [x] **T12** — Import orders and verify aggregate recomputation
   ```
   POST /api/v1/orders/import (with $HEADERS)
   Body: 3 orders all with customer_id=$CUSTOMER_ID, amounts: 2500, 1800, 3200
@@ -131,7 +131,7 @@
   Assert: last_order_at is set to most recent order date
   ```
 
-- [ ] **T13** — Soft delete customer
+- [x] **T13** — Soft delete customer
   ```
   DELETE /api/v1/customers/$CUSTOMER_ID (with $HEADERS)
   Assert: status=200 or 204
@@ -141,7 +141,7 @@
   Assert: customer row in DB has deleted_at set (not hard deleted)
   ```
 
-- [ ] **T14** — Search customers by name
+- [x] **T14** — Search customers by name
   ```
   GET /api/v1/customers?search=Priya (with $HEADERS)
   Assert: status=200, all returned items have "Priya" in name or email
@@ -151,7 +151,7 @@
 
 ## Section 3: Segment Engine (Phase 3)
 
-- [ ] **T15** — Create segment with simple AND rule
+- [x] **T15** — Create segment with simple AND rule
   ```
   POST /api/v1/segments (with $HEADERS)
   Body: {
@@ -166,7 +166,7 @@
   Store: $SEGMENT_ID = response.id
   ```
 
-- [ ] **T16** — Preview segment returns count and sample
+- [x] **T16** — Preview segment returns count and sample
   ```
   POST /api/v1/segments/$SEGMENT_ID/preview (with $HEADERS)
   Assert: status=200, response.count >= 0 (integer)
@@ -174,7 +174,7 @@
   Assert: all sample customers have total_spent >= 5000
   ```
 
-- [ ] **T17** — Nested OR inside AND rule
+- [x] **T17** — Nested OR inside AND rule
   ```
   POST /api/v1/segments (with $HEADERS)
   Body: {
@@ -197,7 +197,7 @@
   Preview it: Assert count >= 0, no SQL error thrown
   ```
 
-- [ ] **T18** — Date-relative filter compiles correctly
+- [x] **T18** — Date-relative filter compiles correctly
   ```
   POST /api/v1/segments (with $HEADERS)
   Body: {
@@ -213,7 +213,7 @@
   Preview: Assert no SQL error, count is integer
   ```
 
-- [ ] **T19** — Tags array filter works
+- [x] **T19** — Tags array filter works
   ```
   POST /api/v1/segments (with $HEADERS)
   Body: {
@@ -227,7 +227,7 @@
   Preview: all sample customers must have "vip" in their tags array
   ```
 
-- [ ] **T20** — Invalid field name rejected
+- [x] **T20** — Invalid field name rejected
   ```
   POST /api/v1/segments (with $HEADERS)
   Body: {
@@ -241,7 +241,7 @@
   Assert: error message mentions invalid field
   ```
 
-- [ ] **T21** — List all segments
+- [x] **T21** — List all segments
   ```
   GET /api/v1/segments (with $HEADERS)
   Assert: status=200, response is array with length >= 3
@@ -252,7 +252,7 @@
 
 ## Section 4: Campaign Engine (Phase 4)
 
-- [ ] **T22** — Create campaign in draft status
+- [x] **T22** — Create campaign in draft status
   ```
   POST /api/v1/campaigns (with $HEADERS)
   Body: {
@@ -265,13 +265,13 @@
   Store: $CAMPAIGN_ID = response.id
   ```
 
-- [ ] **T23** — Cannot launch non-existent campaign
+- [x] **T23** — Cannot launch non-existent campaign
   ```
   POST /api/v1/campaigns/00000000-0000-0000-0000-000000000000/launch (with $HEADERS)
   Assert: status=404
   ```
 
-- [ ] **T24** — Launch campaign triggers Celery dispatch
+- [x] **T24** — Launch campaign triggers Celery dispatch
   ```
   POST /api/v1/campaigns/$CAMPAIGN_ID/launch (with $HEADERS)
   Assert: status=200 or 202
@@ -281,7 +281,7 @@
   Assert: status is "running" or "completed" (not "draft")
   ```
 
-- [ ] **T25** — Communication logs created after dispatch
+- [x] **T25** — Communication logs created after dispatch
   ```
   Wait 10 seconds after T24, then:
   GET /api/v1/campaigns/$CAMPAIGN_ID/logs?page=1&size=50 (with $HEADERS)
@@ -291,14 +291,14 @@
   Store: $LOG_ID = first log's id
   ```
 
-- [ ] **T26** — Template variables resolved in message body
+- [x] **T26** — Template variables resolved in message body
   ```
   GET /api/v1/campaigns/$CAMPAIGN_ID/logs?page=1&size=1 (with $HEADERS)
   Assert: message_body does NOT contain "{{" or "}}"
   Assert: message_body contains an actual customer name
   ```
 
-- [ ] **T27** — Campaign stats endpoint returns funnel data
+- [x] **T27** — Campaign stats endpoint returns funnel data
   ```
   GET /api/v1/campaigns/$CAMPAIGN_ID/stats (with $HEADERS)
   Assert: status=200

@@ -53,8 +53,14 @@ class CampaignService:
         await db.commit()
         await db.refresh(campaign)
         
-        from app.tasks.dispatch import dispatch_campaign_task
-        dispatch_campaign_task.delay(str(campaign_id))
+        try:
+            import celery_app  # Force celery app to initialize with our settings
+            from app.tasks.dispatch import dispatch_campaign_task
+            dispatch_campaign_task.delay(str(campaign_id))
+        except Exception as e:
+            import traceback
+            err = traceback.format_exc()
+            raise HTTPException(status_code=400, detail=f"Celery Error: {e}\n{err}")
         
         return campaign
 
