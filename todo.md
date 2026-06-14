@@ -473,47 +473,6 @@
 - [ ] Final Assertion: Compile output summary table showing pass/fail status for all tests
 
 ---
-
-## Phase 16: Deployment
-> Goal: All services live and accessible.
-
-### 14.1 Backend Deployment (Railway)
-- [ ] Create `backend/Dockerfile`:
-  - [ ] Multi-stage build
-  - [ ] CMD: `uvicorn app.main:app --host 0.0.0.0 --port 8000`
-- [ ] Create `backend/Dockerfile.worker`:
-  - [ ] CMD: `celery -A celery_app worker --loglevel=info --concurrency=4`
-- [ ] Railway project setup:
-  - [ ] Service: `crm-api` (Dockerfile)
-  - [ ] Service: `crm-worker` (Dockerfile.worker)
-  - [ ] Add-on: Redis
-  - [ ] Set all environment variables
-- [ ] Run `alembic upgrade head` against Supabase
-- [ ] Run `python seed.py` to populate demo data
-- [ ] Verify: `GET /health` returns 200
-
-### 14.2 Channel Stub Deployment (Railway)
-- [ ] Create `channel-stub/Dockerfile`
-- [ ] Create `channel-stub/Dockerfile.worker`
-- [ ] Deploy to Railway as separate services
-- [ ] Update `CRM_RECEIPT_URL` env var to point to live CRM API
-- [ ] Test: POST to channel stub `/send` → callbacks arrive at CRM
-
-### 14.3 Frontend Deployment (Vercel)
-- [ ] Set `VITE_API_BASE_URL` to Railway CRM API URL
-- [ ] Deploy via Vercel CLI or GitHub integration
-- [ ] Verify: login works, campaign launch works, SSE connects
-
-### 14.4 End-to-End Smoke Test (Live)
-- [ ] Login as `demo@aurabeauty.com`
-- [ ] Create a segment via AI intent
-- [ ] Create and launch a campaign
-- [ ] Watch delivery funnel populate in real time
-- [ ] Verify: `receipt_events` table has correct entries, no duplicates
-- [ ] Verify: fire duplicate callback manually → `is_duplicate=true` in DB, stats unchanged
-
----
-
 ## Phase 15: Documentation & Submission
 > Goal: README, architecture diagram, and video.
 
@@ -527,8 +486,8 @@
   - [x] Scale considerations ("at 1M customers, I would...")
 
 ### 15.2 Architecture Diagram
-- [ ] Create visual architecture diagram (Excalidraw or Mermaid)
-- [ ] Include in README and prepare for walkthrough video
+- [x] Create visual architecture diagram (Excalidraw or Mermaid)
+- [x] Include in README and prepare for walkthrough video
 
 ### 15.3 Walkthrough Video (~5 min)
 - [ ] Script outline:
@@ -547,6 +506,49 @@
 - [ ] `spec.md` and `todo.md` are committed to root
 - [ ] Walkthrough video link is in README
 - [ ] Submit via Xeno submission form (SDE link)
+
+
+---
+## Phase 16: Deployment
+> Goal: All services live and accessible.
+
+### 16.1 Backend Deployment (Railway)
+- [ ] Create `backend/Dockerfile`:
+  - [ ] Multi-stage build
+  - [ ] CMD: `uvicorn app.main:app --host 0.0.0.0 --port 8000`
+- [ ] Create `backend/Dockerfile.worker`:
+  - [ ] CMD: `celery -A celery_app worker --loglevel=info --concurrency=4`
+- [ ] Railway project setup:
+  - [ ] Service: `crm-api` (Dockerfile)
+  - [ ] Service: `crm-worker` (Dockerfile.worker)
+  - [ ] Add-on: Redis
+  - [ ] Set all environment variables
+- [ ] Run `alembic upgrade head` against Supabase
+- [ ] Run `python seed.py` to populate demo data
+- [ ] Verify: `GET /health` returns 200
+
+### 16.2 Channel Stub Deployment (Railway)
+- [ ] Create `channel-stub/Dockerfile`
+- [ ] Create `channel-stub/Dockerfile.worker`
+- [ ] Deploy to Railway as separate services
+- [ ] Update `CRM_RECEIPT_URL` env var to point to live CRM API
+- [ ] Test: POST to channel stub `/send` → callbacks arrive at CRM
+
+### 16.3 Frontend Deployment (Vercel)
+- [ ] Set `VITE_API_BASE_URL` to Railway CRM API URL
+- [ ] Deploy via Vercel CLI or GitHub integration
+- [ ] Verify: login works, campaign launch works, SSE connects
+
+### 16.4 End-to-End Smoke Test (Live)
+- [ ] Login as `demo@aurabeauty.com`
+- [ ] Create a segment via AI intent
+- [ ] Create and launch a campaign
+- [ ] Watch delivery funnel populate in real time
+- [ ] Verify: `receipt_events` table has correct entries, no duplicates
+- [ ] Verify: fire duplicate callback manually → `is_duplicate=true` in DB, stats unchanged
+
+---
+
 
 ---
 

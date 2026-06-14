@@ -10,52 +10,7 @@ An AI-Native Mini CRM built for consumer brands to intelligently segment their a
 
 ## Architecture
 
-```text
-┌─────────────────────────────────────────────────────────────────────┐
-│                         BROWSER (React 18 + Vite)                   │
-│  ┌──────────────┐  ┌──────────────────┐  ┌──────────────────────┐  │
-│  │  AI Chat UI  │  │  Campaign Builder │  │  Analytics Dashboard │  │
-│  └──────┬───────┘  └────────┬─────────┘  └──────────┬───────────┘  │
-│         │                  │                        │ SSE stream    │
-└─────────┼──────────────────┼────────────────────────┼──────────────┘
-          │ REST/JSON         │ REST/JSON              │
-          ▼                  ▼                        ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    FASTAPI APPLICATION SERVER                        │
-│                                                                      │
-│  /api/v1/ai/*        /api/v1/campaigns/*    /api/v1/analytics/*     │
-│  /api/v1/customers/* /api/v1/segments/*     /api/v1/receipts/*      │
-│                                                                      │
-│  ┌─────────────────┐   ┌───────────────────────────────────────┐   │
-│  │  Anthropic API  │   │         SQLAlchemy ORM (async)         │   │
-│  │  (AI Engine)    │   │                                        │   │
-│  └─────────────────┘   └──────────────────┬────────────────────┘   │
-│                                            │                        │
-│  ┌─────────────────────────────────────────▼──────────────────┐    │
-│  │              CELERY TASK QUEUE (Redis broker)               │    │
-│  │                                                              │    │
-│  │  dispatch_campaign_task   |   simulate_channel_callback     │    │
-│  └───────────────────────────────────────────────────────────-┘    │
-└─────────────────────────────────────────────────────────────────────┘
-          │ asyncpg                          │ httpx callbacks
-          ▼                                  ▼
-┌──────────────────┐              ┌──────────────────────────────┐
-│   SUPABASE       │              │   STUBBED CHANNEL SERVICE    │
-│   PostgreSQL     │              │   (FastAPI, separate app)    │
-│   (hosted)       │              │   Simulates: delivered,      │
-└──────────────────┘              │   failed, opened, clicked    │
-                                  └──────────────────────────────┘
-          ▲
-          │ Redis
-┌──────────────────┐
-│   REDIS          │
-│   (Upstash /     │
-│   Railway)       │
-│   - Celery broker│
-│   - SSE pubsub   │
-│   - Rate limit   │
-└──────────────────┘
-```
+![Architecture Diagram](./architecture.png)
 
 ### Services
 
