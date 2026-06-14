@@ -444,20 +444,20 @@
 > Goal: Production-quality UX: all loading/error/empty states handled.
 
 ### 13.1 Loading & Error States
-- [ ] All TanStack Query hooks: handle `isLoading` → Skeleton components
-- [ ] All TanStack Query hooks: handle `isError` → Toast error notification
-- [ ] Empty states: customer list, segment list, campaign list (with CTAs)
-- [ ] Campaign analytics: "No data yet" state when campaign just launched
+- [x] All TanStack Query hooks: handle `isLoading` → Skeleton components
+- [x] All TanStack Query hooks: handle `isError` → Toast error notification
+- [x] Empty states: customer list, segment list, campaign list (with CTAs)
+- [x] Campaign analytics: "No data yet" state when campaign just launched
 
 ### 13.2 Notifications
-- [ ] `frontend/src/components/ui/Toaster.tsx` — shadcn toast setup
-- [ ] Success toasts: campaign launched, segment saved, import complete
-- [ ] Error toasts: API failures, validation errors
+- [x] `frontend/src/components/ui/Toaster.tsx` — shadcn toast setup
+- [x] Success toasts: campaign launched, segment saved, import complete
+- [x] Error toasts: API failures, validation errors
 
 ### 13.3 Responsive Design Check
-- [ ] Verify layout works on 1280px, 1440px, 1920px
-- [ ] Table overflows handled with horizontal scroll
-- [ ] Sidebar collapses on smaller screens
+- [x] Verify layout works on 1280px, 1440px, 1920px
+- [x] Table overflows handled with horizontal scroll
+- [x] Sidebar collapses on smaller screens
 
 ---
 
