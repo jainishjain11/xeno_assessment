@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
+import { FloatingChat } from '@/components/ai/FloatingChat';
 
 export function Layout() {
   return (
@@ -13,6 +14,9 @@ export function Layout() {
           <Outlet />
         </div>
       </main>
+
+      {/* Global Floating Chat Widget */}
+      <FloatingChat />
     </div>
   );
 }

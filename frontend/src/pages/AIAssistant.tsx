@@ -80,13 +80,13 @@ function renderMarkdown(text: string): React.ReactNode[] {
 function TypingIndicator() {
   return (
     <div className="flex items-end gap-2.5">
-      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-500 dark:bg-crm-blue-dim dark:text-blue-500">
         <Bot className="h-4 w-4" />
       </div>
-      <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-card border border-border px-4 py-3">
-        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:0ms]" />
-        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:150ms]" />
-        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:300ms]" />
+      <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-slate-50 dark:bg-[#1a1f2e] border border-slate-200 dark:border-white/[0.07] px-4 py-3">
+        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:0ms]" />
+        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:150ms]" />
+        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:300ms]" />
       </div>
     </div>
   );
@@ -105,10 +105,10 @@ function MessageBubble({ role, content, result, isStreaming }: MessageBubbleProp
   if (role === 'user') {
     return (
       <div className="flex items-end justify-end gap-2.5">
-        <div className="max-w-[75%] rounded-2xl rounded-br-sm bg-primary px-4 py-3 text-sm text-primary-foreground shadow-sm">
+        <div className="max-w-[75%] rounded-2xl rounded-br-sm bg-blue-500 px-4 py-3 text-sm text-white shadow-sm">
           {content}
         </div>
-        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-600 dark:bg-white/10 dark:text-slate-300">
           <User className="h-4 w-4" />
         </div>
       </div>
@@ -118,16 +118,16 @@ function MessageBubble({ role, content, result, isStreaming }: MessageBubbleProp
   // Assistant bubble
   return (
     <div className="flex items-start gap-2.5">
-      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-500 dark:bg-crm-blue-dim dark:text-blue-500">
         <Bot className="h-4 w-4" />
       </div>
       <div className="max-w-[80%]">
         {/* Text bubble */}
         {(content || isStreaming) && (
-          <div className="rounded-2xl rounded-tl-sm bg-card border border-border px-4 py-3 text-sm text-foreground shadow-sm leading-relaxed">
+          <div className="rounded-2xl rounded-tl-sm bg-white dark:bg-[#131720] border border-slate-200 dark:border-white/10 px-4 py-3 text-sm text-slate-900 dark:text-slate-100 shadow-sm leading-relaxed">
             {content ? renderMarkdown(content) : null}
             {isStreaming && (
-              <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-primary align-text-bottom" />
+              <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-blue-500 align-text-bottom" />
             )}
           </div>
         )}
@@ -147,11 +147,11 @@ interface EmptyStateProps {
 function EmptyState({ onSelectPrompt }: EmptyStateProps) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center">
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-500 dark:bg-crm-blue-dim dark:text-blue-500">
         <Sparkles className="h-8 w-8" />
       </div>
-      <h2 className="text-xl font-bold text-foreground">Aura AI Assistant</h2>
-      <p className="mt-2 max-w-md text-sm text-muted-foreground">
+      <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Aura AI Assistant</h2>
+      <p className="mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">
         Your AI-powered marketing co-pilot. Describe your audience, draft messages,
         or ask for campaign recommendations — all in plain language.
       </p>
@@ -162,10 +162,10 @@ function EmptyState({ onSelectPrompt }: EmptyStateProps) {
             key={prompt.text}
             id={`suggested-prompt-${SUGGESTED_PROMPTS.indexOf(prompt)}`}
             onClick={() => onSelectPrompt(prompt.text)}
-            className="flex items-start gap-3 rounded-xl border border-border bg-card p-3 text-left transition-all hover:border-primary/40 hover:bg-primary/5 hover:shadow-sm"
+            className="flex items-start gap-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#131720] p-3 text-left transition-all hover:border-blue-500/40 hover:bg-slate-50 dark:hover:bg-crm-blue-dim hover:shadow-sm"
           >
             <span className="text-xl leading-none">{prompt.icon}</span>
-            <span className="text-sm text-foreground">{prompt.text}</span>
+            <span className="text-sm text-slate-900 dark:text-slate-100">{prompt.text}</span>
           </button>
         ))}
       </div>
@@ -218,23 +218,23 @@ export function AIAssistant() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-7rem)] flex-col rounded-xl border border-border bg-background shadow-sm overflow-hidden">
+    <div className="flex h-[calc(100vh-7rem)] flex-col rounded-xl border border-slate-200 dark:border-white/10 bg-background shadow-sm overflow-hidden glass-card">
       {/* Header */}
-      <div className="flex flex-shrink-0 items-center justify-between border-b border-border bg-card px-5 py-3">
+      <div className="flex flex-shrink-0 items-center justify-between border-b border-slate-200 dark:border-white/10 bg-white/50 dark:bg-[#131720]/50 backdrop-blur-md px-5 py-3">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-500 dark:bg-crm-blue-dim dark:text-blue-500">
             <Sparkles className="h-4 w-4" />
           </div>
           <div>
-            <h1 className="text-sm font-semibold text-foreground">Aura AI</h1>
-            <p className="text-xs text-muted-foreground">Marketing Intelligence</p>
+            <h1 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Aura AI</h1>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Marketing Intelligence</p>
           </div>
         </div>
         {messages.length > 0 && (
           <button
             id="clear-chat-btn"
             onClick={clearHistory}
-            className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+            className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs text-slate-500 dark:text-slate-400 hover:bg-red-50 dark:hover:bg-red-500/20 hover:text-red-500 dark:hover:text-red-400 transition-colors"
             title="Clear chat history"
           >
             <Trash2 className="h-3.5 w-3.5" />
@@ -286,12 +286,12 @@ export function AIAssistant() {
       </ScrollArea>
 
       {/* Input area */}
-      <div className="flex-shrink-0 border-t border-border bg-card p-4">
-        <div className="flex items-end gap-3 rounded-xl border border-border bg-background px-4 py-2.5 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all">
+      <div className="flex-shrink-0 border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#1a1f2e] p-4">
+        <div className="flex items-end gap-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#131720] px-4 py-2.5 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500/20 dark:focus-within:border-blue-400/50 dark:focus-within:ring-blue-400/10 transition-all">
           {/* Attach placeholder */}
           <button
             id="attach-btn"
-            className="mb-1 flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+            className="mb-1 flex-shrink-0 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
             title="Attach file (coming soon)"
             disabled
           >
@@ -308,7 +308,7 @@ export function AIAssistant() {
             placeholder="Ask me anything about your customers, campaigns, or audience…"
             rows={1}
             disabled={isStreaming}
-            className="flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 min-h-[24px] max-h-[180px] py-1 leading-6"
+            className="flex-1 resize-none bg-transparent text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 min-h-[24px] max-h-[180px] py-1 leading-6"
           />
 
           {/* Send button */}
@@ -322,9 +322,9 @@ export function AIAssistant() {
             <Send className="h-4 w-4" />
           </Button>
         </div>
-        <p className="mt-2 text-center text-[11px] text-muted-foreground">
-          Press <kbd className="rounded border border-border px-1 py-0.5 text-[10px]">Enter</kbd> to send ·{' '}
-          <kbd className="rounded border border-border px-1 py-0.5 text-[10px]">Shift+Enter</kbd> for new line
+        <p className="mt-2 text-center text-[11px] text-slate-500 dark:text-slate-400">
+          Press <kbd className="rounded border border-slate-200 dark:border-white/10 px-1 py-0.5 text-[10px]">Enter</kbd> to send ·{' '}
+          <kbd className="rounded border border-slate-200 dark:border-white/10 px-1 py-0.5 text-[10px]">Shift+Enter</kbd> for new line
         </p>
       </div>
     </div>

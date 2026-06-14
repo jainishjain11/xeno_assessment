@@ -53,10 +53,12 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))'
         },
-        glass: "rgba(255,255,255,0.05)",
-        "glass-border": "rgba(255,255,255,0.1)",
-        "violet-glow": "#a78bfa",
-        "pink-glow": "#f472b6"
+        'crm-bg': '#0f1117',
+        'crm-surface': '#131720',
+        'crm-elevated': '#1a1f2e',
+        'crm-border': 'rgba(255,255,255,0.07)',
+        'crm-blue': '#3b82f6',
+        'crm-blue-dim': 'rgba(59,130,246,0.15)',
       }
     }
   },

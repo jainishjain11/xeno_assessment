@@ -259,16 +259,16 @@ function AIIntentModal({ open, onClose, onApply }: AIIntentModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="sm:max-w-lg glass-strong border-white/10 text-slate-100">
+      <DialogContent className="sm:max-w-lg glass-card border-slate-200 dark:border-white/10 text-slate-900 dark:text-slate-100">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-violet-400" />
+            <Sparkles className="h-5 w-5 text-blue-500 dark:text-blue-400" />
             Describe your audience
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-3">
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Describe who you want to target in plain language. The AI will convert
             it into segment rules automatically.
           </p>
@@ -278,7 +278,7 @@ function AIIntentModal({ open, onClose, onApply }: AIIntentModalProps) {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             rows={4}
-            className="resize-none bg-white/5 border-white/15 text-slate-100 placeholder-slate-500 focus:border-violet-400/50 focus:ring-[3px] focus:ring-violet-400/10"
+            className="resize-none bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-[3px] focus:ring-blue-500/20 dark:bg-white/5 dark:border-white/10 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-blue-400/50 dark:focus:ring-blue-400/10"
           />
           <div className="flex flex-wrap gap-2">
             {[
@@ -289,26 +289,26 @@ function AIIntentModal({ open, onClose, onApply }: AIIntentModalProps) {
               <button
                 key={example}
                 onClick={() => setPrompt(example)}
-                className="rounded-full border border-white/20 px-3 py-1 text-xs text-slate-400 hover:border-violet-400/40 hover:text-slate-100 transition-colors"
+                className="rounded-full border border-slate-200 dark:border-white/20 px-3 py-1 text-xs text-slate-500 dark:text-slate-400 hover:border-blue-500/40 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
               >
                 {example}
               </button>
             ))}
           </div>
           {error && (
-            <p className="text-sm text-red-400">{error}</p>
+            <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
           )}
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} disabled={isLoading} className="bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100">
+          <Button variant="outline" onClick={onClose} disabled={isLoading} className="bg-transparent border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:border-white/20 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-slate-100">
             Cancel
           </Button>
           <Button
             id="ai-intent-submit"
             onClick={handleSubmit}
             disabled={!prompt.trim() || isLoading}
-            className="gap-2 bg-gradient-to-br from-violet-600 to-violet-400 text-white border-none hover:opacity-90 hover:-translate-y-[1px] shadow-[0_4px_15px_rgba(167,139,250,0.4)]"
+            className="gap-2 bg-blue-500 text-white hover:bg-blue-600 border-none"
           >
             {isLoading ? (
               <>
@@ -467,17 +467,17 @@ export function SegmentBuilder() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-100">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
             New Segment
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             Define rules to match your target audience.
           </p>
         </div>
         <Button
           id="ai-assist-btn"
           onClick={() => setAiOpen(true)}
-          className="gap-2 bg-gradient-to-br from-violet-600 to-violet-400 text-white border-none hover:opacity-90 hover:-translate-y-[1px] shadow-[0_4px_15px_rgba(167,139,250,0.4)] glow-violet"
+          className="gap-2"
         >
           <Sparkles className="h-4 w-4" />
           ✨ Describe your audience
@@ -488,11 +488,11 @@ export function SegmentBuilder() {
         {/* Left: builder */}
         <div className="space-y-5 lg:col-span-2">
           {/* Segment name + description */}
-          <div className="glass p-5 space-y-4">
-            <h2 className="text-sm font-semibold text-slate-100">Segment Details</h2>
+          <div className="glass-card p-5 space-y-4">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Segment Details</h2>
             <div className="space-y-1.5">
-              <label htmlFor="segment-name" className="text-sm font-medium text-slate-100">
-                Name <span className="text-red-400">*</span>
+              <label htmlFor="segment-name" className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                Name <span className="text-red-500 dark:text-red-400">*</span>
               </label>
               <Input
                 id="segment-name"
@@ -503,7 +503,7 @@ export function SegmentBuilder() {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="segment-description" className="text-sm font-medium text-slate-100">
+              <label htmlFor="segment-description" className="text-sm font-medium text-slate-900 dark:text-slate-100">
                 Description
               </label>
               <Input
@@ -517,11 +517,11 @@ export function SegmentBuilder() {
           </div>
 
           {/* Rule builder */}
-          <div className="glass p-5 space-y-4">
+          <div className="glass-card p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-slate-100">Rules</h2>
+              <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Rules</h2>
               {/* AND / OR toggle */}
-              <div className="flex rounded-lg border border-white/10 overflow-hidden text-sm">
+              <div className="flex rounded-lg border border-slate-200 dark:border-white/10 overflow-hidden text-sm">
                 {(['AND', 'OR'] as const).map((op) => (
                   <button
                     key={op}
@@ -529,8 +529,8 @@ export function SegmentBuilder() {
                     onClick={() => setGroupOp(op)}
                     className={`px-3 py-1 font-medium transition-colors ${
                       groupOp === op
-                        ? 'bg-violet-500 text-white'
-                        : 'bg-transparent text-slate-400 hover:bg-white/10'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-transparent text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/10'
                     }`}
                   >
                     {op}
@@ -539,7 +539,7 @@ export function SegmentBuilder() {
               </div>
             </div>
 
-            <p className="text-xs text-slate-400 -mt-2">
+            <p className="text-xs text-slate-500 dark:text-slate-400 -mt-2">
               Match customers where{' '}
               <strong>{groupOp === 'AND' ? 'all' : 'any'}</strong> of the following rules apply:
             </p>
@@ -563,7 +563,7 @@ export function SegmentBuilder() {
               variant="outline"
               size="sm"
               onClick={addRule}
-              className="gap-2 bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
+              className="gap-2 bg-transparent border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:border-white/20 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-slate-100"
             >
               <Plus className="h-3.5 w-3.5" />
               Add Rule
@@ -580,7 +580,7 @@ export function SegmentBuilder() {
             id="save-segment-btn"
             onClick={handleSave}
             disabled={!canSave || createMutation.isPending}
-            className="w-full gap-2 bg-gradient-to-br from-violet-600 to-violet-400 text-white border-none hover:opacity-90 hover:-translate-y-[1px] shadow-[0_4px_15px_rgba(167,139,250,0.4)]"
+            className="w-full gap-2"
             size="lg"
           >
             {createMutation.isPending ? (
@@ -599,31 +599,31 @@ export function SegmentBuilder() {
 
         {/* Right: live preview panel */}
         <div className="lg:col-span-1">
-          <div className="sticky top-6 glass-strong p-5">
-            <h2 className="mb-4 text-sm font-semibold text-slate-100">Live Preview</h2>
+          <div className="sticky top-6 glass-card p-5">
+            <h2 className="mb-4 text-sm font-semibold text-slate-900 dark:text-slate-100">Live Preview</h2>
 
-            <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-white/20 py-8 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 mb-3">
+            <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-200 dark:border-white/20 py-8 text-center">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-500 dark:bg-crm-blue-dim dark:text-blue-500 mb-3">
                 <Users className="h-6 w-6" />
               </div>
               {previewLoading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin text-slate-400 mb-2" />
-                  <p className="text-xs text-slate-400">Counting…</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Counting…</p>
                 </>
               ) : previewCount !== null ? (
                 <>
-                  <p className="text-3xl font-bold text-emerald-400">
+                  <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                     {previewCount.toLocaleString()}
                   </p>
-                  <p className="mt-1 text-sm text-slate-400">
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     customer{previewCount !== 1 ? 's' : ''} match
                   </p>
                 </>
               ) : (
                 <>
-                  <p className="text-3xl font-bold text-slate-500/40">—</p>
-                  <p className="mt-1 text-xs text-slate-400">
+                  <p className="text-3xl font-bold text-slate-300 dark:text-slate-500/40">—</p>
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                     Add a complete rule to see preview
                   </p>
                 </>
@@ -633,7 +633,7 @@ export function SegmentBuilder() {
             {/* Rule summary */}
             {rules.length > 0 && (
               <div className="mt-4 space-y-2">
-                <p className="text-xs font-medium text-slate-400 uppercase tracking-wide">
+                <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                   Current rules
                 </p>
                 {rules.map((rule, i) => {
@@ -648,12 +648,12 @@ export function SegmentBuilder() {
                   return (
                     <div
                       key={i}
-                      className="rounded-md bg-white/5 px-3 py-2 text-xs text-slate-400"
+                      className="rounded-md bg-slate-50 dark:bg-white/5 px-3 py-2 text-xs text-slate-600 dark:text-slate-400"
                     >
-                      <span className="font-medium text-slate-100">{fieldLabel}</span>{' '}
+                      <span className="font-medium text-slate-900 dark:text-slate-100">{fieldLabel}</span>{' '}
                       {opLabel}{' '}
                       {valueDisplay && (
-                        <span className="font-medium text-slate-100">{valueDisplay}</span>
+                        <span className="font-medium text-slate-900 dark:text-slate-100">{valueDisplay}</span>
                       )}
                     </div>
                   );

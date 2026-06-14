@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   Rocket,
   Save,
+  AlertCircle,
 } from 'lucide-react';
 import { useCreateCampaign, useLaunchCampaign } from '@/hooks/useCampaigns';
 import { useSegments } from '@/hooks/useSegments';
@@ -64,10 +65,10 @@ function StepIndicator({ current }: { current: Step }) {
           <div
             className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
               current === s.n
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-blue-500 text-white'
                 : current > s.n
-                  ? 'bg-primary/20 text-primary'
-                  : 'bg-muted text-muted-foreground'
+                  ? 'bg-blue-100 dark:bg-crm-blue-dim text-blue-500 dark:text-blue-400'
+                  : 'bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-500'
             }`}
           >
             {current > s.n ? <CheckCircle2 className="h-4 w-4" /> : s.n}
@@ -82,7 +83,7 @@ function StepIndicator({ current }: { current: Step }) {
           {i < steps.length - 1 && (
             <div
               className={`mx-4 h-0.5 w-12 transition-colors ${
-                current > s.n ? 'bg-primary/40' : 'bg-border'
+                current > s.n ? 'bg-blue-200 dark:bg-blue-500/40' : 'bg-slate-200 dark:bg-white/10'
               }`}
             />
           )}
@@ -143,12 +144,12 @@ function Step1Audience({ name, setName, channel, setChannel, segmentId, setSegme
               onClick={() => setChannel(ch.value)}
               className={`flex flex-col items-center gap-2 rounded-xl border p-4 transition-all ${
                 channel === ch.value
-                  ? 'border-primary bg-primary/5 shadow-sm'
-                  : 'border-border bg-card hover:border-primary/40 hover:bg-muted/40'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-crm-blue-dim shadow-sm'
+                  : 'border-slate-200 dark:border-white/10 bg-card hover:border-blue-500/40 hover:bg-slate-50 dark:hover:bg-white/5'
               }`}
             >
               <span className="text-2xl">{ch.emoji}</span>
-              <span className={`text-sm font-medium ${channel === ch.value ? 'text-primary' : 'text-foreground'}`}>
+              <span className={`text-sm font-medium ${channel === ch.value ? 'text-blue-600 dark:text-blue-400' : 'text-foreground'}`}>
                 {ch.label}
               </span>
             </button>
@@ -189,9 +190,9 @@ function Step1Audience({ name, setName, channel, setChannel, segmentId, setSegme
 
         {/* Audience size preview */}
         {selectedSegment && (
-          <div className="flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2.5 text-sm">
-            <Users className="h-4 w-4 text-primary flex-shrink-0" />
-            <span className="text-foreground">
+          <div className="flex items-center gap-2 rounded-lg border border-blue-200 dark:border-blue-500/20 bg-blue-50 dark:bg-crm-blue-dim px-3 py-2.5 text-sm">
+            <Users className="h-4 w-4 text-blue-500 flex-shrink-0" />
+            <span className="text-slate-800 dark:text-slate-200">
               This segment has{' '}
               <strong>
                 {selectedSegment.audience_size?.toLocaleString() ?? '?'}
@@ -293,7 +294,7 @@ function Step2Message({ message, setMessage, channel, segmentName }: Step2Props)
             size="sm"
             onClick={handleAIDraft}
             disabled={aiLoading}
-            className="gap-2 border-primary/30 text-primary hover:bg-primary/5"
+            className="gap-2 border-blue-500/30 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-crm-blue-dim"
           >
             {aiLoading ? (
               <>
@@ -347,7 +348,7 @@ function Step2Message({ message, setMessage, channel, segmentName }: Step2Props)
                 id={`var-chip-${v.label.replace(/[{}]/g, '')}`}
                 onClick={() => insertVar(v.label)}
                 title={v.desc}
-                className="rounded-md border border-border bg-muted/60 px-2.5 py-1 text-xs font-mono text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary transition-colors"
+                className="rounded-md border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-2.5 py-1 text-xs font-mono text-foreground hover:border-blue-500/40 hover:bg-blue-50 dark:hover:bg-crm-blue-dim hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 {v.label}
               </button>
@@ -454,7 +455,7 @@ function Step3Review({ name, channel, segmentName, audienceSize, message }: Step
       </div>
 
       {audienceSize != null && audienceSize > 0 && (
-        <div className="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+        <div className="flex items-start gap-3 rounded-lg border border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-crm-blue-dim px-4 py-3 text-sm text-blue-800 dark:text-blue-200">
           <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0" />
           <span>
             Ready to send to <strong>{audienceSize.toLocaleString()}</strong> customers via{' '}
@@ -645,7 +646,7 @@ export function CampaignBuilder() {
                 id="launch-campaign-btn"
                 onClick={handleLaunch}
                 disabled={isBusy || !step3Valid}
-                className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
+                className="gap-2 bg-blue-500 hover:bg-blue-600 text-white border-none"
               >
                 {isBusy ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

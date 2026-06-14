@@ -37,24 +37,24 @@ import { formatPct, formatDate } from '@/lib/formatters';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 
 const STATUS_CONFIG: Record<string, { cls: string }> = {
-  draft: { cls: 'bg-slate-500/20 text-slate-300 border-slate-500/30' },
-  running: { cls: 'bg-pink-500/20 text-pink-400 border-pink-500/30' },
-  completed: { cls: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
-  failed: { cls: 'bg-red-500/20 text-red-400 border-red-500/30' },
-  queued: { cls: 'bg-slate-500/20 text-slate-300 border-slate-500/30' },
-  sent: { cls: 'bg-sky-500/20 text-sky-400 border-sky-500/30' },
-  delivered: { cls: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
-  opened: { cls: 'bg-violet-500/20 text-violet-400 border-violet-500/30' },
-  clicked: { cls: 'bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/30' },
-  converted: { cls: 'bg-amber-500/20 text-amber-400 border-amber-500/30' },
+  draft: { cls: 'bg-slate-500/15 text-slate-500 dark:text-slate-400 border-slate-500/20' },
+  running: { cls: 'bg-blue-500/15 text-blue-500 dark:text-blue-400 border-blue-500/20' },
+  completed: { cls: 'bg-green-500/15 text-green-500 dark:text-green-400 border-green-500/20' },
+  failed: { cls: 'bg-red-500/15 text-red-500 dark:text-red-400 border-red-500/20' },
+  queued: { cls: 'bg-slate-500/15 text-slate-500 dark:text-slate-400 border-slate-500/20' },
+  sent: { cls: 'bg-blue-500/15 text-blue-500 dark:text-blue-400 border-blue-500/20' },
+  delivered: { cls: 'bg-green-500/15 text-green-500 dark:text-green-400 border-green-500/20' },
+  opened: { cls: 'bg-purple-500/15 text-purple-500 dark:text-purple-400 border-purple-500/20' },
+  clicked: { cls: 'bg-amber-500/15 text-amber-500 dark:text-amber-400 border-amber-500/20' },
+  converted: { cls: 'bg-blue-500/15 text-blue-500 dark:text-blue-400 border-blue-500/20' },
 };
 
 function StatusBadge({ status }: { status: string }) {
-  const cfg = STATUS_CONFIG[status] ?? { cls: 'bg-white/10 text-slate-300 border-white/20' };
+  const cfg = STATUS_CONFIG[status] ?? { cls: 'bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-white/20' };
   return (
     <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${cfg.cls}`}>
       {status === 'running' && (
-        <span className="mr-1.5 h-1.5 w-1.5 animate-pulse rounded-full bg-pink-400 inline-block" />
+        <span className="mr-1.5 h-1.5 w-1.5 animate-pulse rounded-full bg-blue-500 dark:bg-blue-400 inline-block" />
       )}
       {status}
     </span>
@@ -71,12 +71,12 @@ const CHANNEL_EMOJI: Record<string, string> = {
 // ── Funnel chart ──────────────────────────────────────────────────────────────
 
 const FUNNEL_STAGES = [
-  { key: 'total_sent', label: 'Sent', color: '#6366f1' },
-  { key: 'total_delivered', label: 'Delivered', color: '#34d399' },
-  { key: 'total_opened', label: 'Opened', color: '#a78bfa' },
-  { key: 'total_read', label: 'Read', color: '#38bdf8' },
-  { key: 'total_clicked', label: 'Clicked', color: '#fbbf24' },
-  { key: 'total_converted', label: 'Converted', color: '#10b981' },
+  { key: 'total_sent', label: 'Sent', color: '#64748b' },
+  { key: 'total_delivered', label: 'Delivered', color: '#94a3b8' },
+  { key: 'total_opened', label: 'Opened', color: '#60a5fa' },
+  { key: 'total_read', label: 'Read', color: '#3b82f6' },
+  { key: 'total_clicked', label: 'Clicked', color: '#2563eb' },
+  { key: 'total_converted', label: 'Converted', color: '#1d4ed8' },
 ] as const;
 
 interface FunnelChartProps {
@@ -163,18 +163,18 @@ function RateCard({ label, value, description }: RateCardProps) {
   const numVal = value ?? 0;
   const colorClass =
     numVal >= 50
-      ? 'text-emerald-400'
+      ? 'text-blue-500 dark:text-blue-400'
       : numVal >= 20
-        ? 'text-amber-400'
-        : 'text-red-400';
+        ? 'text-slate-600 dark:text-slate-400'
+        : 'text-red-500 dark:text-red-400';
 
   return (
     <div className="glass-card p-5">
-      <p className="text-xs font-medium text-slate-400 uppercase tracking-wide">{label}</p>
-      <p className={`mt-2 text-3xl font-bold ${value == null ? 'text-slate-500/40' : colorClass}`}>
+      <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">{label}</p>
+      <p className={`mt-2 text-3xl font-bold ${value == null ? 'text-slate-400 dark:text-slate-500/40' : colorClass}`}>
         {formatPct(value)}
       </p>
-      <p className="mt-1 text-xs text-slate-400">{description}</p>
+      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{description}</p>
     </div>
   );
 }
@@ -183,10 +183,10 @@ function RateCard({ label, value, description }: RateCardProps) {
 
 function EmptyStats() {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/20 py-12 text-center glass">
-      <Activity className="mb-3 h-10 w-10 text-slate-500/40" />
-      <p className="text-sm font-medium text-slate-100">No analytics data yet</p>
-      <p className="mt-1 text-xs text-slate-400">
+    <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 dark:border-white/20 py-12 text-center glass">
+      <Activity className="mb-3 h-10 w-10 text-slate-400 dark:text-slate-500/40" />
+      <p className="text-sm font-medium text-slate-900 dark:text-slate-100">No analytics data yet</p>
+      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
         Stats will appear here once the campaign is launched and messages start delivering.
       </p>
     </div>
@@ -198,15 +198,15 @@ function EmptyStats() {
 function LiveIndicator({ isLive }: { isLive: boolean }) {
   if (isLive) {
     return (
-      <div className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400">
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+      <div className="flex items-center gap-1.5 rounded-full border border-blue-500/30 bg-blue-50 dark:bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-500 dark:text-blue-400">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-500 dark:bg-blue-400" />
         <Wifi className="h-3 w-3" />
         Live
       </div>
     );
   }
   return (
-    <div className="flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-400">
+    <div className="flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-white/20 bg-slate-50 dark:bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-500 dark:text-slate-400">
       <WifiOff className="h-3 w-3" />
       Offline
     </div>
@@ -263,7 +263,7 @@ export function CampaignDetail() {
       <div>
         <button
           onClick={() => navigate('/campaigns')}
-          className="mb-3 flex items-center gap-1 text-sm text-slate-400 hover:text-slate-100 transition-colors"
+          className="mb-3 flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           Back to Campaigns
@@ -271,12 +271,12 @@ export function CampaignDetail() {
 
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/20 text-2xl">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-500 dark:bg-crm-blue-dim dark:text-blue-500 text-2xl">
               {channelEmoji}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-100">{campaign.name}</h1>
-              <div className="mt-1 flex items-center gap-2 text-sm text-slate-400">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{campaign.name}</h1>
+              <div className="mt-1 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                 <span className="capitalize">{campaign.channel}</span>
                 <span>·</span>
                 <span>Created {formatDate(campaign.created_at)}</span>
@@ -319,11 +319,11 @@ export function CampaignDetail() {
       </div>
 
       {/* Funnel chart */}
-      <div className="glass p-6">
+      <div className="glass-card p-6">
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-100">Delivery Funnel</h2>
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Delivery Funnel</h2>
           {stats && (
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               {stats.total_sent.toLocaleString()} total sent
             </p>
           )}
@@ -337,12 +337,12 @@ export function CampaignDetail() {
       </div>
 
       {/* Communication logs */}
-      <div className="glass overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-          <h2 className="text-sm font-semibold text-slate-100">
+      <div className="glass-card overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-white/[0.07]">
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
             Communication Logs
             {logsData && (
-              <span className="ml-2 rounded-full bg-white/10 px-2 py-0.5 text-xs text-slate-300 border border-white/20">
+              <span className="ml-2 rounded-full bg-slate-100 dark:bg-white/10 px-2 py-0.5 text-xs text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/20">
                 {logsData.total.toLocaleString()}
               </span>
             )}
@@ -352,27 +352,27 @@ export function CampaignDetail() {
 
         <Table>
           <TableHeader>
-            <TableRow className="bg-white/5 border-white/10 hover:bg-white/5">
-              <TableHead className="text-slate-300">Customer ID</TableHead>
-              <TableHead className="text-slate-300">Status</TableHead>
-              <TableHead className="text-slate-300">Sent At</TableHead>
-              <TableHead className="text-slate-300">Delivered At</TableHead>
-              <TableHead className="text-slate-300">Opened At</TableHead>
+            <TableRow className="bg-slate-50 dark:bg-[#1a1f2e] border-slate-200 dark:border-white/[0.07] hover:bg-slate-50 dark:hover:bg-[#1a1f2e]">
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">Customer ID</TableHead>
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">Status</TableHead>
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">Sent At</TableHead>
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">Delivered At</TableHead>
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">Opened At</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {logsLoading
               ? [...Array(5)].map((_, i) => (
-                <TableRow key={i} className="border-white/10 hover:bg-transparent">
+                <TableRow key={i} className="border-slate-100 dark:border-white/[0.05] hover:bg-transparent">
                   {[...Array(5)].map((_, j) => (
-                    <TableCell key={j}><Skeleton className="h-4 w-full bg-white/10" /></TableCell>
+                    <TableCell key={j}><Skeleton className="h-4 w-full bg-slate-200 dark:bg-white/10" /></TableCell>
                   ))}
                 </TableRow>
               ))
               : logs.length === 0
                 ? (
-                  <TableRow className="border-white/10 hover:bg-transparent">
-                    <TableCell colSpan={5} className="py-12 text-center text-slate-400">
+                  <TableRow className="border-slate-100 dark:border-white/[0.05] hover:bg-transparent">
+                    <TableCell colSpan={5} className="py-12 text-center text-slate-500 dark:text-slate-400">
                       {campaign.status === 'draft'
                         ? 'No messages sent yet — launch the campaign to start.'
                         : 'No logs found.'}
@@ -380,20 +380,20 @@ export function CampaignDetail() {
                   </TableRow>
                 )
                 : logs.map((log) => (
-                  <TableRow key={log.id} className="border-white/10 hover:bg-white/5">
-                    <TableCell className="text-slate-400 font-mono text-xs">
+                  <TableRow key={log.id} className="border-slate-100 dark:border-white/[0.05] hover:bg-slate-50 dark:hover:bg-white/[0.03]">
+                    <TableCell className="text-slate-500 dark:text-slate-400 font-mono text-xs">
                       {log.customer_id.slice(0, 8)}…
                     </TableCell>
                     <TableCell>
                       <StatusBadge status={log.status} />
                     </TableCell>
-                    <TableCell className="text-slate-400 text-xs">
+                    <TableCell className="text-slate-600 dark:text-slate-400 text-xs">
                       {formatDate(log.sent_at)}
                     </TableCell>
-                    <TableCell className="text-slate-400 text-xs">
+                    <TableCell className="text-slate-600 dark:text-slate-400 text-xs">
                       {formatDate(log.delivered_at)}
                     </TableCell>
-                    <TableCell className="text-slate-400 text-xs">
+                    <TableCell className="text-slate-600 dark:text-slate-400 text-xs">
                       {formatDate(log.opened_at)}
                     </TableCell>
                   </TableRow>
@@ -403,8 +403,8 @@ export function CampaignDetail() {
 
         {/* Pagination */}
         {logsData && logsData.pages > 1 && (
-          <div className="flex items-center justify-between border-t border-white/10 px-5 py-3">
-            <p className="text-xs text-slate-400">
+          <div className="flex items-center justify-between border-t border-slate-200 dark:border-white/[0.07] px-5 py-3">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Page {logsPage} of {logsData.pages}
             </p>
             <div className="flex items-center gap-2">
@@ -414,7 +414,7 @@ export function CampaignDetail() {
                 size="sm"
                 onClick={() => setLogsPage((p) => Math.max(1, p - 1))}
                 disabled={logsPage === 1}
-                className="bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
+                className="bg-transparent"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -424,7 +424,7 @@ export function CampaignDetail() {
                 size="sm"
                 onClick={() => setLogsPage((p) => Math.min(logsData.pages, p + 1))}
                 disabled={logsPage === logsData.pages}
-                className="bg-transparent border-white/20 text-slate-300 hover:bg-white/10 hover:text-slate-100"
+                className="bg-transparent"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>

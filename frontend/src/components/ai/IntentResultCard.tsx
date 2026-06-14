@@ -96,32 +96,32 @@ export function IntentResultCard({ result }: IntentResultCardProps) {
   };
 
   return (
-    <div className="mt-3 overflow-hidden rounded-xl border border-primary/20 bg-card shadow-sm">
+    <div className="mt-3 overflow-hidden rounded-xl border border-blue-500/20 bg-white dark:bg-[#131720] shadow-sm">
       {/* Header */}
-      <div className="flex items-center gap-2 border-b border-border bg-primary/5 px-4 py-3">
-        <Sparkles className="h-4 w-4 text-primary" />
-        <span className="text-sm font-semibold text-primary">AI Recommendation</span>
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/10 bg-blue-50 dark:bg-crm-blue-dim px-4 py-3">
+        <Sparkles className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+        <span className="text-sm font-semibold text-blue-500 dark:text-blue-400">AI Recommendation</span>
       </div>
 
       <div className="p-4 space-y-4">
         {/* Segment name */}
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-1">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">
             Suggested Segment
           </p>
-          <p className="font-semibold text-foreground text-sm">{result.segment_name}</p>
+          <p className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{result.segment_name}</p>
         </div>
 
         {/* Rules summary */}
         {rules.length > 0 && (
           <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-2">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
               Rules ({operator})
             </p>
             <ul className="space-y-1.5">
               {rules.map((rule, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-foreground">
-                  <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
+                <li key={i} className="flex items-start gap-2 text-sm text-slate-900 dark:text-slate-100">
+                  <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-crm-blue-dim dark:text-blue-500 text-[10px] font-bold">
                     {i + 1}
                   </span>
                   <span>{humanizeRule(rule as { field: string; op: string; value: string | number })}</span>
@@ -133,7 +133,7 @@ export function IntentResultCard({ result }: IntentResultCardProps) {
 
         {/* Recommended channel */}
         <div className="flex items-center gap-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
             Channel:
           </p>
           <span
@@ -146,10 +146,10 @@ export function IntentResultCard({ result }: IntentResultCardProps) {
         {/* Message draft */}
         {result.message_draft && (
           <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-1.5">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1.5">
               Message Draft
             </p>
-            <div className="rounded-lg border border-border bg-muted/40 px-3 py-2.5 text-sm text-foreground leading-relaxed whitespace-pre-wrap">
+            <div className="rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#1a1f2e] px-3 py-2.5 text-sm text-slate-900 dark:text-slate-100 leading-relaxed whitespace-pre-wrap">
               {result.message_draft}
             </div>
           </div>
@@ -161,7 +161,7 @@ export function IntentResultCard({ result }: IntentResultCardProps) {
             id="intent-create-segment"
             variant="outline"
             size="sm"
-            className="gap-2"
+            className="gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:bg-[#131720] dark:border-white/20 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-slate-100"
             onClick={() =>
               navigate('/segments/new', { state: segmentState })
             }
@@ -173,7 +173,7 @@ export function IntentResultCard({ result }: IntentResultCardProps) {
           <Button
             id="intent-create-campaign"
             size="sm"
-            className="gap-2"
+            className="gap-2 bg-blue-500 text-white hover:bg-blue-600 shadow-sm"
             onClick={() =>
               navigate('/campaigns/new', { state: campaignState })
             }

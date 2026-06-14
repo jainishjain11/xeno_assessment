@@ -72,8 +72,8 @@ function humanizeValue(field: string, value: string | number | undefined): strin
 function RuleReadOnly({ rule }: { rule: FilterRule | FilterGroup }) {
   if ('operator' in rule) {
     return (
-      <div className="ml-4 space-y-1.5 border-l-2 border-primary/30 pl-3">
-        <p className="text-xs font-medium text-primary">{rule.operator} group:</p>
+      <div className="ml-4 space-y-1.5 border-l-2 border-blue-500/30 pl-3">
+        <p className="text-xs font-medium text-blue-500 dark:text-blue-400">{rule.operator} group:</p>
         {rule.rules.map((r, i) => (
           <RuleReadOnly key={i} rule={r} />
         ))}
@@ -82,13 +82,13 @@ function RuleReadOnly({ rule }: { rule: FilterRule | FilterGroup }) {
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-md bg-muted/40 px-3 py-2 text-sm">
-      <span className="font-medium text-foreground">
+    <div className="flex items-center gap-2 rounded-md bg-slate-50 dark:bg-white/5 px-3 py-2 text-sm border border-slate-100 dark:border-white/10">
+      <span className="font-medium text-slate-900 dark:text-slate-100">
         {FIELD_LABELS[rule.field] ?? rule.field}
       </span>
       <span className="text-muted-foreground">{OP_LABELS[rule.op] ?? rule.op}</span>
       {rule.op !== 'is_null' && rule.op !== 'is_not_null' && (
-        <span className="font-semibold text-foreground">
+        <span className="font-semibold text-slate-900 dark:text-slate-100">
           {humanizeValue(rule.field, rule.value)}
         </span>
       )}
@@ -98,14 +98,14 @@ function RuleReadOnly({ rule }: { rule: FilterRule | FilterGroup }) {
 
 // ── Tag badge ─────────────────────────────────────────────────────────────────
 const TAG_COLORS: Record<string, string> = {
-  vip: 'bg-amber-100 text-amber-800',
-  churned: 'bg-red-100 text-red-800',
-  loyal: 'bg-green-100 text-green-800',
-  new: 'bg-blue-100 text-blue-800',
+  vip: 'bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-400',
+  churned: 'bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-400',
+  loyal: 'bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-400',
+  new: 'bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-400',
 };
 
 function TagBadge({ tag }: { tag: string }) {
-  const cls = TAG_COLORS[tag.toLowerCase()] ?? 'bg-gray-100 text-gray-700';
+  const cls = TAG_COLORS[tag.toLowerCase()] ?? 'bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300';
   return (
     <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${cls}`}>{tag}</span>
   );
@@ -157,18 +157,19 @@ export function SegmentDetail() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-8 w-64 bg-slate-200 dark:bg-white/10" />
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <Skeleton className="h-40 rounded-xl" />
-          <Skeleton className="h-40 rounded-xl" />
-          <Skeleton className="h-40 rounded-xl" />
+          <Skeleton className="h-40 rounded-xl bg-slate-200 dark:bg-white/10" />
+          <Skeleton className="h-40 rounded-xl bg-slate-200 dark:bg-white/10" />
+          <Skeleton className="h-40 rounded-xl bg-slate-200 dark:bg-white/10" />
         </div>
-        <Skeleton className="h-48 rounded-xl" />
+        <Skeleton className="h-48 rounded-xl bg-slate-200 dark:bg-white/10" />
       </div>
     );
   }
 
   if (isError || !segment) {
+    return (
       <div className="py-12">
         <ErrorMessage message="Segment not found. It may have been deleted." />
         <div className="mt-4 text-center">
@@ -181,6 +182,7 @@ export function SegmentDetail() {
           </Button>
         </div>
       </div>
+    );
   }
 
   const displayCount = previewCount ?? segment.audience_size;
@@ -198,13 +200,13 @@ export function SegmentDetail() {
         </button>
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-500 dark:bg-crm-blue-dim dark:text-blue-500">
               <Layers className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">{segment.name}</h1>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{segment.name}</h1>
               {segment.description && (
-                <p className="mt-0.5 text-sm text-muted-foreground">{segment.description}</p>
+                <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{segment.description}</p>
               )}
             </div>
           </div>
@@ -222,9 +224,9 @@ export function SegmentDetail() {
       {/* Stats row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {/* Audience size */}
-        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <div className="glass-card p-5">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
               Audience Size
             </p>
             <button
@@ -252,11 +254,11 @@ export function SegmentDetail() {
         </div>
 
         {/* Created date */}
-        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">
+        <div className="glass-card p-5">
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
             Created
           </p>
-          <p className="text-xl font-semibold text-foreground">
+          <p className="text-xl font-semibold text-slate-900 dark:text-slate-100">
             {formatDate(segment.created_at)}
           </p>
           <p className="mt-1 text-xs text-muted-foreground flex items-center gap-1">
@@ -269,11 +271,11 @@ export function SegmentDetail() {
         </div>
 
         {/* Rules count */}
-        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">
+        <div className="glass-card p-5">
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
             Rules
           </p>
-          <p className="text-4xl font-bold text-foreground">
+          <p className="text-4xl font-bold text-slate-900 dark:text-slate-100">
             {Array.isArray(segment.filter_rules?.rules)
               ? segment.filter_rules.rules.length
               : '—'}
@@ -285,11 +287,11 @@ export function SegmentDetail() {
       </div>
 
       {/* Rules display */}
-      <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-        <h2 className="mb-4 text-sm font-semibold text-foreground">Segment Rules</h2>
-        <div className="mb-2 text-xs text-muted-foreground">
+      <div className="glass-card p-5">
+        <h2 className="mb-4 text-sm font-semibold text-slate-900 dark:text-slate-100">Segment Rules</h2>
+        <div className="mb-2 text-xs text-slate-500 dark:text-slate-400">
           Match customers where{' '}
-          <span className="rounded bg-primary/10 px-1.5 py-0.5 font-semibold text-primary">
+          <span className="rounded bg-blue-50 dark:bg-crm-blue-dim px-1.5 py-0.5 font-semibold text-blue-600 dark:text-blue-400 border border-blue-500/20">
             {segment.filter_rules?.operator === 'AND' ? 'ALL' : 'ANY'}
           </span>{' '}
           of the following rules apply:
@@ -303,17 +305,17 @@ export function SegmentDetail() {
       </div>
 
       {/* Sample customers table */}
-      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-          <h2 className="text-sm font-semibold text-foreground">
+      <div className="glass-card overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-white/[0.07]">
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
             Sample Customers
-            <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+            <span className="ml-2 rounded-full bg-slate-100 dark:bg-white/10 px-2 py-0.5 text-xs text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/20">
               first 20
             </span>
           </h2>
           <button
             onClick={() => navigate('/customers')}
-            className="flex items-center gap-1 text-xs text-primary hover:underline"
+            className="flex items-center gap-1 text-xs text-blue-500 hover:text-blue-600 transition-colors"
           >
             View all <ChevronRight className="h-3 w-3" />
           </button>
@@ -321,12 +323,12 @@ export function SegmentDetail() {
 
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted/30">
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>City</TableHead>
-              <TableHead>Total Spent</TableHead>
-              <TableHead>Tags</TableHead>
+            <TableRow className="bg-slate-50 dark:bg-[#1a1f2e] border-slate-200 dark:border-white/[0.07] hover:bg-slate-50 dark:hover:bg-[#1a1f2e]">
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">Name</TableHead>
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">Email</TableHead>
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">City</TableHead>
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">Total Spent</TableHead>
+              <TableHead className="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">Tags</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -340,20 +342,20 @@ export function SegmentDetail() {
               sampleCustomers.map((c) => (
                 <TableRow
                   key={c.id}
-                  className="cursor-pointer hover:bg-muted/40 transition-colors"
+                  className="cursor-pointer hover:bg-slate-50 dark:hover:bg-white/[0.03] border-slate-100 dark:border-white/[0.05] transition-colors"
                   onClick={() => navigate(`/customers/${c.id}`)}
                 >
-                  <TableCell className="font-medium text-foreground">
+                  <TableCell className="font-medium text-slate-900 dark:text-slate-100">
                     <div className="flex items-center gap-2">
-                      <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-crm-blue-dim dark:text-blue-500 text-xs font-bold">
                         {c.name[0]?.toUpperCase()}
                       </div>
                       {c.name}
                     </div>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">{c.email}</TableCell>
-                  <TableCell className="text-muted-foreground">{c.city ?? '—'}</TableCell>
-                  <TableCell className="font-medium">{formatCurrency(c.total_spent)}</TableCell>
+                  <TableCell className="text-slate-500 dark:text-slate-400">{c.email}</TableCell>
+                  <TableCell className="text-slate-500 dark:text-slate-400">{c.city ?? '—'}</TableCell>
+                  <TableCell className="font-medium text-slate-900 dark:text-slate-100">{formatCurrency(c.total_spent)}</TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-1">
                       {c.tags.slice(0, 2).map((t) => (
