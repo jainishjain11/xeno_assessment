@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI):
         logger.info("Database connection established successfully.")
     except Exception as e:
         logger.error(f"Failed to connect to database: {e}")
-        raise e
+        # Don't crash on startup — log and continue
 
     # Create async Redis client and store on app state
     app.state.redis = aioredis.from_url(
@@ -49,7 +49,7 @@ app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:5174"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
