@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {
   ChevronLeft,
   ChevronRight,
@@ -467,18 +467,32 @@ function Step3Review({ name, channel, segmentName, audienceSize, message }: Step
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 
+// Shape of the state passed from IntentResultCard via navigate()
+interface CampaignPrefillState {
+  prefill?: {
+    segment_name?: string;
+    filter_rules?: object;
+    message_template?: string;
+    channel?: string;
+  };
+}
+
 export function CampaignBuilder() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const locationState = (location.state ?? {}) as CampaignPrefillState;
+  const prefill = locationState.prefill;
+
   const prefilledSegmentId = searchParams.get('segment_id') ?? '';
 
   const [step, setStep] = useState<Step>(1);
 
-  // Form state
-  const [name, setName] = useState('');
-  const [channel, setChannel] = useState('whatsapp');
+  // Form state — use prefill values when coming from AI assistant
+  const [name, setName] = useState(prefill?.segment_name ? `Campaign — ${prefill.segment_name}` : '');
+  const [channel, setChannel] = useState(prefill?.channel ?? 'whatsapp');
   const [segmentId, setSegmentId] = useState(prefilledSegmentId);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(prefill?.message_template ?? '');
   const [error, setError] = useState('');
 
   const createMutation = useCreateCampaign();

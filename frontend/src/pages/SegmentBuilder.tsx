@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Plus,
   Trash2,
@@ -327,13 +327,33 @@ function AIIntentModal({ open, onClose, onApply }: AIIntentModalProps) {
 
 const DEFAULT_RULE: FilterRule = { field: 'total_spent', op: 'gte', value: 0 };
 
+// Shape of state passed from IntentResultCard via navigate()
+interface SegmentPrefillState {
+  prefill?: {
+    name?: string;
+    filter_rules?: FilterGroup;
+  };
+}
+
 export function SegmentBuilder() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationState = (location.state ?? {}) as SegmentPrefillState;
+  const prefill = locationState.prefill;
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(prefill?.name ?? '');
   const [description, setDescription] = useState('');
-  const [groupOp, setGroupOp] = useState<'AND' | 'OR'>('AND');
-  const [rules, setRules] = useState<FilterRule[]>([{ ...DEFAULT_RULE }]);
+  const [groupOp, setGroupOp] = useState<'AND' | 'OR'>(
+    prefill?.filter_rules?.operator ?? 'AND'
+  );
+  const [rules, setRules] = useState<FilterRule[]>(() => {
+    const prefillRules = prefill?.filter_rules?.rules?.filter(
+      (r): r is FilterRule => 'field' in r && 'op' in r
+    );
+    return prefillRules && prefillRules.length > 0
+      ? prefillRules
+      : [{ ...DEFAULT_RULE }];
+  });
   const [aiOpen, setAiOpen] = useState(false);
   const [previewCount, setPreviewCount] = useState<number | null>(null);
   const [previewLoading, setPreviewLoading] = useState(false);

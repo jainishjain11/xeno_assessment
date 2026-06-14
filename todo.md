@@ -423,20 +423,20 @@
 > Goal: Chat-first AI interface is functional and end-to-end.
 
 ### 12.1 AI Chat Interface
-- [ ] `frontend/src/store/ai.ts` — Zustand store: `{ messages, isStreaming, addMessage(), clearHistory() }`
-- [ ] `frontend/src/pages/AIAssistant.tsx` — full-page chat interface:
-  - [ ] Message list (user + assistant bubbles with markdown rendering)
-  - [ ] Streaming response (tokens appear in real time via SSE)
-  - [ ] Structured result cards: when AI returns `IntentParseResult`, show as interactive card
-  - [ ] Action buttons on card: "Create Segment", "Create Campaign with this" → pre-populate builders
-  - [ ] Suggested prompts shown when history is empty
-- [ ] `frontend/src/components/ai/IntentResultCard.tsx` — displays segment rules + message draft with approve/edit flow
-- [ ] `frontend/src/hooks/useAIChat.ts` — manages streaming, history, SSE connection
+- [x] `frontend/src/store/ai.ts` — Zustand store: `{ messages, isStreaming, addMessage(), clearHistory() }`
+- [x] `frontend/src/pages/AIAssistant.tsx` — full-page chat interface:
+  - [x] Message list (user + assistant bubbles with markdown rendering)
+  - [x] Streaming response (tokens appear in real time via SSE)
+  - [x] Structured result cards: when AI returns `IntentParseResult`, show as interactive card
+  - [x] Action buttons on card: "Create Segment", "Create Campaign with this" → pre-populate builders
+  - [x] Suggested prompts shown when history is empty
+- [x] `frontend/src/components/ai/IntentResultCard.tsx` — displays segment rules + message draft with approve/edit flow
+- [x] `frontend/src/hooks/useAIChat.ts` — manages streaming, history, SSE connection
 
 ### 12.2 AI Integration Throughout App
-- [ ] Segment Builder: "✨ Describe your audience" button → calls AI → auto-fills rules
-- [ ] Campaign Builder: "✨ Draft with AI" button → calls AI → auto-fills message
-- [ ] Campaign Builder: "✨ Generate from intent" → full parse-intent → fills segment + message
+- [x] Segment Builder: "✨ Describe your audience" button → calls AI → auto-fills rules
+- [x] Campaign Builder: "✨ Draft with AI" button → calls AI → auto-fills message
+- [x] Campaign Builder: "✨ Generate from intent" → full parse-intent → fills segment + message
 
 ---
 
@@ -553,7 +553,7 @@
 | 9 | Frontend Foundation + Auth | `[x]` |
 | 10 | Customer + Segment Pages | `[x]` |
 | 11 | Campaign Builder + Analytics | `[x]` |
-| 12 | AI Assistant | `[ ]` |
+| 12 | AI Assistant | `[x]` |
 | 13 | Polish + Error States | `[ ]` |
 | 14 | Deployment | `[ ]` |
 | 15 | Docs + Submission | `[ ]` |
