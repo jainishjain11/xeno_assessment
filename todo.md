@@ -461,7 +461,20 @@
 
 ---
 
-## Phase 14: Deployment
+## Phase 14: Testing
+> Goal: Run automated test scripts to verify core system stability.
+
+- [ ] Pre-Test Setup: Verify all servers run, run seed script, capture JWT token
+- [ ] Section 1: Auth (Phase 2): Register, Login, health checks, JWT assertions
+- [ ] Section 2: Customers & Orders (Phase 2): Bulk import, filtering, retrieval
+- [ ] Section 3: Segment Engine (Phase 3): Create Segment, Rule Logic, Preview Logic
+- [ ] Section 4: Campaigns & AI (Phase 4, 8, 11): Intent parsing, Draft Message, Launch Campaign
+- [ ] Section 5: Receipts & Analytics (Phase 6, 7): Idempotency limits, duplicate tests, funnel stats
+- [ ] Final Assertion: Compile output summary table showing pass/fail status for all tests
+
+---
+
+## Phase 16: Deployment
 > Goal: All services live and accessible.
 
 ### 14.1 Backend Deployment (Railway)
@@ -505,13 +518,13 @@
 > Goal: README, architecture diagram, and video.
 
 ### 15.1 README
-- [ ] `README.md` — covers:
-  - [ ] Project overview + demo URL
-  - [ ] Architecture diagram (copy from spec.md or link to it)
-  - [ ] Local development setup (docker-compose up)
-  - [ ] Seeding instructions
-  - [ ] Key technical decisions + tradeoffs (reference spec.md §12)
-  - [ ] Scale considerations ("at 1M customers, I would...")
+- [x] `README.md` — covers:
+  - [x] Project overview + demo URL
+  - [x] Architecture diagram (copy from spec.md or link to it)
+  - [x] Local development setup (docker-compose up)
+  - [x] Seeding instructions
+  - [x] Key technical decisions + tradeoffs (reference spec.md §12)
+  - [x] Scale considerations ("at 1M customers, I would...")
 
 ### 15.2 Architecture Diagram
 - [ ] Create visual architecture diagram (Excalidraw or Mermaid)
@@ -554,9 +567,10 @@
 | 10 | Customer + Segment Pages | `[x]` |
 | 11 | Campaign Builder + Analytics | `[x]` |
 | 12 | AI Assistant | `[x]` |
-| 13 | Polish + Error States | `[ ]` |
-| 14 | Deployment | `[ ]` |
+| 13 | Polish + Error States | `[x]` |
+| 14 | Testing | `[ ]` |
 | 15 | Docs + Submission | `[ ]` |
+| 16 | Deployment | `[ ]` |
 
 ---
 
