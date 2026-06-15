@@ -1,10 +1,10 @@
+# AI-Native Mini CRM
+### Built for Xeno Engineering Assessment Project
+
 ---
 
-# AI-Native Mini CRM
-### Built for Xeno Engineering Take-Home Assignment
-
-> A production-grade CRM for consumer brands to intelligently reach 
-> their shoppers — powered by AI-driven segmentation, async campaign 
+> A production-grade CRM for consumer brands to intelligently reach
+> their shoppers — powered by AI-driven segmentation, async campaign
 > delivery, and real-time analytics.
 
 ---
