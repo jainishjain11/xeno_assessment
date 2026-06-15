@@ -310,13 +310,13 @@
 
 ## Section 5: Channel Stub (Phase 5)
 
-- [ ] **T28** — Channel stub health check
+- [x] **T28** — Channel stub health check
   ```
   GET http://localhost:8001/health
   Assert: status=200, body.service="channel-stub"
   ```
 
-- [ ] **T29** — POST /send returns 202 immediately
+- [x] **T29** — POST /send returns 202 immediately
   ```
   POST http://localhost:8001/send
   Body: {
@@ -332,7 +332,7 @@
   Assert: response time < 500ms (non-blocking)
   ```
 
-- [ ] **T30** — Callbacks arrive at CRM after delay
+- [x] **T30** — Callbacks arrive at CRM after delay
   ```
   After T29, wait 10 seconds then:
   GET /api/v1/campaigns/$CAMPAIGN_ID/logs?page=1&size=50 (with $HEADERS)
@@ -341,7 +341,7 @@
   Assert: logs with status "delivered" have delivered_at timestamp set
   ```
 
-- [ ] **T31** — Full lifecycle fires in correct sequence
+- [x] **T31** — Full lifecycle fires in correct sequence
   ```
   Wait 60 seconds after launching campaign, then:
   GET /api/v1/campaigns/$CAMPAIGN_ID/stats (with $HEADERS)
@@ -354,7 +354,7 @@
 
 ## Section 6: Receipt API Idempotency (Phase 6) — CRITICAL
 
-- [ ] **T32** — Normal callback advances status
+- [x] **T32** — Normal callback advances status
   ```
   POST /api/v1/receipts/callback (with $HEADERS)
   Body: {
@@ -369,7 +369,7 @@
   Assert: response.new_status = "delivered"
   ```
 
-- [ ] **T33** — Duplicate event_id is complete no-op
+- [x] **T33** — Duplicate event_id is complete no-op
   ```
   POST /api/v1/receipts/callback (exact same body as T32, same event_id)
   Assert: status=200
@@ -378,7 +378,7 @@
   Verify: communication_log status unchanged from T32
   ```
 
-- [ ] **T34** — Out-of-order callback backfills intermediate states
+- [x] **T34** — Out-of-order callback backfills intermediate states
   ```
   Find a log still in "queued" or "sent" status
   Store: $FRESH_LOG_ID = that log's id
@@ -403,7 +403,7 @@
   FAILURE HERE = idempotency backfill logic is broken — fix receipt_service.py
   ```
 
-- [ ] **T35** — Failed event accepted regardless of current status
+- [x] **T35** — Failed event accepted regardless of current status
   ```
   POST /api/v1/receipts/callback (with $HEADERS)
   Body: {
@@ -417,14 +417,14 @@
   Assert: response.status = "accepted" or "duplicate"
   ```
 
-- [ ] **T36** — Malformed payload still returns 200
+- [x] **T36** — Malformed payload still returns 200
   ```
   POST /api/v1/receipts/callback (with $HEADERS)
   Body: {"completely":"wrong","structure":true}
   Assert: status=200 — MUST NOT return 4xx or 5xx
   ```
 
-- [ ] **T37** — Rate limiting active but not triggered by normal volume
+- [x] **T37** — Rate limiting active but not triggered by normal volume
   ```
   Send 10 rapid sequential requests to POST /api/v1/receipts/callback
   Assert: all return 200
@@ -435,7 +435,7 @@
 
 ## Section 7: Analytics SSE (Phase 7)
 
-- [ ] **T38** — Campaign stats view returns correct aggregates
+- [x] **T38** — Campaign stats view returns correct aggregates
   ```
   GET /api/v1/campaigns/$CAMPAIGN_ID/stats (with $HEADERS)
   Assert: status=200
@@ -443,7 +443,7 @@
   Assert: delivery_rate is decimal between 0 and 100
   ```
 
-- [ ] **T39** — SSE endpoint accepts connection and streams
+- [x] **T39** — SSE endpoint accepts connection and streams
   ```
   GET /api/v1/analytics/live/$CAMPAIGN_ID?token=$TOKEN
   Assert: HTTP 200 with Content-Type: text/event-stream
@@ -452,7 +452,7 @@
   Assert: connection stays open
   ```
 
-- [ ] **T40** — SSE requires authentication
+- [x] **T40** — SSE requires authentication
   ```
   GET /api/v1/analytics/live/$CAMPAIGN_ID (no token)
   Assert: status=401 or connection immediately closed
@@ -462,7 +462,7 @@
 
 ## Section 8: AI Engine (Phase 8)
 
-- [ ] **T41** — Parse intent returns valid structured JSON
+- [x] **T41** — Parse intent returns valid structured JSON
   ```
   POST /api/v1/ai/parse-intent (with $HEADERS)
   Body: {
@@ -476,7 +476,7 @@
   Assert: response.recommended_channel is one of: whatsapp, sms, email, rcs
   ```
 
-- [ ] **T42** — AI-generated rules compile and execute without error
+- [x] **T42** — AI-generated rules compile and execute without error
   ```
   Using segment_rules from T41:
   POST /api/v1/segments (with $HEADERS)
@@ -488,7 +488,7 @@
   Store: $AI_SEGMENT_ID = new segment id
   ```
 
-- [ ] **T43** — Draft message endpoint works
+- [x] **T43** — Draft message endpoint works
   ```
   POST /api/v1/ai/draft-message (with $HEADERS)
   Body: {
@@ -501,7 +501,7 @@
   Assert: message length <= 1024
   ```
 
-- [ ] **T44** — AI chat SSE streams tokens
+- [x] **T44** — AI chat SSE streams tokens
   ```
   POST /api/v1/ai/chat (with $HEADERS)
   Body: {"messages":[{"role":"user","content":"Suggest a campaign for VIP customers"}]}
@@ -514,7 +514,7 @@
 
 ## Section 9: Full End-to-End Flow
 
-- [ ] **T45** — Complete AI-driven campaign flow
+- [x] **T45** — Complete AI-driven campaign flow
   ```
   Step 1: POST /api/v1/ai/parse-intent → get segment_rules + message_draft
   Step 2: POST /api/v1/segments with AI rules → verify preview count > 0
@@ -531,14 +531,14 @@
 
 ## Section 10: Frontend Smoke Tests (Phases 9-12)
 
-- [ ] **T46** — Frontend loads without errors
+- [x] **T46** — Frontend loads without errors
   ```
   Open http://localhost:3000
   Assert: login page renders
   Assert: no console errors on load
   ```
 
-- [ ] **T47** — Login flow works end to end
+- [x] **T47** — Login flow works end to end
   ```
   Enter demo@aurabeauty.com / demo1234
   Click Sign In
@@ -547,7 +547,7 @@
   Assert: user name visible in sidebar footer
   ```
 
-- [ ] **T48** — All routes render without crashing
+- [x] **T48** — All routes render without crashing
   ```
   Click each sidebar link:
   Dashboard, Customers, Segments, Campaigns, AI Assistant
@@ -555,7 +555,7 @@
   Assert: no uncaught React errors in console
   ```
 
-- [ ] **T49** — Segment builder AI flow works
+- [x] **T49** — Segment builder AI flow works
   ```
   Navigate to /segments/new
   Click "✨ Describe your audience"
@@ -566,7 +566,7 @@
   Assert: saving creates a new segment
   ```
 
-- [ ] **T50** — Campaign analytics shows live funnel
+- [x] **T50** — Campaign analytics shows live funnel
   ```
   Navigate to /campaigns/$CAMPAIGN_ID
   Assert: funnel chart renders

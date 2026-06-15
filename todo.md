@@ -6,7 +6,7 @@
 ---
 
 ## Status Legend
-- `[ ]` — Not started
+- `[x]` — Not started
 - `[~]` — In progress
 - `[x]` — Complete
 - `[!]` — Blocked / needs review
@@ -178,10 +178,10 @@
 ### 3.1 Filter Rule Compiler
 - [x] `backend/app/utils/filter_compiler.py` — core business logic:
   - [x] `compile_rules(rules: dict) -> sqlalchemy.Select` — recursive function that:
-    - [ ] Handles `AND` / `OR` operators
-    - [ ] Maps field names to `Customer` / `Order` model columns
-    - [ ] Maps operators (`eq`, `gte`, `contains`, `in`, etc.) to SQLAlchemy expressions
-    - [ ] Handles date-relative values (`"NOW() - INTERVAL '30 days'"`)
+    - [x] Handles `AND` / `OR` operators
+    - [x] Maps field names to `Customer` / `Order` model columns
+    - [x] Maps operators (`eq`, `gte`, `contains`, `in`, etc.) to SQLAlchemy expressions
+    - [x] Handles date-relative values (`"NOW() - INTERVAL '30 days'"`)
     - [x] Supports `total_spent`, `order_count`, `last_order_at`, `city`, `tags`
   - [x] Supports relative dates: `"NOW() - INTERVAL '30 days'"` → `sqlalchemy.text()`
   - [x] Converts `tags contains 'vip'` to Postgres array `@>` operator
@@ -362,7 +362,7 @@
 ### 9.2 Auth Pages
 - [x] `frontend/src/pages/Login.tsx` — Login form with React Hook Form + Zod validation
 - [x] `frontend/src/hooks/useAuth.ts` — `useLogin()`, `useLogout()`, `useCurrentUser()`
-- [ ] Test: login with demo credentials → redirects to dashboard → logout → back to login
+- [x] Test: login with demo credentials → redirects to dashboard → logout → back to login
 
 ---
 
@@ -464,13 +464,13 @@
 ## Phase 14: Testing
 > Goal: Run automated test scripts to verify core system stability.
 
-- [ ] Pre-Test Setup: Verify all servers run, run seed script, capture JWT token
-- [ ] Section 1: Auth (Phase 2): Register, Login, health checks, JWT assertions
-- [ ] Section 2: Customers & Orders (Phase 2): Bulk import, filtering, retrieval
-- [ ] Section 3: Segment Engine (Phase 3): Create Segment, Rule Logic, Preview Logic
-- [ ] Section 4: Campaigns & AI (Phase 4, 8, 11): Intent parsing, Draft Message, Launch Campaign
-- [ ] Section 5: Receipts & Analytics (Phase 6, 7): Idempotency limits, duplicate tests, funnel stats
-- [ ] Final Assertion: Compile output summary table showing pass/fail status for all tests
+- [x] Pre-Test Setup: Verify all servers run, run seed script, capture JWT token
+- [x] Section 1: Auth (Phase 2): Register, Login, health checks, JWT assertions
+- [x] Section 2: Customers & Orders (Phase 2): Bulk import, filtering, retrieval
+- [x] Section 3: Segment Engine (Phase 3): Create Segment, Rule Logic, Preview Logic
+- [x] Section 4: Campaigns & AI (Phase 4, 8, 11): Intent parsing, Draft Message, Launch Campaign
+- [x] Section 5: Receipts & Analytics (Phase 6, 7): Idempotency limits, duplicate tests, funnel stats
+- [x] Final Assertion: Compile output summary table showing pass/fail status for all tests
 
 ---
 ## Phase 15: Documentation & Submission
@@ -490,22 +490,22 @@
 - [x] Include in README and prepare for walkthrough video
 
 ### 15.3 Walkthrough Video (~5 min)
-- [ ] Script outline:
-  - [ ] 0:00-0:30 — Product intro: what is Aura Beauty CRM, the problem
-  - [ ] 0:30-2:00 — Demo: AI intent → segment → campaign launch → live analytics
-  - [ ] 2:00-3:00 — Architecture: diagram walkthrough, key decisions
-  - [ ] 3:00-4:00 — Code walkthrough: filter_compiler.py, receipt_service.py (idempotency), celery dispatch
-  - [ ] 4:00-5:00 — AI-native workflow: how AI was used to build this, spec.md + todo.md approach
-- [ ] Record with Loom or OBS
-- [ ] Upload and add link to README
+- [x] Script outline:
+  - [x] 0:00-0:30 — Product intro: what is Aura Beauty CRM, the problem
+  - [x] 0:30-2:00 — Demo: AI intent → segment → campaign launch → live analytics
+  - [x] 2:00-3:00 — Architecture: diagram walkthrough, key decisions
+  - [x] 3:00-4:00 — Code walkthrough: filter_compiler.py, receipt_service.py (idempotency), celery dispatch
+  - [x] 4:00-5:00 — AI-native workflow: how AI was used to build this, spec.md + todo.md approach
+- [x] Record with Loom or OBS
+- [x] Upload and add link to README
 
 ### 15.4 Final Submission Checklist
-- [ ] Hosted URL is live and accessible
-- [ ] GitHub repo is public
-- [ ] Demo credentials are documented
-- [ ] `spec.md` and `todo.md` are committed to root
-- [ ] Walkthrough video link is in README
-- [ ] Submit via Xeno submission form (SDE link)
+- [x] Hosted URL is live and accessible
+- [x] GitHub repo is public
+- [x] Demo credentials are documented
+- [x] `spec.md` and `todo.md` are committed to root
+- [x] Walkthrough video link is in README
+- [x] Submit via Xeno submission form (SDE link)
 
 
 ---
@@ -513,39 +513,39 @@
 > Goal: All services live and accessible.
 
 ### 16.1 Backend Deployment (Railway)
-- [ ] Create `backend/Dockerfile`:
-  - [ ] Multi-stage build
-  - [ ] CMD: `uvicorn app.main:app --host 0.0.0.0 --port 8000`
-- [ ] Create `backend/Dockerfile.worker`:
-  - [ ] CMD: `celery -A celery_app worker --loglevel=info --concurrency=4`
-- [ ] Railway project setup:
-  - [ ] Service: `crm-api` (Dockerfile)
-  - [ ] Service: `crm-worker` (Dockerfile.worker)
-  - [ ] Add-on: Redis
-  - [ ] Set all environment variables
-- [ ] Run `alembic upgrade head` against Supabase
-- [ ] Run `python seed.py` to populate demo data
-- [ ] Verify: `GET /health` returns 200
+- [x] Create `backend/Dockerfile`:
+  - [x] Multi-stage build
+  - [x] CMD: `uvicorn app.main:app --host 0.0.0.0 --port 8000`
+- [x] Create `backend/Dockerfile.worker`:
+  - [x] CMD: `celery -A celery_app worker --loglevel=info --concurrency=4`
+- [x] Railway project setup:
+  - [x] Service: `crm-api` (Dockerfile)
+  - [x] Service: `crm-worker` (Dockerfile.worker)
+  - [x] Add-on: Redis
+  - [x] Set all environment variables
+- [x] Run `alembic upgrade head` against Supabase
+- [x] Run `python seed.py` to populate demo data
+- [x] Verify: `GET /health` returns 200
 
 ### 16.2 Channel Stub Deployment (Railway)
-- [ ] Create `channel-stub/Dockerfile`
-- [ ] Create `channel-stub/Dockerfile.worker`
-- [ ] Deploy to Railway as separate services
-- [ ] Update `CRM_RECEIPT_URL` env var to point to live CRM API
-- [ ] Test: POST to channel stub `/send` → callbacks arrive at CRM
+- [x] Create `channel-stub/Dockerfile`
+- [x] Create `channel-stub/Dockerfile.worker`
+- [x] Deploy to Railway as separate services
+- [x] Update `CRM_RECEIPT_URL` env var to point to live CRM API
+- [x] Test: POST to channel stub `/send` → callbacks arrive at CRM
 
 ### 16.3 Frontend Deployment (Vercel)
-- [ ] Set `VITE_API_BASE_URL` to Railway CRM API URL
-- [ ] Deploy via Vercel CLI or GitHub integration
-- [ ] Verify: login works, campaign launch works, SSE connects
+- [x] Set `VITE_API_BASE_URL` to Railway CRM API URL
+- [x] Deploy via Vercel CLI or GitHub integration
+- [x] Verify: login works, campaign launch works, SSE connects
 
 ### 16.4 End-to-End Smoke Test (Live)
-- [ ] Login as `demo@aurabeauty.com`
-- [ ] Create a segment via AI intent
-- [ ] Create and launch a campaign
-- [ ] Watch delivery funnel populate in real time
-- [ ] Verify: `receipt_events` table has correct entries, no duplicates
-- [ ] Verify: fire duplicate callback manually → `is_duplicate=true` in DB, stats unchanged
+- [x] Login as `demo@aurabeauty.com`
+- [x] Create a segment via AI intent
+- [x] Create and launch a campaign
+- [x] Watch delivery funnel populate in real time
+- [x] Verify: `receipt_events` table has correct entries, no duplicates
+- [x] Verify: fire duplicate callback manually → `is_duplicate=true` in DB, stats unchanged
 
 ---
 
@@ -570,9 +570,9 @@
 | 11 | Campaign Builder + Analytics | `[x]` |
 | 12 | AI Assistant | `[x]` |
 | 13 | Polish + Error States | `[x]` |
-| 14 | Testing | `[ ]` |
-| 15 | Docs + Submission | `[ ]` |
-| 16 | Deployment | `[ ]` |
+| 14 | Testing | `[x]` |
+| 15 | Docs + Submission | `[x]` |
+| 16 | Deployment | `[x]` |
 
 ---
 
