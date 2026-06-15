@@ -45,10 +45,7 @@ export function useCampaignSSE(campaignId: string): SSEState {
 
     // Build the SSE URL — backend accepts token as query param for EventSource clients
     const baseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api/v1';
-    // The SSE route is at /api/analytics/live/:id (no /v1 in the backend prefix)
-    // Strip /v1 if present to hit the correct path
-    const apiRoot = baseUrl.replace(/\/v1\/?$/, '');
-    const url = `${apiRoot}/analytics/live/${campaignId}?token=${encodeURIComponent(token)}`;
+    const url = `${baseUrl}/analytics/live/${campaignId}?token=${encodeURIComponent(token)}`;
 
     const abortController = new AbortController();
     abortRef.current = abortController;
