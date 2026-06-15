@@ -58,9 +58,7 @@ export function useAIChat() {
       const token = useAuthStore.getState().token;
       const baseUrl =
         import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api/v1';
-      // Strip /v1 to hit /api/ai/chat (backend prefixes with /api/ai)
-      const apiRoot = baseUrl.replace(/\/v1\/?$/, '');
-      const chatUrl = `${apiRoot}/ai/chat`;
+      const chatUrl = `${baseUrl}/ai/chat`;
 
       // 1. Add the user message to the store
       addMessage({ role: 'user', content: prompt });
