@@ -97,8 +97,7 @@ export function FloatingChat() {
 
     const token = useAuthStore.getState().token;
     const baseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api/v1';
-    const apiRoot = baseUrl.replace(/\/v1\/?$/, '');
-    const chatUrl = `${apiRoot}/ai/chat`;
+    const chatUrl = `${baseUrl}/ai/chat`;
 
     // Snapshotted messages for backend
     const historyForBackend: BackendChatMessage[] = [
