@@ -182,7 +182,7 @@ export function FloatingChat() {
       {/* Chat Panel */}
       {isOpen && (
         <div
-          className="mb-4 flex flex-col overflow-hidden origin-bottom-right transition-all duration-200 glass-card shadow-lg"
+          className="mb-4 flex flex-col origin-bottom-right transition-all duration-200 chat-panel-container"
           style={{
             width: '380px',
             height: '520px',
@@ -190,32 +190,31 @@ export function FloatingChat() {
           }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 bg-white/50 dark:bg-[#131720]/50 backdrop-blur-md px-5 py-4">
+          <div className="flex items-center justify-between chat-panel-header">
             <div>
-              <h3 className="flex items-center gap-2 font-bold text-blue-500 dark:text-blue-400">
-                <Sparkles className="h-4 w-4" />
-                Aura AI
+              <h3 className="chat-panel-title">
+                ✨ Aura AI
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Ask me anything about your customers</p>
+              <p className="chat-panel-subtitle">Ask me anything about your customers</p>
             </div>
             <button
               onClick={handleToggle}
-              className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+              className="rounded-full p-1.5 text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+          <div className="flex-1 overflow-y-auto chat-messages-area flex flex-col">
             {messages.length === 0 ? (
-              <div className="mt-auto space-y-2">
-                <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 px-1">Suggested questions:</p>
+              <div className="mt-auto flex flex-col gap-3">
+                <p className="text-xs text-slate-500 mb-1 px-1">Suggested questions:</p>
                 {SUGGESTIONS.map((suggestion) => (
                   <button
                     key={suggestion}
                     onClick={() => handleSend(suggestion)}
-                    className="block w-full text-left rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:border-blue-500/40 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+                    className="chat-suggested-chip"
                   >
                     {suggestion}
                   </button>
@@ -233,10 +232,10 @@ export function FloatingChat() {
                     </div>
                   )}
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
+                    className={`max-w-[85%] text-sm ${
                       msg.role === 'user'
-                        ? 'bg-blue-500 text-white shadow-sm'
-                        : 'bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-white/10 shadow-sm'
+                        ? 'chat-bubble-user'
+                        : 'chat-bubble-assistant'
                     }`}
                   >
                     <p className="whitespace-pre-wrap">{msg.content || (msg.role === 'assistant' && ' ')}</p>
@@ -273,14 +272,14 @@ export function FloatingChat() {
           </div>
 
           {/* Input Area */}
-          <div className="p-3 bg-slate-50/50 dark:bg-[#1a1f2e]/50 border-t border-slate-200 dark:border-white/10">
-            <div className="relative flex items-end overflow-hidden rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/15 focus-within:border-blue-500 focus-within:ring-[3px] focus-within:ring-blue-500/20 dark:focus-within:border-blue-400/50 dark:focus-within:ring-blue-400/10 transition-all">
+          <div className="chat-input-area">
+            <div className="relative flex items-end">
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask about your customers..."
-                className="max-h-[120px] min-h-[44px] w-full resize-none bg-transparent py-3 pl-3 pr-10 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none"
+                className="max-h-[120px] min-h-[44px] w-full resize-none chat-input-field pr-10"
                 rows={1}
               />
               <button
@@ -316,6 +315,133 @@ export function FloatingChat() {
             opacity: 1;
             transform: scale(1);
           }
+        }
+        
+        .chat-panel-container {
+          background: #1e2433;
+          border: 1px solid rgba(59,130,246,0.25);
+          box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+          border-radius: 20px;
+        }
+        html.light .chat-panel-container {
+          background: #ffffff;
+        }
+
+        .chat-panel-header {
+          background: #252d3d;
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+          border-radius: 20px 20px 0 0;
+          padding: 16px;
+        }
+        html.light .chat-panel-header {
+          background: #f8fafc;
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .chat-panel-title {
+          color: #f1f5f9;
+          font-weight: 600;
+        }
+        html.light .chat-panel-title {
+          color: #0f172a;
+        }
+
+        .chat-panel-subtitle {
+          color: #64748b;
+          font-size: 12px;
+          margin-top: 2px;
+        }
+
+        .chat-messages-area {
+          background: #1e2433;
+          padding: 16px;
+          gap: 12px;
+        }
+        html.light .chat-messages-area {
+          background: #ffffff;
+        }
+
+        .chat-bubble-user {
+          background: #2563eb;
+          color: #ffffff;
+          border-radius: 16px 16px 4px 16px;
+          padding: 10px 14px;
+          border: none;
+        }
+        /* User bubble light mode keeps same */
+
+        .chat-bubble-assistant {
+          background: #252d3d;
+          color: #e2e8f0;
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 16px 16px 16px 4px;
+          padding: 10px 14px;
+        }
+        html.light .chat-bubble-assistant {
+          background: #f1f5f9;
+          border-color: #e2e8f0;
+          color: #1e293b;
+        }
+
+        .chat-input-area {
+          background: #252d3d;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          border-radius: 0 0 20px 20px;
+          padding: 12px;
+        }
+        html.light .chat-input-area {
+          background: #f8fafc;
+          border-top: 1px solid #e2e8f0;
+        }
+
+        .chat-input-field {
+          background: #1a2030;
+          border: 1px solid rgba(255,255,255,0.12);
+          color: #f1f5f9;
+          border-radius: 10px;
+          padding: 10px 14px;
+          outline: none;
+          transition: border-color 0.2s;
+        }
+        .chat-input-field::placeholder {
+          color: #475569;
+        }
+        .chat-input-field:focus {
+          border-color: rgba(59,130,246,0.5);
+        }
+        html.light .chat-input-field {
+          background: #ffffff;
+          border-color: #cbd5e1;
+          color: #0f172a;
+        }
+
+        .chat-suggested-chip {
+          background: #252d3d;
+          border: 1px solid rgba(255,255,255,0.10);
+          color: #94a3b8;
+          border-radius: 8px;
+          padding: 8px 12px;
+          font-size: 12px;
+          transition: all 0.2s;
+          text-align: left;
+          display: block;
+          width: 100%;
+          cursor: pointer;
+        }
+        .chat-suggested-chip:hover {
+          background: #2d3748;
+          border-color: rgba(59,130,246,0.3);
+          color: #e2e8f0;
+        }
+        html.light .chat-suggested-chip {
+          background: #f1f5f9;
+          border-color: #e2e8f0;
+          color: #64748b;
+        }
+        html.light .chat-suggested-chip:hover {
+          background: #e2e8f0;
+          border-color: rgba(59,130,246,0.3);
+          color: #1e293b;
         }
       `}</style>
     </div>
