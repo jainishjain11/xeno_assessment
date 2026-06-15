@@ -51,41 +51,26 @@ with 1,000+ shoppers. The product lets a marketer:
 
 ![Architecture](image.png)
 
+```text
 Browser (React 18 + Vite + Tailwind)
-
 │
-
 │ REST + SSE
-
 ▼
-
 FastAPI (CRM API) ──────────── Gemini API
-
 │                     (AI Engine)
-
 ├── SQLAlchemy ─────── Supabase PostgreSQL
-
 │   (async ORM)       (hosted DB)
-
 │
-
 └── Celery ─────────── Upstash Redis
-
 │                 (broker + SSE pubsub)
-
 │
-
 └── Channel Stub (FastAPI, Render)
-
 │
-
 └── Celery Worker
-
 │
-
 └── Fires callbacks
-
 back to /receipts/callback
+```
 
 ### Service Map
 
@@ -129,23 +114,17 @@ back to /receipts/callback
 ## 🗄️ Database Schema
 
 7 tables in Supabase PostgreSQL:
+```text
 customers ──────────── orders
-
 │
-
 └── segments (JSONB filter_rules)
-
 │
-
 campaigns
-
 │
-
 communication_logs ── receipt_events
-
 │
-
 (idempotency_key: campaign_id:customer_id)
+```
 
 ### Key Design Decisions in the Schema
 
@@ -174,83 +153,48 @@ The SSE stream publishes updates on every callback received.
 ## 🔄 Async Webhook Lifecycle
 
 The two-service callback loop is the core system design challenge:
+
+```text
 CRM launches campaign
-
 │
-
 ▼
-
 dispatch_campaign_task (Celery)
-
 │ creates communication_log rows
-
 │ (ON CONFLICT DO NOTHING — idempotent)
-
 │
-
 ▼
-
 POST /send → Channel Stub
-
 │ returns 202 immediately
-
 │
-
 ▼
-
 simulate_delivery_task (Celery, channel stub worker)
-
 │
-
 ├── sleep 1-5s → POST "sent" callback
-
 ├── sleep 2-8s → POST "delivered" (85%) or "failed" (15%)
-
 ├── sleep 5-15s → POST "opened" (40% of delivered)
-
 ├── sleep 2-5s → POST "read" (70% of opened)
-
 ├── sleep 3-8s → POST "clicked" (20% of read)
-
 └── sleep 1-3s → POST "converted" (10% of clicked)
-
 │
-
 ▼
-
 POST /receipts/callback → CRM Receipt API
-
 │
-
 ├── Layer 1: Redis idempotency key check (24h TTL)
-
 ├── Layer 2: receipt_events dedup check
-
 ├── Layer 3: forward-only state transition
-
 ├── Layer 4: out-of-order backfill
-
 │
-
 └── Always returns 200 OK
-
 │
-
 ▼
-
 update_campaign_aggregate_task (Celery)
-
 │ refreshes Redis cache
-
 └── publishes to SSE pubsub channel
-
 │
-
 ▼
-
 Browser receives funnel_update SSE event
-
 Live chart updates in real time
+```
 
 ### Idempotency — The Four Layers
 
@@ -282,64 +226,38 @@ remains mathematically consistent.
 ## 🤖 AI Integration
 
 ### Intent Parsing Pipeline
+```text
 Marketer types: "Find VIP customers who haven't ordered in 60 days,
-
 draft a WhatsApp win-back with 15% discount"
-
 │
-
 ▼
-
 POST /ai/parse-intent
-
 │
-
 ▼
-
 Gemini 1.5 Flash
-
 System prompt includes:
-
 Full schema of filterable fields + operators
 Brand context (Aura Beauty, Indian market)
 Required JSON output format
-
 │
-
 ▼
-
 Returns structured JSON:
-
 {
-
 "segment_rules": { "operator": "AND", "rules": [...] },
-
 "segment_name": "Lapsed VIP 60d",
-
 "message_draft": "Hey {{first_name}}! ...",
-
 "recommended_channel": "whatsapp",
-
 "reasoning": "..."
-
 }
-
 │
-
 ▼
-
 Pydantic validates output
-
 If invalid JSON → retry once with error context
-
 │
-
 ▼
-
 Frontend pre-populates segment builder + message composer
-
 Marketer reviews, edits, approves → launches campaign
-
+```
 
 ### Segment Filter Compiler
 
@@ -471,13 +389,9 @@ cp frontend/.env.example frontend/.env.local
 
 Fill in `backend/.env`:
 DATABASE_URL=your-supabase-connection-string
-
 REDIS_URL=your-upstash-redis-url
-
 JWT_SECRET=any-32-char-random-string
-
 GEMINI_API_KEY=your-gemini-api-key
-
 CHANNEL_STUB_URL=http://localhost:8001
 
 ### 2. Backend
@@ -526,76 +440,44 @@ Login: demo@aurabeauty.com / demo1234
 ---
 
 ## 📁 Project Structure
+
+```text
 xeno_assessment/
-
 ├── spec.md                    # Architecture + API contracts
-
 ├── todo.md                    # Implementation checklist
-
 ├── test.md                    # 50-test verification suite
-
 ├── backend/
-
 │   ├── app/
-
 │   │   ├── main.py            # FastAPI app factory
-
 │   │   ├── config.py          # Pydantic settings
-
 │   │   ├── database.py        # Async SQLAlchemy engine
-
 │   │   ├── models/            # ORM models (7 tables)
-
 │   │   ├── schemas/           # Pydantic request/response
-
 │   │   ├── routers/           # API endpoints
-
 │   │   ├── services/          # Business logic
-
 │   │   ├── tasks/             # Celery tasks
-
 │   │   ├── ai/                # Gemini client + prompts
-
 │   │   └── utils/             # filter_compiler.py + JWT
-
 │   ├── alembic/               # DB migrations
-
 │   ├── seed.py                # Demo data generator
-
 │   └── requirements.txt
-
 ├── channel-stub/
-
 │   ├── app/
-
 │   │   ├── main.py
-
 │   │   ├── routers/send.py    # POST /send endpoint
-
 │   │   └── tasks/simulate.py  # Delivery simulation
-
 │   └── requirements.txt
-
 └── frontend/
-
-├── src/
-
-│   ├── components/
-
-│   │   ├── layout/        # Sidebar + Layout
-
-│   │   ├── ui/            # shadcn components
-
-│   │   └── ai/            # FloatingChat + IntentCard
-
-│   ├── pages/             # All route pages
-
-│   ├── hooks/             # TanStack Query hooks
-
-│   ├── store/             # Zustand stores
-
-│   └── lib/               # axios + utils
-
-└── package.json
+    ├── src/
+    │   ├── components/
+    │   │   ├── layout/        # Sidebar + Layout
+    │   │   ├── ui/            # shadcn components
+    │   │   └── ai/            # FloatingChat + IntentCard
+    │   ├── pages/             # All route pages
+    │   ├── hooks/             # TanStack Query hooks
+    │   ├── store/             # Zustand stores
+    │   └── lib/               # axios + utils
+    └── package.json
+```
 
 ---
