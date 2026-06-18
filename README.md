@@ -25,8 +25,8 @@
 
 ## 📹 Walkthrough Video
 
-[YOUR LOOM VIDEO URL]
 
+[Demo Video Link](https://drive.google.com/file/d/1aEDGbenehtH6cXqiNiueyKbWCjuZxDdT/view?usp=drive_link)
 ---
 
 ## 🧠 What I Built
