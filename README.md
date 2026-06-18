@@ -51,26 +51,6 @@ with 1,000+ shoppers. The product lets a marketer:
 
 ![Architecture](image.png)
 
-```text
-Browser (React 18 + Vite + Tailwind)
-│
-│ REST + SSE
-▼
-FastAPI (CRM API) ──────────── Gemini API
-│                     (AI Engine)
-├── SQLAlchemy ─────── Supabase PostgreSQL
-│   (async ORM)       (hosted DB)
-│
-└── Celery ─────────── Upstash Redis
-│                 (broker + SSE pubsub)
-│
-└── Channel Stub (FastAPI, Render)
-│
-└── Celery Worker
-│
-└── Fires callbacks
-back to /receipts/callback
-```
 
 ### Service Map
 
@@ -353,10 +333,7 @@ This project was built using a structured development workflow:
 2. **todo.md as execution plan** — 15 phases, each broken into 
    micro-tasks. Checked off as completed.
 
-3. **Phase-by-phase execution** — each phase 
-   opened with the same context:
-   "Read spec.md and todo.md. I am on Phase X. 
-    Completed: Phases 0-Y. Do not rewrite previous phases."
+3. **Phase-by-phase execution** — each phase   
 
 4. **Context management** — strict phase isolation prevented 
    code drift. spec.md served as ground truth.
